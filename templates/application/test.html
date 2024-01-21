@@ -1,0 +1,79 @@
+function traverseNestedDictionary(obj, parentElement, isRoot = false) {
+    var ul = document.createElement('ul');
+    parentElement.appendChild(ul);
+
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            var li = document.createElement('li');
+            ul.appendChild(li);
+
+            var span = document.createElement('span');
+            span.textContent = key + ": ";
+            li.appendChild(span);
+
+            // Si la valeur est un autre objet, appel récursif de la fonction pour ce sous-objet
+            if (typeof obj[key] === 'object' && obj[key] !== null) {
+                traverseNestedDictionary(obj[key], li, false);
+
+                // Ajout d'un gestionnaire d'événements pour montrer/cacher les enfants
+                span.addEventListener('click', function(e) {
+                    e.stopPropagation();  // Empêche la propagation de l'événement aux parents
+
+                    var ul = this.parentElement.querySelector('ul');
+                    if (ul) {
+                        ul.classList.toggle('hidden');
+
+                        // Changer l'icône en fonction de l'état
+                        var icon = this.querySelector('.mdi');
+                        if (ul.classList.contains('hidden')) {
+                            icon.classList.remove('mdi-chevron-down');
+                            icon.classList.add('mdi-chevron-right');
+                        } else {
+                            icon.classList.remove('mdi-chevron-right');
+                            icon.classList.add('mdi-chevron-down');
+                        }
+                    }
+                });
+
+                // Ajout d'une icône de chevron pour indiquer les éléments avec des enfants
+                var icon = document.createElement('i');
+                icon.className = 'mdi mdi-chevron-right';  // Icône par défaut
+                span.appendChild(icon);
+
+                if (Object.keys(obj[key]).length > 0) {
+                    // L'élément a des enfants, utilisez une icône de chevron
+                    icon.classList.add('has-children');
+                } else {
+                    // L'élément n'a pas d'enfants, masquez l'icône
+                    icon.style.display = 'none';
+                }
+            } else {
+                // Si la valeur n'est pas un objet, affichez-la directement
+                var leafSpan = document.createElement('span');
+                leafSpan.textContent = obj[key];
+                li.appendChild(leafSpan);
+            }
+        }
+    }
+}
+
+// Exemple d'utilisation avec un dictionnaire
+var sampleData = {
+    "Root": {
+        "Child1": {
+            "Grandchild1": "Leaf1",
+            "Grandchild2": {
+                "Great-grandchild1": "Leaf2",
+                "Great-grandchild2": "Leaf3",
+                "Great-grandchild3": {
+                    "Mega-great-grandchild1": "Last leaf",
+                    "Mega-great-grandchild2": "Another last leaf"
+                }
+            }
+        },
+        "Child2": "Leaf3"
+    }
+};
+
+var treeContainer = document.getElementById('tree');
+traverseNestedDictionary(sampleData, treeContainer, true);

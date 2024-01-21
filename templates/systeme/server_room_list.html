@@ -1,0 +1,49 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Salle serveurs</h4>
+            <p class="card-description">
+              Liste de toute les salle serveur
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Datacenter</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for server_room in server_rooms %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-server_room' server_room.pk %}" >{{ server_room.name }} </a></td> 
+                            
+                            <td>{{server_room.datacenter}}</td>
+                            <td>{{server_room.updated}}</td>
+                            <td>{{server_room.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

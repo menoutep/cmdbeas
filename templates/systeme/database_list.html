@@ -1,0 +1,93 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+    <!-- partial:partials/_navbar.html -->
+    {%block categories%}
+    <li class="nav-item dropdown d-none d-lg-block">
+      <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+        data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+        aria-labelledby="messageDropdown">
+        <a class="dropdown-item py-3">
+          <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item preview-item" href="{% url 'base:database-list' %}?parametre=Oracle">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Base de données Oracle</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les bases de données Oracle</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item" href="{% url 'base:database-list' %}?parametre=MySQL">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Bases de données MySQL</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les bases de données MySQL</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item" href="{% url 'base:database-list' %}?parametre=PostgreSQL">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Bases de données PostgreSQL</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les bases de données PostgreSQL</p>
+          </div>
+        </a>
+ 
+      </div>
+    </li>
+    {%endblock%}
+    {%block form-search%}
+    <li class="nav-item">
+      <form method="GET" class="search-form" action="{% url 'base:database-list' %}">
+        <i class="icon-search"></i>
+        <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+      </form>
+    </li>
+    {%endblock%}
+    {%block content%}
+
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-9">
+                  <h4 class="card-title"> Vos Base de données</h4>
+                  <p class="card-description">
+                    Liste de toutes les base données
+                  </p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>  
+                      <th>Serveur de base de donnée</th>
+                      <th>modifié le</th>
+                      <th>créer le</th>
+                  </thead>
+                  <tbody>
+                    {% for database in databases %}               
+                          <tr>
+                            <td><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
+                            
+                            <td>{{database.updated}}</td>
+                            <td>{{database.created}}</td>                 
+                          </tr>
+                     
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+      </div>
+    </div>
+    {% endblock %}
+
+  <!-- plugins:js -->
+
+  

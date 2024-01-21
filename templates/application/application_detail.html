@@ -1,0 +1,244 @@
+{% extends 'application/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{application.name}}</h4>
+            <p class="card-description">
+                Detail du application : {{application.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Replication</th>
+                    <th>Priorité d'exécution</th>
+                    <th>control name</th>
+                    <th>année de deployement</th>
+                    <th>type d'application</th>
+                    <th>Backup strategie</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  
+                  <tr>
+                    <td><a href= "{% url 'base:update-application' application.pk %}"> {{ application.name }} </a></td> 
+                    <td>{{application.description}}</td>
+                    <td>{{application.replication}}</td>
+                    <td>{{application.priority}}</td>
+                    <td>{{application.control_name}}</td>
+                    <td>{{application.deployement_year}}</td>
+                    <td><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}} </a></td>
+                    <td><a href= "">{{application.backup_strategie}}</a></td>
+                    <td>{{application.updated}}</td>
+                    <td>{{application.created}}</td>                
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%if modules %}
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Détails des modules applicatif fournie par {{application.name}}</h4>
+            <p class="card-datacenter">
+                Voir les modules applicatifs relié au  {{application.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Application</th>
+                    <th>Vendor</th>
+                    <th>Departement</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                       
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for module in modules %}
+                  <tr>
+                    <td><a href= ""> {{ module.name }} </a></td> 
+                    <td> {{ module.description }} </td>   
+                    <td> {{ module.application}} </td> 
+                    <td> {{ module.vendor}} </td>   
+                    <td> {{ module.departement }} </td>                      
+                    <td> {{partition.updated}} </td>
+                    <td> {{partition.created}} </td>                
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif  %}
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-9">
+                <h4 class="card-title"> Vos Base de données</h4>
+                <p class="card-description">
+                  Liste de toutes les base données
+                </p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>  
+                    <th>Serveur de base de donnée</th>
+                    <th>Modules applicatifs</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                </thead>
+                <tbody>
+                  {% for database in databases %}               
+                        <tr>
+                          <td><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
+                          <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
+                            <td>
+                              {%for module in database.module_applicatifs.all%}
+                                {{module.name}},
+                              {%endfor%}
+                            </td>
+                          <td>{{database.updated}}</td>
+                          <td>{{database.created}}</td>                 
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Historique </h4>
+            <p class="card-description">
+              Historique des modifications portant sur le application : {{application.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Modifié le</th>
+                    <th>Modifier par</th>
+                    <th>Raison de la modifications</th>
+                    <th>action effectué</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Replication</th>
+                    <th>Priorité d'exécution</th>
+                    <th>control name</th>
+                    <th>année de deployement</th>
+                    <th>type d'application</th>
+                    <th>Backup strategie</th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for application_history in application.history.all %}
+                  {% if application_history.get_history_type_display != "Created" %}
+                  <tr>
+                    <td>{{application_history.history_id}}</td>
+                    <td>{{application_history.history_date}}</td>
+                    <td>{{application_history.history_user}}</td>
+                    <td>{{application_history.history_change_reason}}</td>
+                    <td>{{application_history.get_history_type_display}}</td>
+                    {% if application_history.prev_record.name != application_history.name %}
+                        <td>valeur après modification : {{application_history.name}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.name}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.description != application_history.description %}
+                        <td>valeur après modification : {{application_history.description}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.description}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.replication != application_history.replication %}
+                        <td>valeur après modification : {{application_history.replication}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.replication}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.priority != application_history.priority %}
+                        <td>valeur après modification : {{application_history.priority}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.priority}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.control_name != application_history.control_name %}
+                        <td>valeur après modification : {{application_history.control_name}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.control_name}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.deployement_year != application_history.deployement_year %}
+                        <td>valeur après modification : {{application_history.deployement_year}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.deployement_year}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.app_type != application_history.app_type %}
+                        <td>valeur après modification : {{application_history.app_type}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.app_type}}</td>
+                    {% endif %}
+                    {% if application_history.prev_record.backup_strategie != application_history.backup_strategie %}
+                        <td>valeur après modification : {{application_history.backup_strategie}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{application_history.backup_strategie}}</td>
+                    {% endif %}
+
+                  </tr>
+                  {%else%}
+                  <tr>
+                    <td>{{application_history.history_id}}</td>
+                    <td>{{application_history.history_date}}</td>
+                    <td>{{application_history.history_user}}</td>
+                    <td>{{application_history.history_change_reason}}</td>
+                    <td>{{application_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{application_history.name}}</td>
+                    <td> valeur a la création :{{application.description}}</td>
+                    <td> valeur a la création :{{application.replication}}</td>
+                    <td> valeur a la création :{{application.priority}}</td>
+                    <td> valeur a la création :{{application.control_name}}</td>
+                    <td> valeur a la création :{{application.deployement_year}}</td>
+                    <td> valeur a la création :{{application.app_type}} </td>
+                    <td> valeur a la création :{{application.backup_strategie}}</td>
+
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+
+    </div>
+  </div>
+  {% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'application/index.html' %}
+{% load static %}
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:vendor-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Vendors</h4>
+            <p class="card-description">
+              Liste de tous les départements
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>description</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for vendor in vendors %}
+                        <tr>
+                            <td><a href="{% url 'base:detail-vendor' vendor.pk %}" >{{ vendor.name }} </a></td>   
+                            <td>{{vendor.description}}</td>
+                            <td>{{vendor.updated}}</td>
+                            <td>{{vendor.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

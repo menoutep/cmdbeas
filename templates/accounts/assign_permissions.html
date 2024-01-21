@@ -1,0 +1,39 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+
+      <div class="col-md-9 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Assigner des permissions</h4>
+            <p class="card-description">
+              Veuillez selectionner l'utlisateur puis cocher les permissions que vous souhaitez lui attribué
+            </p>
+            <form  method="post" class="forms-sample">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.user.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.user }}
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="exampleInputMobile" class="col-sm-3 col-form-label">{{ form.permissions.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.permissions}}
+                </div>
+              </div>
+              
+              <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

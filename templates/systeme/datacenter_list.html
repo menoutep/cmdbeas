@@ -1,0 +1,49 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Datacenter</h4>
+            <p class="card-description">
+              Liste de tous les datacenters
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>localisation</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for datacenter in datacenters %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
+                            
+                            <td>{{datacenter.localisation}}</td>
+                            <td>{{datacenter.updated}}</td>
+                            <td>{{datacenter.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

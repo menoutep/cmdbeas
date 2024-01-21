@@ -1,0 +1,85 @@
+{% extends 'application/index.html' %}
+{% load static %}
+{%block categories%}
+<li class="nav-item dropdown d-none d-lg-block">
+  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+    data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+    aria-labelledby="messageDropdown">
+    <a class="dropdown-item py-3">
+      <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+    </a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item preview-item" href="{% url 'base:module_applicatif-list' %}?parametre=in_house">
+      <div class="preview-item-content flex-grow py-2">
+        <p class="preview-subject ellipsis font-weight-medium text-dark">Application maison</p>
+        <p class="fw-light small-text mb-0">Afficher seulement les module_applicatifs conçue au sein du groupe</p>
+      </div>
+    </a>
+    <a class="dropdown-item preview-item" href="{% url 'base:module_applicatif-list' %}?parametre=vendor">
+      <div class="preview-item-content flex-grow py-2">
+        <p class="preview-subject ellipsis font-weight-medium text-dark">Applications fournies</p>
+        <p class="fw-light small-text mb-0">Afficher seulement les module_applicatifs conçues par des fournisseurs exterieurs</p>
+      </div>
+    </a>
+  </div>
+</li>
+{%endblock%}
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:module_applicatif-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Applications</h4>
+            <p class="card-description">
+              Liste de toutes les module_applicatifs
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Application</th>
+                    <th>Vendor</th>
+                    <th>Departement</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for module in module_applicatifs %}
+                  <tr>
+                    <td><a href= "{% url 'base:detail-module_applicatif' module_applicatif.pk %}" > {{ module.name }} </a></td> 
+                    <td> {{ module.description }} </td>   
+                    <td> {{ module.application}} </td> 
+                    <td> {{ module.vendor}} </td>   
+                    <td> {{ module.departement }} </td>                      
+                    <td>{{module.updated}}</td>
+                    <td>{{module.created}}</td>                
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

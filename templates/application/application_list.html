@@ -1,0 +1,90 @@
+{% extends 'application/index.html' %}
+{% load static %}
+{%block categories%}
+<li class="nav-item dropdown d-none d-lg-block">
+  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+    data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+    aria-labelledby="messageDropdown">
+    <a class="dropdown-item py-3">
+      <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+    </a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item preview-item" href="{% url 'base:application-list' %}?parametre=in_house">
+      <div class="preview-item-content flex-grow py-2">
+        <p class="preview-subject ellipsis font-weight-medium text-dark">Application maison</p>
+        <p class="fw-light small-text mb-0">Afficher seulement les applications conçue au sein du groupe</p>
+      </div>
+    </a>
+    <a class="dropdown-item preview-item" href="{% url 'base:application-list' %}?parametre=vendor">
+      <div class="preview-item-content flex-grow py-2">
+        <p class="preview-subject ellipsis font-weight-medium text-dark">Applications fournies</p>
+        <p class="fw-light small-text mb-0">Afficher seulement les applications conçues par des fournisseurs exterieurs</p>
+      </div>
+    </a>
+  </div>
+</li>
+{%endblock%}
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:application-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Applications</h4>
+            <p class="card-description">
+              Liste de toutes les applications
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Replication</th>
+                    <th>Priorité d'exécution</th>
+                    <th>control name</th>
+                    <th>année de deployement</th>
+                    <th>type d'application</th>
+                    <th>Backup strategie</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for application in applications %}
+                  <tr>
+                    <td><a href= "{% url 'base:detail-application' application.pk %}"> {{ application.name }} </a></td> 
+                    <td>{{application.description}}</td>
+                    <td>{{application.replication}}</td>
+                    <td>{{application.priority}}</td>
+                    <td>{{application.control_name}}</td>
+                    <td>{{application.deployement_year}}</td>
+                    <td><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}} </a></td>
+                    <td><a href= "">{{application.backup_strategie}}</a></td>
+                    <td>{{application.updated}}</td>
+                    <td>{{application.created}}</td>                
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

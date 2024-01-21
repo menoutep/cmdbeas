@@ -1,0 +1,81 @@
+{% extends 'application/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+
+      <div class="col-md-9 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un application</h4>
+            <p class="card-description">
+              Veuillez saisir les informations relatives à l'application
+            </p>
+            <form  method="post" class="forms-sample" enctype="multipart/form-data">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.name.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.name }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.description.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.description }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.replication.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.replication }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.priority.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.priority }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.control_name.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.control_name }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.deployement_year.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.deployement_year }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.app_type.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.app_type }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.backup_strategie.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.backup_strategie }}
+                </div>
+              </div>
+              {% if form.instance.pk %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.historical_change_reason.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.historical_change_reason }}
+                </div>
+              </div>
+              {% endif %}
+              <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

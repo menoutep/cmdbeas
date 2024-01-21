@@ -1,0 +1,51 @@
+{% extends '' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Deploiement de serveur sur cluster</h4>
+            <p class="card-description">
+              Liste de tout les deploiements clusters-serveurs
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Serveur</th>
+                    <th>Cluster</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for deploiement_cluster in deploiement_clusters %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-deploiement_cluster' deploiement_cluster.pk %}" >{{ deploiement_cluster.pk }} </a></td> 
+                            
+                            <td>{{deploiement_cluster.server}}</td>
+                            <td>{{deploiement_cluster.cluster}}</td>
+                            <td>{{deploiement_cluster.updated}}</td>
+                            <td>{{deploiement_cluster.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

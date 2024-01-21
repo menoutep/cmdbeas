@@ -1,0 +1,103 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+    <!-- partial:partials/_navbar.html -->
+    {%block categories%}
+    <li class="nav-item dropdown d-none d-lg-block">
+      <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+        data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+        aria-labelledby="messageDropdown">
+        <a class="dropdown-item py-3">
+          <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item preview-item" href="{% url 'base:database_server-list' %}?parametre=server">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Serveurs </p>
+            <p class="fw-light small-text mb-0">Afficher seulement les serveurs serveurs de base de données hébergé sur un seul serveur</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item" href="{% url 'base:database_server-list' %}?parametre=cluster">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Cluster</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les serveurs de base de données hébergé sur un cluster</p>
+          </div>
+        </a>
+
+      </div>
+    </li>
+    {%endblock%}
+    {%block form-search%}
+    <li class="nav-item">
+      <form method="GET" class="search-form" action="{% url 'base:database_server-list' %}">
+        <i class="icon-search"></i>
+        <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+      </form>
+    </li>
+    {%endblock%}
+    {%block content%}
+
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-9">
+                  <h4 class="card-title"> Vos Serveurs</h4>
+                  <p class="card-description">
+                    Liste de tous les serveurs
+                  </p>
+                </div>
+       
+                
+              </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nom </th>
+                      <th>Mémoire vive requise (gb)</th>
+                      <th>Stockage requis (tera)</th>                     
+                      <th>Serveur </th>
+                      <th>Cluster</th>
+                      <th>modifié le</th>
+                      <th>créer le</th>
+                  </thead>
+                  <tbody>
+                    {% for database_server in database_servers %}
+                    
+                          <tr>
+                            <td><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
+                            <td>{{database_server.ram}}</td>
+                            <td>{{database_server.rom}}</td> 
+                            {%if database_server.server%}
+                            <td><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
+                            {%else%} 
+                            <td>pas hebergé sur serveur</td> 
+                            {%endif%}
+                            {%if database_server.cluster%}
+                            <td><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
+                              {%else%} 
+                            <td>pas hebergé sur cluster</td> 
+                            {%endif%}
+                            <td>{{database_server.updated}}</td>
+                            <td>{{database_.created}}</td>                 
+                          </tr>
+                     
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+      </div>
+    </div>
+    {% endblock %}
+
+  <!-- plugins:js -->
+
+  

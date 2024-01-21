@@ -1,0 +1,56 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:rack-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Racks</h4>
+            <p class="card-description">
+              Liste de tous les Racks
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Salle serveur</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for rack in racks %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
+                            
+                            <td>{{rack.server_room}}</td>
+                            <td>{{rack.updated}}</td>
+                            <td>{{rack.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

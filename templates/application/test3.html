@@ -1,0 +1,153 @@
+{% extends 'application/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding-left: 20px;
+    }
+    
+    li {
+        margin-bottom: 5px;
+    }
+    
+    .expand-btn {
+        cursor: pointer;
+        padding: 3px;
+        border-radius: 3px;
+        margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+        display: inline-block; /* Affichage en ligne pour permettre le positionnement horizontal */
+    }
+    
+    .expand-btn:hover {
+        background-color: #f0f0f0;
+    }
+    
+    ul.hidden {
+        display: none;
+    }
+
+    .mdi {
+        font-size: 18px;
+        vertical-align: middle; /* Alignement vertical au centre */
+        margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+    }
+    
+</style>
+
+<div id="tree"></div>
+
+<script>
+    function traverseNestedDictionary(obj, parentElement, isRoot = false) {
+        var ul = document.createElement('ul');
+        parentElement.appendChild(ul);
+    
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var li = document.createElement('li');
+                ul.appendChild(li);
+    
+                // Ajout d'un bouton d'expansion
+                var expandBtn = document.createElement('span');
+                expandBtn.className = 'mdi mdi-chevron-right expand-btn';
+                expandBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+    
+                    var ul = this.parentElement.querySelector('ul');
+                    if (ul) {
+                        ul.classList.toggle('hidden');
+                        console.log(this)
+                        // Changer l'icône en fonction de l'état
+                        var icon = this;
+                        
+                        console.log(icon)
+                        console.log('ok')
+                        if (ul.classList.contains('hidden')) {
+                            console.log('ok')
+                            // Les éléments sont masqués, changer l'icône vers la droite
+                            icon.classList.remove('mdi-chevron-down');
+                            icon.classList.add('mdi-chevron-right');
+                        } else {
+                            // Les éléments sont visibles, changer l'icône vers le bas
+                            icon.classList.remove('mdi-chevron-right');
+                            icon.classList.add('mdi-chevron-down');
+                        }
+                    }
+                    
+                });
+    
+                li.appendChild(expandBtn);
+    
+                // Ajout du texte
+                var textDiv = document.createElement('span');
+                textDiv.textContent = key + ": ";
+                li.appendChild(textDiv);
+    
+                // Si la valeur est un autre objet, appel récursif de la fonction pour ce sous-objet
+                if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    traverseNestedDictionary(obj[key], li, false);
+    
+                    // Masquer tous les éléments <ul> sauf si c'est l'élément "Root"
+                    if (!isRoot) {
+                        ul.classList.add('hidden');
+                    }
+                } else {
+                    // Si la valeur n'est pas un objet, affichez-la directement
+                    var leafDiv = document.createElement('span');
+                    leafDiv.textContent = obj[key];
+                    li.appendChild(leafDiv);
+                }
+            }
+        }
+    }
+
+    // Exemple d'utilisation avec un dictionnaire
+    var sampleData = {
+        "Root1": {
+            "Child1": {
+                "Grandchild1": "Leaf1",
+                "Grandchild2": {
+                    "Great-grandchild1": "Leaf2",
+                    "Great-grandchild2": "Leaf3",
+                    "Great-grandchild3": {
+                        "Mega-great-grandchild1": "Last leaf",
+                        "Mega-great-grandchild2": "Another last leaf"
+                    }
+                }
+            },
+            "Child2": "Leaf3"
+        },
+        "root2": {
+            "Child1": {
+                "Grandchild1": "Leaf1",
+                "Grandchild2": {
+                    "Great-grandchild1": "Leaf2",
+                    "Great-grandchild2": "Leaf3",
+                    "Great-grandchild3": {
+                        "Mega-great-grandchild1": "Last leaf",
+                        "Mega-great-grandchild2": "Another last leaf"
+                    }
+                }
+            },
+            "Child2": "Leaf3"
+        }
+    };
+    
+    var serializedData = {}
+    var serializedData = {{serializer_data|safe}};
+    // Utiliser la structure JavaScript dans la console log
+    console.log(serializedData);
+    
+    
+    var treeContainer = document.getElementById('tree');
+    traverseNestedDictionary(serializedData, treeContainer, true);
+    
+</script>
+
+{% endblock %}

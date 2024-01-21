@@ -1,0 +1,114 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+    <!-- partial:partials/_navbar.html -->
+    {%block categories%}
+    <li class="nav-item dropdown d-none d-lg-block">
+      <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+        data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+        aria-labelledby="messageDropdown">
+        <a class="dropdown-item py-3">
+          <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item preview-item" href="{% url 'base:server-list' %}?parametre=physique">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Serveurs physique</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les serveurs physiques</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item" href="{% url 'base:server-list' %}?parametre=virtuel">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">Serveurs virtuels</p>
+            <p class="fw-light small-text mb-0">Afficher seulement les serveurs virtuels</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+            <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p>
+          </div>
+        </a>
+        <a class="dropdown-item preview-item">
+          <div class="preview-item-content flex-grow py-2">
+            <p class="preview-subject ellipsis font-weight-medium text-dark">React Bundle</p>
+            <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p>
+          </div>
+        </a>
+      </div>
+    </li>
+    {%endblock%}
+    {%block form-search%}
+    <li class="nav-item">
+      <form method="GET" class="search-form" action="{% url 'base:server-list' %}">
+        <i class="icon-search"></i>
+        <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+      </form>
+    </li>
+    {%endblock%}
+    {%block content%}
+
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-9">
+                  <h4 class="card-title"> Vos Serveurs</h4>
+                  <p class="card-description">
+                    Liste de tous les serveurs
+                  </p>
+                </div>
+       
+                
+              </div>
+          
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Type de serveur</th>
+                      <th>Memoire Rom (tera)</th>
+                      <th>Memoire Ram (gb)</th>
+                      <th>Nombre de processeur </th>
+                      <th>Vitesseur des processeur</th>
+             
+                      <th>Rack</th>
+                      <th>modifié le</th>
+                      <th>créer le</th>
+                  </thead>
+                  <tbody>
+                    {% for server in servers %}
+                    
+                          <tr>
+                            <td><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
+                            <td>{{server.type_server}}</td>
+                            <td>{{server.ram}}</td>
+                            <td>{{server.rom}}</td>
+                            <td>{{server.nb_processor}}</td>
+                            <td>{{server.v_processor}}</td>
+         
+                            <td><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
+                            <td>{{server.updated}}</td>
+                            <td>{{server.created}}</td>                 
+                          </tr>
+                     
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+      </div>
+    </div>
+    {% endblock %}
+
+  <!-- plugins:js -->
+
+  

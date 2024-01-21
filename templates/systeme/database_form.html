@@ -1,0 +1,52 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+
+      <div class="col-md-9 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une base de donnée</h4>
+            <p class="card-description">
+              Veuillez saisir les informations relatives a la base de donnée
+            </p>
+            <form  method="post" class="forms-sample" enctype="multipart/form-data">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.name.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.name }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.db_server.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.db_server }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.module_applicatifs.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.module_applicatifs }}
+                </div>
+              </div>
+
+              {% if form.instance.pk %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.historical_change_reason.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.historical_change_reason }}
+                </div>
+              </div>
+              {% endif %}
+              <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

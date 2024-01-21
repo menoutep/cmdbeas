@@ -1,0 +1,27 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="row">
+
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Horizontal Form</h4>
+            <p class="card-description">
+              Horizontal form layout
+            </p>
+            {% load crispy_forms_tags %}
+            <form method="post" class="forms-sample">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
+            <p class="error-message" id="error-message">{{ error_message }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
