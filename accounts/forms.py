@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 import re
+from django_select2 import forms as s2forms
 from django.contrib.auth.hashers import check_password
 from crispy_forms.helper import FormHelper
 from .models import User
@@ -143,23 +144,43 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         return new_password1
     
 
+class PermissionWidget(s2forms.ModelSelect2MultipleWidget):
+    search_fields = [
+        "name__icontains",
+        "codename__icontains",
+    ]
+
+
+class GroupWidget(s2forms.ModelSelect2MultipleWidget):
+    search_fields = [
+        "name__icontains",
+        
+    ]
+
+
+class UserWidget(s2forms.ModelSelect2Widget):
+    search_fields = [
+        "username__icontains",
+        "email__icontains",
+    ]
 
 class PermissionForm(forms.Form):
     user = forms.ModelChoiceField(
         queryset=User.objects.all(), 
         label='Utilisateur',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un utilisateur'}),
+        widget=UserWidget(attrs={'class': 'form-control','placeholder':'Selectionner un utilisateur'}),
         )
     permissions = forms.ModelMultipleChoiceField(
         queryset=Permission.objects.all(), 
-        widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les permissions'}), 
+        widget=PermissionWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les permissions'}), 
         label='Permissions'
         )
 
 class AdminResetUserPassword(forms.Form):
     user = forms.ModelChoiceField(
-        queryset=User.objects.all(), label='Utilisateur',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Entrez votre departement'}),
+        queryset=User.objects.all(), 
+        label='Utilisateur',
+        widget=UserWidget(attrs={'class': 'form-control','placeholder':'mail ou username'}),
         )
     
 
@@ -175,21 +196,20 @@ class GroupCreationForm(forms.Form):
         
     )
     permissions = forms.ModelMultipleChoiceField(
-            queryset=Permission.objects.all(), 
-            widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les permissions'}), 
-            label='Permissions'
-            )
-
+        queryset=Permission.objects.all(),
+        widget=PermissionWidget(attrs={'class': 'form-control', 'id': 'permissionsSelect', 'style': 'height: 100px;'}),
+        label='Permissions'
+    )
 
 class GroupAddForm(forms.Form):
     user = forms.ModelChoiceField(
         queryset=User.objects.all(), 
         label='Utilisateur',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un utilisateur'}),
+        widget=UserWidget(attrs={'class': 'form-control','placeholder':'Selectionner un utilisateur'}),
         )
     group = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(), 
-        widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les roles'}), 
+        widget=GroupWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les roles'}), 
         label='Roles'
         )
 

@@ -1,0 +1,51 @@
+{% extends 'integration/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Sous Process</h4>
+            <p class="card-description">
+              Liste de tous les Sous Process
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Process</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for sub_process in sub_processes %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-sub_process' sub_process.pk %}" >{{ sub_process.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-process' sub_process.process.pk %}" >{{sub_process.process.name}}</a></td>
+
+                            <td>{{sub_process.description}}</td>
+                            <td>{{sub_process.updated}}</td>
+                            <td>{{sub_process.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

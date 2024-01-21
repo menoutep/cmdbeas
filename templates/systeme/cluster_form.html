@@ -20,7 +20,18 @@
                     {{ form.name }}
                 </div>
               </div>
-              
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.ip_address.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.ip_address }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.servers.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.servers }}
+                </div>
+              </div>
               {% if form.instance.pk %}
               <div class="form-group row">
                 <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.historical_change_reason.label }}</label>

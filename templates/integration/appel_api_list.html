@@ -1,0 +1,55 @@
+{% extends 'integration/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Appel APi</h4>
+            <p class="card-description">
+              Liste de tous les Appels APi
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Module Applicatif</th>
+                    <th>Api</th>
+                    <th>Use case</th>
+                    <th>Description</th>                   
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for appel_api in appel_apis %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-appel_api' appel_api.pk %}" >{{ appel_api.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-module_applicatif' appel_api.module_applicatif.pk %}" >{{appel_api.module_applicatif.name}}</a></td>
+                            <td><a href="{% url 'base:detail-api' appel_api.api.pk %}" >{{appel_api.api.name}}</a></td>
+                            <td><a href="{% url 'base:detail-use_case' appel_api.use_case.pk %}" >{{appel_api.use_case.name}}</a></td>
+
+                            <td>{{appel_api.description}}</td>
+                            <td>{{appel_api.updated}}</td>
+                            <td>{{appel_api.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

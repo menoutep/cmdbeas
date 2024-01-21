@@ -38,14 +38,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_select2',
+    'api',
     'axes',
     'simple_history',
     'base',
+    
     'rest_framework',
     'accounts',
     'guardian',
 
 ]
+
+
+# Tell select2 which cache configuration to use:
+
 
 AXES_FAILURE_LIMIT = 10
 AXES_LOCK_OUT_AT_FAILURE = True
@@ -211,3 +218,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    },
+    'select2': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'select2-cache',
+    },
+}
+# Tell select2 which cache configuration to use:
+SELECT2_CACHE_BACKEND = "select2"

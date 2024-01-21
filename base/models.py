@@ -1,6 +1,10 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
 
+NAME_SERVER_TYPE_CHOICES = (
+    ('virtuel','virtuel'),
+    ('physique','physique'),
+)
 # Create your models here.
 class Departement(models.Model):
     name = models.CharField(max_length=200)
@@ -182,24 +186,6 @@ class SystemeStockage(models.Model):
 
 
 
-class Cluster(models.Model):
-    name = models.CharField(max_length=200)
-    #ip_address = models.ForeignKey(IpAdress,on_delete=models.SET_NULL,null=True,blank=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Cluster"
-        verbose_name_plural = "Clusters"
-
-NAME_SERVER_TYPE_CHOICES = (
-    ('virtuel','virtuel'),
-    ('physique','physique'),
-)
 
 class Server(models.Model):
     name = models.CharField(max_length=200)
@@ -209,7 +195,7 @@ class Server(models.Model):
     nb_processor = models.IntegerField()
     v_processor = models.IntegerField()
     sys_stockage = models.ManyToManyField(SystemeStockage,through="base.Partition")# creer si neccessaire les tables intermediaire pour les many to many pour chaque relation de ce type 
-    cluster = models.ManyToManyField(Cluster,through="base.DeploiementCluster")
+    #cluster = models.ManyToManyField(Cluster,through="base.DeploiementCluster")
     rack = models.ForeignKey(Rack,on_delete=models.CASCADE)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -220,6 +206,56 @@ class Server(models.Model):
     class Meta:
         verbose_name = "Serveur "
         verbose_name_plural = "Serveurs"
+
+
+class NetworkInterface(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(null=True,blank=True)
+    server = models.ForeignKey(Server,on_delete=models.CASCADE)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Interface Réseau "
+        verbose_name_plural = "Interface Réseaux"
+
+
+class IpAdress(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(null=True,blank=True)
+    interface = models.ForeignKey(NetworkInterface,on_delete=models.CASCADE)
+    ipv4 = models.GenericIPAddressField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Adresse IP"
+        verbose_name_plural = "Adresses IP"
+
+class Cluster(models.Model):
+    name = models.CharField(max_length=200)
+    ip_address = models.ForeignKey(IpAdress,on_delete=models.SET_NULL,blank=True,null=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    servers = models.ManyToManyField(Server,through="base.DeploiementCluster")
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Cluster"
+        verbose_name_plural = "Clusters"
+
+
 
 class DeploiementCluster(models.Model):
     serveur = models.ForeignKey(Server,on_delete=models.CASCADE)
@@ -396,37 +432,6 @@ class AppelApi(models.Model):
 
 
 
-class NetworkInterface(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True,blank=True)
-    server = models.ForeignKey(Server,on_delete=models.CASCADE)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Interface Réseau "
-        verbose_name_plural = "Interface Réseaux"
-
-
-class IpAdress(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True,blank=True)
-    interface = models.ForeignKey(NetworkInterface,on_delete=models.CASCADE)
-    ipv4 = models.GenericIPAddressField()
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Adresse IP"
-        verbose_name_plural = "Adresses IP"
 
 class DomainName(models.Model):
     name = models.CharField(max_length=200)

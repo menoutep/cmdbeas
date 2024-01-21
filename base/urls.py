@@ -87,9 +87,48 @@ path('module_applicatif/<int:pk>/update/', views.ModuleApplicatifUpdateView.as_v
 path('module_applicatif/create', views.ModuleApplicatifCreateView.as_view(), name='create-module_applicatif'),
 path('module_applicatif/<int:pk>/delete/', views.ModuleApplicatifDeleteView.as_view(), name='delete-module_applicatif'),
 
-path('departement-api/<int:departement_id>/', views.departementApi, name='departement-api'),
-path('server-room-api/<int:id>/', views.serverRoomApiView.as_view(), name='server-room-api'),
-path('datacenter-api/<int:id>/', views.DatacenterApiView.as_view(), name='datacenter-api'),
+path('ip_adress', views.IpAdressListView.as_view(), name='ip_adress-list'),
+path('ip_adress/<int:pk>/', views.IpAdressDetailView.as_view(), name='detail-ip_adress'),
+path('ip_adress/<int:pk>/update/', views.IpAdressUpdateView.as_view(), name='update-ip_adress'),
+path('ip_adress/create', views.IpAdressCreateView.as_view(), name='create-ip_adress'),
+path('ip_adress/<int:pk>/delete/', views.IpAdressDeleteView.as_view(), name='delete-ip_adress'),
+
+path('network_interface', views.NetworkInterfaceListView.as_view(), name='network_interface-list'),
+path('network_interface/<int:pk>/', views.NetworkInterfaceDetailView.as_view(), name='detail-network_interface'),
+path('network_interface/<int:pk>/update/', views.NetworkInterfaceUpdateView.as_view(), name='update-network_interface'),
+path('network_interface/create', views.NetworkInterfaceCreateView.as_view(), name='create-network_interface'),
+path('network_interface/<int:pk>/delete/', views.NetworkInterfaceDeleteView.as_view(), name='delete-network_interface'),
+
+
+path('appel_api', views.AppelApiListView.as_view(), name='appel_api-list'),
+path('appel_api/<int:pk>/', views.AppelApiDetailView.as_view(), name='detail-appel_api'),
+path('appel_api/<int:pk>/update/', views.AppelApiUpdateView.as_view(), name='update-appel_api'),
+path('appel_api/create', views.AppelApiCreateView.as_view(), name='create-appel_api'),
+path('appel_api/<int:pk>/delete/', views.AppelApiDeleteView.as_view(), name='delete-appel_api'),
+
+path('api', views.ApiListView.as_view(), name='api-list'),
+path('api/<int:pk>/', views.ApiDetailView.as_view(), name='detail-api'),
+path('api/<int:pk>/update/', views.ApiUpdateView.as_view(), name='update-api'),
+path('api/create', views.ApiCreateView.as_view(), name='create-api'),
+path('api/<int:pk>/delete/', views.ApiDeleteView.as_view(), name='delete-api'),
+
+path('use_case', views.UseCaseListView.as_view(), name='use_case-list'),
+path('use_case/<int:pk>/', views.UseCaseDetailView.as_view(), name='detail-use_case'),
+path('use_case/<int:pk>/update/', views.UseCaseUpdateView.as_view(), name='update-use_case'),
+path('use_case/create', views.UseCaseCreateView.as_view(), name='create-use_case'),
+path('use_case/<int:pk>/delete/', views.UseCaseDeleteView.as_view(), name='delete-use_case'),
+
+path('process', views.ProcessListView.as_view(), name='process-list'),
+path('process/<int:pk>/', views.ProcessDetailView.as_view(), name='detail-process'),
+path('process/<int:pk>/update/', views.ProcessUpdateView.as_view(), name='update-process'),
+path('process/create', views.ProcessCreateView.as_view(), name='create-process'),
+path('process/<int:pk>/delete/', views.ProcessDeleteView.as_view(), name='delete-process'),
+
+path('sub_process', views.SubProcessListView.as_view(), name='sub_process-list'),
+path('sub_process/<int:pk>/', views.SubProcessDetailView.as_view(), name='detail-sub_process'),
+path('sub_process/<int:pk>/update/', views.SubProcessUpdateView.as_view(), name='update-sub_process'),
+path('sub_process/create', views.SubProcessCreateView.as_view(), name='create-sub_process'),
+path('sub_process/<int:pk>/delete/', views.SubProcessDeleteView.as_view(), name='delete-sub_process'),
 
 path('home', views.home, name='home'),
 ]

@@ -16,7 +16,7 @@
                 <thead>
                   <tr>
                     <th>Nom</th>
-
+                    <th>Adresse ip</th>
                     <th>modifié le</th>
                     <th>créer le</th>
                     
@@ -24,21 +24,72 @@
                 </thead>
                 <tbody>
                   
-                  <tr>
-                    <td><a href="{% url 'base:update-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
 
-
-                    <td>{{cluster.updated}}</td>
-                    <td>{{cluster.created}}</td>
-                    
-                  </tr>
-                 
+                            <td>{{cluster.updated}}</td>
+                            <td>{{cluster.created}}</td>                    
+                        </tr>
+                   
+                  
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
+      {%if cluster.servers.all %}
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{cluster.name}}</h4>
+            <p class="card-server_room">
+                Liste des serveurs sur le cluster : {{cluster.name}}
+            </p>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Type de serveur</th>
+                    <th>Memoire Rom (tera)</th>
+                    <th>Memoire Ram (gb)</th>
+                    <th>Nombre de processeur </th>
+                    <th>Vitesseur des processeur</th>
+           
+                    <th>Rack</th>
+                    <th>modifié le</th>
+
+                    <th>créer le</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for server in cluster.servers.all %}
+                  
+                        <tr>
+                          <td><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
+                          <td>{{server.type_server}}</td>
+                          <td>{{server.ram}}</td>
+                          <td>{{server.rom}}</td>
+                          <td>{{server.nb_processor}}</td>
+                          <td>{{server.v_processor}}</td>
+       
+                          <td><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
+                          <td>{{server.updated}}</td>
+                          <td>{{server.created}}</td>                 
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif %}
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">

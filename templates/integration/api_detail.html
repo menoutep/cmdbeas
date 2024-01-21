@@ -1,0 +1,273 @@
+{% extends 'integration/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Api</h4>
+            <p class="card-description">
+              Liste de toutes les api
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Module Applicatif</th>
+                    <th>Description</th>         
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  
+                        <tr>
+                            <td><a href="{% url 'base:update-api' api.pk %}" >{{ api.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-module_applicatif' api.module_applicatif.pk %}" >{{api.module_applicatif.name}}</a></td>
+
+                            <td>{{api.description}}</td>
+                            <td>{{api.updated}}</td>
+                            <td>{{api.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Historique </h4>
+            <p class="card-description">
+              Historique des modifications portant sur l'Api' : {{api.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Modifié le</th>
+                    <th>Modifier par</th>
+                    <th>Raison de la modifications</th>
+                    <th>action effectué</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Module Applicatif</th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for api_history in api.history.all %}
+                  {% if api_history.get_history_type_display != "Created" %}
+                  <tr>
+                    <td>{{api_history.history_id}}</td>
+                    <td>{{api_history.history_date}}</td>
+                    <td>{{api_history.history_user}}</td>
+                    <td>{{api_history.history_change_reason}}</td>
+                    <td>{{api_history.get_history_type_display}}</td>
+                    {% if api_history.prev_record.name != api_history.name %}
+                        <td>valeur après modification : {{api_history.name}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{api_history.name}}</td>
+                    {% endif %}
+                    {% if api_history.prev_record.description != api_history.description %}
+                        <td>valeur après modification : {{api_history.description}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{api_history.description}}</td>
+                    {% endif %}
+                    {% if api_history.prev_record.module_applicatif != api_history.module_applicatif %}
+                    <td>valeur après modification : {{api_history.module_applicatif}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{api_history.module_applicatif}}</td>
+                    {% endif %}
+
+                
+
+                  </tr>
+                  {%else%}
+                  <tr>
+                    <td>{{api_history.history_id}}</td>
+                    <td>{{api_history.history_date}}</td>
+                    <td>{{api_history.history_user}}</td>
+                    <td>{{api_history.history_change_reason}}</td>
+                    <td>{{api_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{api_history.name}}</td>
+                    <td>valeur a la création: {{api_history.description}}</td>
+                    <td>valeur a la création: {{api_history.module_applicatif}}</td>
+
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Structure arborescente de l'objet : {{api.name}}</h4>
+            <p class="card-api">
+              Détails des composant de  : {{api.name}}
+            </p>
+            <div class="table-responsive">
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                  }
+                  
+                  ul {
+                      list-style-type: none;
+                      padding-left: 20px;
+                      margin-left: 20px;
+                      margin-bottom: 5px;
+                      padding-bottom: 10px;
+                  }
+                  
+                  li {
+                      margin-bottom: 5px;
+                      margin-left: 7px;
+                      padding-left: 10px;
+                      padding-right: 5px;
+                  }
+                  
+                  .expand-btn {
+                      cursor: pointer;
+                      padding: 3px;
+                      border-radius: 3px;
+                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                      display: inline-block; /* Affichage en ligne pour permettre le positionnement horizontal */
+                  }
+                  
+                  .expand-btn:hover {
+                      background-color: #f0f0f0;
+                  }
+                  
+                  ul.hidden {
+                      display: none;
+                  }
+              
+                  .mdi {
+                      font-size: 18px;
+                      vertical-align: middle; /* Alignement vertical au centre */
+                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                  }
+                  
+              </style>
+            
+            <div id="tree"></div>
+            
+            <script>
+              var levelColors = ['#95b9c2c1', '#6390a34d', '#95b9c258', '#687f8c','#8d9498'];// Ajoutez autant de couleurs que nécessaire
+
+              var levelTColors = [
+                'rgba(255, 255, 150, 0.7)',  // Jaune clair
+                'rgba(255, 255, 120, 0.7)',  // Jaune plus doux
+                'rgba(255, 250, 150, 0.7)',  // Jaune pâle
+                'rgba(255, 250, 120, 0.7)'   // Jaune très clair
+              ];// Ajoutez autant de couleurs que nécessaire
+        
+              function traverseNestedDictionary(obj, parentElement, level = 0) {
+                var ul = document.createElement('ul');
+                parentElement.appendChild(ul);
+            
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        var li = document.createElement('li');
+                        ul.appendChild(li);
+            
+                        var span = document.createElement('span');
+                        var h3 = document.createElement('h3');
+        
+                        span.textContent = key + ": ";
+                        span.style.color = levelTColors[level % levelTColors.length];
+                        span.style.fontSize = '20px'; 
+                        span.style.fontWeight = 'bold';
+                        li.appendChild(span);
+            
+                        // Appliquer la couleur de fond en fonction du niveau
+                        li.style.backgroundColor = levelColors[level % levelColors.length];
+                        li.style.borderRadius = '8px'; 
+                        li.style.maginBottom = '5px';
+                        li.style.paddingBottom = '5px';
+                        //li.style.width = '500px';
+                        // Si la valeur est un autre objet, appel récursif de la fonction pour ce sous-objet
+                        if (typeof obj[key] === 'object' && obj[key] !== null) {
+                            traverseNestedDictionary(obj[key], li, level + 1);
+                            span.style.color = levelTColors[level % levelTColors.length];
+        
+                            // Ajout d'un gestionnaire d'événements pour montrer/cacher les enfants
+                            span.addEventListener('click', function(e) {
+                                e.stopPropagation();  // Empêche la propagation de l'événement aux parents
+            
+                                var ul = this.parentElement.querySelector('ul');
+                                if (ul) {
+                                    ul.classList.toggle('hidden');
+            
+                                    // Changer l'icône en fonction de l'état
+                                    var icon = this.querySelector('.mdi');
+                                    
+                                    if (ul.classList.contains('hidden')) {
+                                        icon.classList.remove('mdi-chevron-down');
+                                        icon.classList.add('mdi-chevron-right');
+                                    } else {
+                                        icon.classList.remove('mdi-chevron-right');
+                                        icon.classList.add('mdi-chevron-down');
+                                    }
+                                }
+                            });
+            
+                            // Ajout d'une icône de chevron pour indiquer les éléments avec des enfants
+                            var icon = document.createElement('i');
+                            icon.className = 'mdi mdi-chevron-right';  // Icône par défaut
+                            span.appendChild(icon);
+            
+                            if (Object.keys(obj[key]).length > 0) {
+                                // L'élément a des enfants, utilisez une icône de chevron
+                                icon.classList.add('has-children');
+                            } else {
+                                // L'élément n'a pas d'enfants, masquez l'icône
+                                icon.style.display = 'none';
+                            }
+                        } else {
+                            // Si la valeur n'est pas un objet, affichez-la directement
+                            var leafSpan = document.createElement('span');
+                            var small = document.createElement('small');
+                            small.textContent = obj[key];
+                            small.className = 'text-muted'; 
+                            small.style.fontSize = '20px'; 
+        
+                            leafSpan.appendChild(small);
+                            li.appendChild(leafSpan);
+                        }
+                    }
+                }
+              }
+            
+              var serializedData = {}
+              var serializedData = {{serializer_data|safe}};
+              // Utiliser la structure JavaScript dans la console log
+              console.log(serializedData);
+              var treeContainer = document.getElementById('tree');
+              traverseNestedDictionary(serializedData, treeContainer, true);
+              
+            </script>
+            </div>
+          </div>
+        </div>
+      </div>       
+
+    </div>
+  </div>
+  {% endblock %}

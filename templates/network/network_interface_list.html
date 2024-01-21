@@ -1,0 +1,51 @@
+{% extends 'network/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Interfaces Réseaux</h4>
+            <p class="card-description">
+              Liste de tous les interfaces réseaux
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Server</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for network_interface in network_interfaces %}
+                  
+                        <tr>
+                            <td><a href="{% url 'base:detail-network_interface' network_interface.pk %}" >{{ network_interface.name }} </a></td> 
+                            
+                            <td>{{network_interface.description}}</td>
+                            <td><a href="{% url 'base:detail-server' network_interface.server.pk %}" >{{network_interface.server}}</a></td>
+                            <td>{{network_interface.updated}}</td>
+                            <td>{{network_interface.created}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

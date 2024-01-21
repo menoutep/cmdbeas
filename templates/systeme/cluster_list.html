@@ -18,7 +18,7 @@
                 <thead>
                   <tr>
                     <th>Nom</th>
-
+                    <th>Adresse ip</th>
                     <th>modifié le</th>
                     <th>créer le</th>
                     
@@ -30,6 +30,7 @@
                         <tr>
                             <td><a href="{% url 'base:detail-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
                             
+                            <td><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
 
                             <td>{{cluster.updated}}</td>
                             <td>{{cluster.created}}</td>                    

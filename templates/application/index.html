@@ -168,7 +168,7 @@
                   Activity</a>
                 <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-help-circle-outline text-primary me-2"></i>
                   FAQ</a>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
               </div>
             </li>
           </ul>
@@ -383,8 +383,8 @@
           </a>
           <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="">Voir les serveurs </a></li>
-              <li class="nav-item"> <a class="nav-link" href="">creer un serveur</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:server-list' %}">Voir les serveurs </a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-server' %}">creer un serveur</a></li>
     
             </ul>
           </div>
@@ -429,8 +429,8 @@
           </a>
           <div class="collapse" id="modapp">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"><a class="nav-link" href="">Voir nos modules applicatifs</a></li>
-              <li class="nav-item"><a class="nav-link" href="">Creer un modules applicatifs</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'base:module_applicatif-list' %}">Voir nos modules applicatifs</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'base:create-module_applicatif' %}">Creer un modules applicatifs</a></li>
             </ul>
           </div>
         </li>

@@ -1,11 +1,12 @@
 from rest_framework import serializers
-from .models import BackupStrategie, ServerRoom,Server,SystemeStockage,Datacenter,Departement,DeploiementCluster,Application,AppType,ModuleApplicatif,Vendor,Cluster,Rack,DatabaseServer,Database,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,NetworkInterface,Notifications,IpAdress,ConnexionBD,AppDeployment,AppServer
+from .models import AppelApi,Api,Process,UseCase,SubProcess,CallFlow,IpAdress,BackupStrategie, ServerRoom,Server,SystemeStockage,Datacenter,Departement,DeploiementCluster,Application,AppType,ModuleApplicatif,Vendor,Cluster,Rack,DatabaseServer,Database,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,NetworkInterface,Notifications,ConnexionBD,AppDeployment,AppServer
 
 class DepartementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Departement
         fields = '__all__'
         
+ 
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,6 +44,25 @@ class AppTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
      
 
+class ProcessSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Process
+        fields = '__all__'
+     
+class SubProcessSerializer(serializers.ModelSerializer):
+    process = ProcessSerializer(read_only=True)
+    class Meta:
+        model = SubProcess
+        fields = '__all__'
+     
+class UseCaseSerializer(serializers.ModelSerializer):
+    sub_process = SubProcessSerializer(read_only=True)
+    class Meta:
+        model = UseCase
+        fields = '__all__'
+     
+
 class BackupStrategieSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -70,7 +90,21 @@ class ModuleApplicatifSerializer(serializers.ModelSerializer):
         fields = '__all__'
      
 
+class ApiSerializer(serializers.ModelSerializer):
+    module_applicatif = ModuleApplicatifSerializer(read_only=True)
 
+    class Meta:
+        model = Api
+        fields = '__all__'
+     
+class AppelApiSerializer(serializers.ModelSerializer):
+    module_applicatif = ModuleApplicatifSerializer(read_only=True)
+    api = ApiSerializer(read_only=True)
+    use_case = UseCaseSerializer(read_only=True)
+    class Meta:
+        model = AppelApi
+        fields = '__all__'
+    
 class SystemeStockageSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -80,22 +114,38 @@ class SystemeStockageSerializer(serializers.ModelSerializer):
 
 
 
-class ClusterSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Cluster
-        fields = '__all__'
     
 
 class ServerSerializer(serializers.ModelSerializer):
     sys_stockage = SystemeStockageSerializer(many=True,read_only=True)
-    cluster = ClusterSerializer(many=True,read_only=True)
+   
     rack = RackSerializer(read_only=True)
     class Meta:
         model = Server
         fields = '__all__'
         depth=5
 
+
+class NetworkInterfaceSerializer(serializers.ModelSerializer):
+    server = ServerSerializer(read_only=True)
+    class Meta:
+        model = NetworkInterface
+        fields = ['name','description','server','updated','created']
+
+class IpAdressSerializer(serializers.ModelSerializer):
+
+    interface = NetworkInterfaceSerializer(read_only=True)
+    class Meta:
+        model = IpAdress
+        fields = '__all__'
+      
+class ClusterSerializer(serializers.ModelSerializer):
+    servers = ServerSerializer(many=True,read_only=True)
+    ip_address = IpAdressSerializer(read_only=True)
+    class Meta:
+        model = Cluster
+        fields = '__all__'
 class DeploiementClusterSerializer(serializers.ModelSerializer):
     cluster = ClusterSerializer(read_only=True)
     serveur = ServerSerializer(read_only=True)

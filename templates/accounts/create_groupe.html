@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-
+      {{ form.media.css }}
       <div class="col-md-9 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
@@ -36,4 +36,8 @@
       </div>
     </div>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  {{ form.media.js }}
   {% endblock %}

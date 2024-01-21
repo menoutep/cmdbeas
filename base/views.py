@@ -2,25 +2,27 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.urls import reverse
 import json
+from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
-from base.models import ServerRoom,Server,SystemeStockage,Datacenter,Departement,DeploiementCluster,Application,AppType,ModuleApplicatif,Vendor,Cluster,Rack,DatabaseServer,Database,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,NetworkInterface,Notifications,IpAdress,ConnexionBD,AppDeployment,AppServer
+from base.models import Process,SubProcess,UseCase,Api,AppelApi,ServerRoom,Server,IpAdress,SystemeStockage,Datacenter,Departement,DeploiementCluster,Application,AppType,ModuleApplicatif,Vendor,Cluster,Rack,DatabaseServer,Database,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,NetworkInterface,Notifications,ConnexionBD,AppDeployment,AppServer
 from accounts.models import User
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Departement,Partition
 from django.views import View
 from django.db.models import Q
-from base.serializers import DatacenterSerializer,ServerRoomSerializer,DepartementSerializer,DatabaseSerializer,DatabaseServerSerializer
+from base.serializers import AppelApiSerializer,ApiSerializer,UseCaseSerializer,ProcessSerializer,SubProcessSerializer,DatacenterSerializer,ServerRoomSerializer,DepartementSerializer,DatabaseSerializer,DatabaseServerSerializer
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .forms import DepartementForm,DepartementUpdateForm,AppTypeForm,AppTypeUpdateForm,DatacenterForm,DatacenterUpdateForm,ServerRoomForm,ServerRoomUpdateForm,RackForm,RackUpdateForm,ClusterForm,ClusterUpdateForm,SystemeStockageForm,SystemeStockageUpdateForm,ServerForm,ServerUpdateForm,DeploiementClusterUpdateForm,DeploiementClusterForm,PartitionForm,PartitionUpdateForm,DatabaseServerForm,DatabaseServerUpdateForm,DatabaseForm,DatabaseUpdateForm,VendorUpdateForm,VendorForm,ApplicationForm,ApplicationUpdateForm,ModuleApplicatifForm,ModuleApplicatifUpdateForm
+from .forms import ProcessForm,UseCaseUpdateForm,UseCaseForm,SubProcessForm,AppelApiForm,ApiForm,ApiUpdateForm,SubProcessUpdateForm,ProcessUpdateForm,AppelApiUpdateForm,IpAdressForm,IpAdressUpdateForm,NetworkInterfaceForm,NetworkInterfaceUpdateForm,DepartementForm,DepartementUpdateForm,AppTypeForm,AppTypeUpdateForm,DatacenterForm,DatacenterUpdateForm,ServerRoomForm,ServerRoomUpdateForm,RackForm,RackUpdateForm,ClusterForm,ClusterUpdateForm,SystemeStockageForm,SystemeStockageUpdateForm,ServerForm,ServerUpdateForm,DeploiementClusterUpdateForm,DeploiementClusterForm,PartitionForm,PartitionUpdateForm,DatabaseServerForm,DatabaseServerUpdateForm,DatabaseForm,DatabaseUpdateForm,VendorUpdateForm,VendorForm,ApplicationForm,ApplicationUpdateForm,ModuleApplicatifForm,ModuleApplicatifUpdateForm
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import ServerRoom
-from .serializers import ServerRoomSerializer,ServerSerializer,VendorSerializer,DatacenterSerializer,DepartementSerializer,DeploiementClusterSerializer,PartitionSerializer,ClusterSerializer,SystemeStockageSerializer,ApplicationSerializer,ModuleApplicatifSerializer,AppTypeSerializer,RackSerializer,BackupStrategieSerializer
+from .serializers import ServerRoomSerializer,NetworkInterfaceSerializer,IpAdressSerializer,ServerSerializer,VendorSerializer,DatacenterSerializer,DepartementSerializer,DeploiementClusterSerializer,PartitionSerializer,ClusterSerializer,SystemeStockageSerializer,ApplicationSerializer,ModuleApplicatifSerializer,AppTypeSerializer,RackSerializer,BackupStrategieSerializer
 
+@login_required
 def index(request):
     user = User.objects.get(email=request.user.email,username=request.user.username)
     if user.departement.name == "systeme" : 
@@ -29,10 +31,78 @@ def index(request):
     if user.departement.name == "application" : 
         return render(request, 'application/index.html')
     
+    if user.departement.name == "networking" : 
+        return render(request, 'network/index.html')
+    
+    if user.departement.name == "integration" : 
+        return render(request, 'integration/index.html')
+   
     return render(request, 'base/index.html')
 
 # views.py
+######################Networking views#############
+class NetworkInterfaceListView(ListView):
+    model = NetworkInterface
+    template_name = 'network/network_interface_list.html'
+    context_object_name = 'network_interfaces'
 
+class NetworkInterfaceDetailView(DetailView):
+    model = NetworkInterface
+    template_name = 'network/network_interface_detail.html'
+    context_object_name = 'network_interface'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = NetworkInterfaceSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class NetworkInterfaceCreateView(CreateView):
+    model = NetworkInterface
+    form_class = NetworkInterfaceForm
+    template_name = 'network/network_interface_form.html'
+    success_url = reverse_lazy('base:network_interface-list')
+class NetworkInterfaceUpdateView(UpdateView):
+    model = NetworkInterface
+    form_class = NetworkInterfaceUpdateForm
+    template_name = 'network/network_interface_form.html'
+    success_url = reverse_lazy('base:network_interface-list')
+class NetworkInterfaceDeleteView(DeleteView):
+    model = NetworkInterface
+    template_name = 'network/network_interface_confirm_delete.html'
+    success_url = reverse_lazy('base:network_interface-list')
+
+class IpAdressListView(ListView):
+    model = IpAdress
+    template_name = 'network/ip_adress_list.html'
+    context_object_name = 'ip_adresses'
+
+class IpAdressDetailView(DetailView):
+    model = IpAdress
+    template_name = 'network/ip_adress_detail.html'
+    context_object_name = 'ip_adress'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = IpAdressSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class IpAdressCreateView(CreateView):
+    model = IpAdress
+    form_class = IpAdressForm
+    template_name = 'network/ip_adress_form.html'
+    success_url = reverse_lazy('base:ip_adress-list')
+class IpAdressUpdateView(UpdateView):
+    model = IpAdress
+    form_class = IpAdressUpdateForm
+    template_name = 'network/ip_adress_form.html'
+    success_url = reverse_lazy('base:ip_adress-list')
+
+class IpAdressDeleteView(DeleteView):
+    model = IpAdress
+    template_name = 'network/ip_adress_confirm_delete.html'
+    success_url = reverse_lazy('base:ip_adress-list')
+
+#######################END NETWORKING VIEWS###################################
 ############# START APPLICATION MODULE VIEWS ###############################
 
 
@@ -282,15 +352,155 @@ class ApplicationDeleteView(DeleteView):
 
 
 ############# END APPLICATION MODULE VIEWS ###############################
+####################### Start INTEGRATION ############
+class ProcessListView(ListView):
+    model = Process
+    template_name = 'integration/process_list.html'
+    context_object_name = 'processes'
+class ProcessDetailView(DetailView):
+    model = Process
+    template_name = 'integration/process_detail.html'
+    context_object_name = 'process'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = ProcessSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class ProcessCreateView(CreateView):
+    model = Process
+    form_class = ProcessForm
+    template_name = 'integration/process_form.html'
+    success_url = reverse_lazy('base:process-list')
+class ProcessUpdateView(UpdateView):
+    model = Process
+    form_class = ProcessUpdateForm
+    template_name = 'integration/process_form.html'
+    success_url = reverse_lazy('base:process-list')
+class ProcessDeleteView(DeleteView):
+    model = Process
+    template_name = 'integration/process_confirm_delete.html'
+    success_url = reverse_lazy('base:process-list')
+class SubProcessListView(ListView):
+    model = SubProcess
+    template_name = 'integration/sub_process_list.html'
+    context_object_name = 'sub_processes'
+class SubProcessDetailView(DetailView):
+    model = SubProcess
+    template_name = 'integration/sub_process_detail.html'
+    context_object_name = 'sub_process'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = SubProcessSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class SubProcessCreateView(CreateView):
+    model = SubProcess
+    form_class = SubProcessForm
+    template_name = 'integration/sub_process_form.html'
+    success_url = reverse_lazy('base:sub_process-list')
+class SubProcessUpdateView(UpdateView):
+    model = SubProcess
+    form_class = SubProcessUpdateForm
+    template_name = 'integration/sub_process_form.html'
+    success_url = reverse_lazy('base:sub_process-list')
+class SubProcessDeleteView(DeleteView):
+    model = SubProcess
+    template_name = 'integration/sub_process_confirm_delete.html'
+    success_url = reverse_lazy('base:sub_process-list')
+class UseCaseListView(ListView):
+    model = UseCase
+    template_name = 'integration/use_case_list.html'
+    context_object_name = 'use_cases'
+class UseCaseDetailView(DetailView):
+    model = UseCase
+    template_name = 'integration/use_case_detail.html'
+    context_object_name = 'use_case'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = UseCaseSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class UseCaseCreateView(CreateView):
+    model = UseCase
+    form_class = UseCaseForm
+    template_name = 'integration/use_case_form.html'
+    success_url = reverse_lazy('base:use_case-list')
+class UseCaseUpdateView(UpdateView):
+    model = UseCase
+    form_class = UseCaseUpdateForm
+    template_name = 'integration/use_case_form.html'
+    success_url = reverse_lazy('base:use_case-list')
+class UseCaseDeleteView(DeleteView):
+    model = UseCase
+    template_name = 'integration/use_case_confirm_delete.html'
+    success_url = reverse_lazy('base:use_case-list')
+class ApiListView(ListView):
+    model = Api
+    template_name = 'integration/api_list.html'
+    context_object_name = 'apis'
+class ApiDetailView(DetailView):
+    model = Api
+    template_name = 'integration/api_detail.html'
+    context_object_name = 'api'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = ApiSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class ApiCreateView(CreateView):
+    model = Api
+    form_class = ApiForm
+    template_name = 'integration/api_form.html'
+    success_url = reverse_lazy('base:api-list')
+class ApiUpdateView(UpdateView):
+    model = Api
+    form_class = ApiUpdateForm
+    template_name = 'integration/api_form.html'
+    success_url = reverse_lazy('base:api-list')
+class ApiDeleteView(DeleteView):
+    model = Api
+    template_name = 'integration/api_confirm_delete.html'
+    success_url = reverse_lazy('base:api-list')
+class AppelApiListView(ListView):
+    model = AppelApi
+    template_name = 'integration/appel_api_list.html'
+    context_object_name = 'appel_apis'
+class AppelApiDetailView(DetailView):
+    model = AppelApi
+    template_name = 'integration/appel_api_detail.html'
+    context_object_name = 'appel_api'
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            serializer = AppelApiSerializer(self.object)
+            serializer_data=json.dumps(serializer.data)
+            context['serializer_data'] = serializer_data
+            return context
+class AppelApiCreateView(CreateView):
+    model = AppelApi
+    form_class = AppelApiForm
+    template_name = 'integration/appel_api_form.html'
+    success_url = reverse_lazy('base:appel_api-list')
+class AppelApiUpdateView(UpdateView):
+    model = AppelApi
+    form_class = AppelApiUpdateForm
+    template_name = 'integration/appel_api_form.html'
+    success_url = reverse_lazy('base:appel_api-list')
+class AppelApiDeleteView(DeleteView):
+    model = AppelApi
+    template_name = 'integration/appel_api_confirm_delete.html'
+    success_url = reverse_lazy('base:appel_api-list')
 
-
+#####################End INTEGRATION VIEWS#################
 ############# START SYSTEME MODULE VIEWS ###############################
 
 class DatacenterListView(ListView):
     model = Datacenter
     template_name = 'systeme/datacenter_list.html'
     context_object_name = 'datacenters'
-
 class DatacenterDetailView(DetailView):
     model = Datacenter
     template_name = 'systeme/datacenter_detail.html'
@@ -306,15 +516,11 @@ class DatacenterCreateView(CreateView):
     form_class = DatacenterForm
     template_name = 'systeme/datacenter_form.html'
     success_url = reverse_lazy('base:datacenter-list')
-
-
 class DatacenterUpdateView(UpdateView):
     model = Datacenter
     form_class = DatacenterUpdateForm
     template_name = 'systeme/datacenter_form.html'
     success_url = reverse_lazy('base:datacenter-list')
-
-
 class DatacenterDeleteView(DeleteView):
     model = Datacenter
     template_name = 'systeme/datacenter_confirm_delete.html'
@@ -479,8 +685,7 @@ class ServerListView(View):
                               Q(rack__server_room__name__icontains=q)|
                               Q(rack__server_room__datacenter__localisation__icontains=q)|
                               Q(type_server__icontains=q)|
-                              Q(sys_stockage__name__icontains=q) |  # Ajout pour filtrer par nom de système de stockage
-                              Q(cluster__name__icontains=q))  
+                              Q(sys_stockage__name__icontains=q))  
         # Passer le queryset trié au template
         context = {'servers': queryset}
         return render(request, self.template_name, context)
@@ -499,12 +704,12 @@ class ServerDetailView(DetailView):
         serializer_data=json.dumps(serializer.data)
         context['serializer_data'] = serializer_data
         partitions = self.object.sys_stockage.all()
-        clusters = self.object.cluster.all()
+        #clusters = self.object.cluster.all()
         context['partitions'] = partitions
-        context['clusters'] = clusters
+        #context['clusters'] = clusters
         
         print(f"les partitions : {partitions}")
-        print(f"les clusters : {clusters}")
+        #print(f"les clusters : {clusters}")
         
         return context
 
@@ -584,8 +789,8 @@ class PartitionListView(View):
                               Q(serveur__rack__server_room__name__icontains=q)|
                               Q(serveur__rack__server_room__datacenter__localisation__icontains=q)|
                               Q(serveur__type_server__icontains=q)|
-                              Q(stockage__name__icontains=q) |  # Ajout pour filtrer par nom de système de stockage
-                              Q(serveur__cluster__name__icontains=q))  
+                              Q(stockage__name__icontains=q))  # Ajout pour filtrer par nom de système de stockage
+                                
         # Passer le queryset trié au template
         context = {'partitions': queryset}
         return render(request, self.template_name, context)
@@ -644,8 +849,7 @@ class DatabaseServerListView(View):
                               Q(rack__server_room__datacenter__localisation__icontains=q)|
                               Q(server__type_server__icontains=q)|
                               Q(server__sys_stockage__name__icontains=q) | 
-                              Q(cluster__name__icontains=q) |  # Ajout pour filtrer par nom de système de stockage
-                              Q(server__cluster__name__icontains=q))  
+                              Q(cluster__name__icontains=q) )  
         # Passer le queryset trié au template
         print(queryset)
         context = {'database_servers': queryset}
@@ -726,7 +930,7 @@ class DatabaseListView(View):
                             Q(db_server__server__sys_stockage__name__icontains=q) | 
                             Q(name__icontains=q) |
                             Q(db_server__name__icontains=q) |  # Ajout pour filtrer par nom de système de stockage
-                            Q(server__cluster__name__icontains=q)|
+                            
                             Q(module_applicatifs__name__icontains=q)|
                             Q(module_applicatifs__application__name__icontains=q))  
         # Passer le queryset trié au template
