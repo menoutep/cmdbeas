@@ -1,0 +1,5 @@
+django.log
+accounts.log
+base.log
+cache.log
+db.sqlite3
