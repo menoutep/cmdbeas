@@ -16,7 +16,7 @@ git commit -m "$1"
 echo "Le commit a été effectué avec succès."
 
 # Effectuer un push vers le dépôt distant (changez 'origin' et 'master' selon vos besoins)
-git push origin master
+#git push origin master
 git push origin main
 # Afficher un message de confirmation pour le push
 echo "Le code a été poussé vers le dépôt distant (GitHub)."
