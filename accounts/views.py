@@ -29,6 +29,20 @@ import random
 import string
 from django.core.mail import send_mail
 import logging
+from django.contrib.auth.mixins import UserPassesTestMixin,LoginRequiredMixin
+from django.http import HttpResponseForbidden
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        # Vérifie si l'utilisateur est authentifié et s'il est un superutilisateur
+        return self.request.user.is_authenticated and self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        # Redirige l'utilisateur vers une page d'interdiction d'accès s'il n'est pas un superutilisateur
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à accéder à cette page.")
+
+def is_superuser(user):
+    return user.is_authenticated and user.is_superuser
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -40,6 +54,9 @@ def get_client_ip(request):
 
 
 logger = logging.getLogger(__name__)
+
+@login_required
+@user_passes_test(is_superuser)
 def send_password_email(email,password):
     # Créez le contenu de l'e-mail
     user_ = User.objects.get(email=email)
@@ -55,7 +72,8 @@ def send_password_email(email,password):
     send_mail(subject, message, from_email, recipient_list)
 
 
-
+@login_required
+@user_passes_test(is_superuser)
 def generate_random_password(taille):
     # Définissez les caractères possibles pour chaque catégorie
     taille_= int(taille)
@@ -74,8 +92,6 @@ def generate_random_password(taille):
     return random_password
 
 
-def is_superuser(user):
-    return user.is_authenticated and user.is_superuser
 
 @login_required
 @user_passes_test(is_superuser)
@@ -147,6 +163,7 @@ def reset_password(request):
         return redirect('base:index') 
 
 
+@login_required
 @user_passes_test(is_superuser)
 def admin_reset_user_password(request):
     user_ip = get_client_ip(request)
@@ -216,12 +233,13 @@ def custom_login(request):
     return render(request, 'accounts/login.html', context)
 
 
-
+@login_required
+@user_passes_test(is_superuser)
 def list_groups(request):
     groups = Group.objects.all()
     return render(request, 'list_groups.html', {'groups': groups})
 
-class GroupListView(ListView):
+class GroupListView(LoginRequiredMixin,SuperuserRequiredMixin,ListView):
     model = Permission
     template_name = 'accounts/list_groups.html'
     context_object_name = 'groups'
@@ -244,7 +262,7 @@ class GroupListView(ListView):
 
 
 
-class GroupDetailView(DetailView):
+class GroupDetailView(LoginRequiredMixin,SuperuserRequiredMixin,DetailView):
     model = Group
     template_name = 'accounts/detail_groups.html'
     context_object_name = 'group'
@@ -261,12 +279,8 @@ class GroupDetailView(DetailView):
         #context['serializer_data'] = serializer_data      
         context['permissions'] = permissions
         return context
-
 @login_required
 @user_passes_test(is_superuser)
-@permission_required('auth.change_permission', raise_exception=True)
-@permission_required('auth.delete_permission', raise_exception=True)
-@permission_required('auth.add_permission', raise_exception=True)
 def create_group(request):
     user = User.objects.get(email=request.user.email)
     user_ip = get_client_ip(request)
@@ -291,8 +305,8 @@ def create_group(request):
     context = {'form':form}
     return render(request, 'accounts/create_groupe.html',context)
 
-@permission_required('accounts.delete_permission', raise_exception=True)
-
+@login_required
+@user_passes_test(is_superuser)
 def edit_group(request, group_id):
     user = User.objects.get(email=request.user.email)
     user_ip = get_client_ip(request)
@@ -333,10 +347,6 @@ def edit_group(request, group_id):
 
 @login_required
 @user_passes_test(is_superuser)
-@permission_required('accounts.modifier_user', raise_exception=True)
-@permission_required('accounts.lire_user', raise_exception=True)
-@permission_required('accounts.ajouter_user', raise_exception=True)
-@permission_required('accounts.supprimer_user', raise_exception=True)
 def add_user_to_group(request):
     user_ip = get_client_ip(request)
     q= request.GET.get('q') if request.GET.get('q') != None else ''
@@ -373,9 +383,6 @@ def add_user_to_group(request):
 
 @login_required
 @user_passes_test(is_superuser)
-@permission_required('auth.change_permission', raise_exception=True)
-@permission_required('auth.delete_permission', raise_exception=True)
-@permission_required('auth.add_permission', raise_exception=True)
 def assign_permissions(request):
     user_ip = get_client_ip(request)
     permissions = Permission.objects.all()
@@ -409,7 +416,7 @@ def assign_permissions(request):
 
 
 
-class PermissionListView(ListView):
+class PermissionListView(LoginRequiredMixin,SuperuserRequiredMixin,ListView):
     model = Permission
     template_name = 'accounts/list_permissions.html'
     context_object_name = 'permissions'
@@ -430,7 +437,8 @@ class PermissionListView(ListView):
         context = {'permissions': queryset}
         return render(request, self.template_name, context)
 
-@permission_required('auth.add_permission')
+@login_required
+@user_passes_test(is_superuser)
 def create_permission(request):
     user = User.objects.get(email=request.user.email)
     user_ip = get_client_ip(request)
@@ -454,7 +462,8 @@ def create_permission(request):
     return render(request, 'accounts/create_permission.html', context)
 
 
-@permission_required('auth.change_permission')
+@login_required
+@user_passes_test(is_superuser)
 def edit_permission(request, permission_id):
     permission = get_object_or_404(Permission, id=permission_id)
 
@@ -479,7 +488,8 @@ def logout_view(request):
 
 
 #######################user management views##############
-class UserListView(View):
+
+class UserListView(LoginRequiredMixin,SuperuserRequiredMixin,View):
     template_name = 'accounts/list_users.html'
 
     def get(self, request, *args, **kwargs):
@@ -513,18 +523,20 @@ class UserListView(View):
                    'groups':groups
                    }
         return render(request, self.template_name, context)
-class UserDetailView(DetailView):
+
+class UserDetailView(LoginRequiredMixin,SuperuserRequiredMixin,DetailView):
     model = User
     template_name = 'accounts/user_detail.html'
     context_object_name = 'user'
-  
-class UserUpdateView(UpdateView):
+
+
+class UserUpdateView(LoginRequiredMixin,SuperuserRequiredMixin,UpdateView):
     model = User
     form_class = CustomUserUpdateForm
     template_name = 'accounts/sign.html'
     success_url = reverse_lazy('accounts:user-list')
-  
-class UserDeleteView(DeleteView):
+
+class UserDeleteView(LoginRequiredMixin,SuperuserRequiredMixin,DeleteView):
     model = User
     template_name = 'accounts/user_confirm_delete.html'
     success_url = reverse_lazy('accounts:user-list')
