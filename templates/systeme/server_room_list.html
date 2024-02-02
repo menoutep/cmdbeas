@@ -1,23 +1,31 @@
 {% extends 'systeme/index.html' %}
 {% load static %}
 
-
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:server_room-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Salle serveurs</h4>
+            <h4 class="card-title"> Vos salles serveurs</h4>
             <p class="card-description">
-              Liste de toute les salle serveur
+              Liste de toutes les salles serveurs
             </p>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
                     <th>Nom</th>
+                    <th>Nombre de racks</th>
                     <th>Datacenter</th>
                     <th>modifié le</th>
                     <th>créer le</th>
@@ -28,11 +36,11 @@
                   {% for server_room in server_rooms %}
                   
                         <tr>
-                            <td><a href="{% url 'base:detail-server_room' server_room.pk %}" >{{ server_room.name }} </a></td> 
-                            
-                            <td>{{server_room.datacenter}}</td>
-                            <td>{{server_room.updated}}</td>
-                            <td>{{server_room.created}}</td>                    
+                            <td style="text-align:center"><a href="{% url 'base:detail-server_room' server_room.pk %}">{{ server_room.name }} </a></td> 
+                            <td style="text-align:center">{{server_room.racks.all.distinct.count}}</td>
+                            <td style="text-align:center"><a href="{% url 'base:detail-datacenter' server_room.datacenter.pk %}">{{server_room.datacenter}}</a></td>
+                            <td style="text-align:center">{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{server_room.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

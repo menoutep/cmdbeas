@@ -38,7 +38,7 @@ class Datacenter(models.Model):
 
 class ServerRoom(models.Model):
     name = models.CharField(max_length=200)
-    datacenter = models.ForeignKey(Datacenter,on_delete=models.CASCADE)
+    datacenter = models.ForeignKey(Datacenter,on_delete=models.CASCADE,related_name="servers_rooms")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -53,7 +53,7 @@ class ServerRoom(models.Model):
 
 class Rack(models.Model):
     name = models.CharField(max_length=200)
-    server_room = models.ForeignKey(ServerRoom,on_delete=models.CASCADE)
+    server_room = models.ForeignKey(ServerRoom,on_delete=models.CASCADE,related_name="racks")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -117,8 +117,8 @@ class Application(models.Model):
     priority = models.CharField(max_length=200,choices=PRIORITY_CHOICES,default="faible")
     control_name = models.CharField(max_length=200)
     deployement_year = models.DateTimeField()
-    app_type = models.ForeignKey(AppType,on_delete=models.RESTRICT)
-    backup_strategie = models.ForeignKey(BackupStrategie,on_delete=models.RESTRICT)
+    app_type = models.ForeignKey(AppType,on_delete=models.RESTRICT,related_name="applications")
+    backup_strategie = models.ForeignKey(BackupStrategie,on_delete=models.RESTRICT,related_name="applications")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -149,9 +149,9 @@ class Vendor(models.Model):
 class ModuleApplicatif(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    application = models.ForeignKey(Application,on_delete=models.CASCADE)
-    vendor = models.ForeignKey(Vendor,on_delete=models.RESTRICT) 
-    departement = models.ForeignKey(Departement,on_delete=models.CASCADE)
+    application = models.ForeignKey(Application,on_delete=models.CASCADE,related_name="modules_applicatifs")
+    vendor = models.ForeignKey(Vendor,on_delete=models.RESTRICT,related_name="modules_applicatifs") 
+    departement = models.ForeignKey(Departement,on_delete=models.CASCADE,related_name="modules_applicatifs")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -194,9 +194,8 @@ class Server(models.Model):
     rom = models.IntegerField()
     nb_processor = models.IntegerField()
     v_processor = models.IntegerField()
-    sys_stockage = models.ManyToManyField(SystemeStockage,through="base.Partition")# creer si neccessaire les tables intermediaire pour les many to many pour chaque relation de ce type 
-    #cluster = models.ManyToManyField(Cluster,through="base.DeploiementCluster")
-    rack = models.ForeignKey(Rack,on_delete=models.CASCADE)
+    sys_stockage = models.ManyToManyField(SystemeStockage,through="base.Partition",related_name="servers")# creer si neccessaire les tables intermediaire pour les many to many pour chaque relation de ce type 
+    rack = models.ForeignKey(Rack,on_delete=models.CASCADE,related_name="servers")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()# gerer apres les relations many to many
@@ -211,7 +210,7 @@ class Server(models.Model):
 class NetworkInterface(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    server = models.ForeignKey(Server,on_delete=models.CASCADE)
+    server = models.ForeignKey(Server,on_delete=models.CASCADE,related_name="networks_interfaces")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -227,7 +226,7 @@ class NetworkInterface(models.Model):
 class IpAdress(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    interface = models.ForeignKey(NetworkInterface,on_delete=models.CASCADE)
+    interface = models.ForeignKey(NetworkInterface,on_delete=models.CASCADE,related_name="ip_addresses")
     ipv4 = models.GenericIPAddressField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -242,10 +241,10 @@ class IpAdress(models.Model):
 
 class Cluster(models.Model):
     name = models.CharField(max_length=200)
-    ip_address = models.ForeignKey(IpAdress,on_delete=models.SET_NULL,blank=True,null=True)
+    ip_address = models.ForeignKey(IpAdress,on_delete=models.SET_NULL,blank=True,null=True,related_name="clusters")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    servers = models.ManyToManyField(Server,through="base.DeploiementCluster")
+    servers = models.ManyToManyField(Server,through="base.DeploiementCluster",related_name="clusters")
     history = HistoricalRecords()
 
     def __str__(self):
@@ -258,7 +257,7 @@ class Cluster(models.Model):
 
 
 class DeploiementCluster(models.Model):
-    serveur = models.ForeignKey(Server,on_delete=models.CASCADE)
+    serveur = models.ForeignKey(Server,on_delete=models.CASCADE,related_name="servers")
     cluster = models.ForeignKey(Cluster,on_delete=models.CASCADE)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -290,8 +289,8 @@ class DatabaseServer(models.Model):
     name = models.CharField(max_length=200)
     ram = models.IntegerField()
     rom = models.IntegerField()
-    server =  models.ForeignKey(Server,on_delete=models.SET_NULL,blank=True,null=True)
-    cluster = models.ForeignKey(Cluster,on_delete=models.SET_NULL,blank=True,null=True)
+    server =  models.ForeignKey(Server,on_delete=models.SET_NULL,blank=True,null=True,related_name="databases_servers")
+    cluster = models.ForeignKey(Cluster,on_delete=models.SET_NULL,blank=True,null=True,related_name="databases_servers")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -305,8 +304,8 @@ class DatabaseServer(models.Model):
 
 class Database(models.Model):
     name = models.CharField(max_length=200) 
-    db_server = models.ForeignKey(DatabaseServer,on_delete=models.CASCADE)
-    module_applicatifs = models.ManyToManyField(ModuleApplicatif,through="ConnexionBD")# creer si neccessaire les tables intermediaire pour les many to many pour chaque relation de ce type    
+    db_server = models.ForeignKey(DatabaseServer,on_delete=models.CASCADE,related_name="databases")
+    module_applicatifs = models.ManyToManyField(ModuleApplicatif,through="ConnexionBD",related_name="databases")# creer si neccessaire les tables intermediaire pour les many to many pour chaque relation de ce type    
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -339,7 +338,7 @@ class Notifications(models.Model):
     description = models.TextField(null=True,blank=True)
     trigger = models.CharField(max_length=200)
     notifications = models.CharField(max_length=200)
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="notifications")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -353,7 +352,7 @@ class Notifications(models.Model):
 class Api(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="apis")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -383,7 +382,7 @@ class Process(models.Model):
 class SubProcess(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    process = models.ForeignKey(Process,on_delete=models.CASCADE)
+    process = models.ForeignKey(Process,on_delete=models.CASCADE,related_name="sub_processes")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -400,7 +399,7 @@ class SubProcess(models.Model):
 class UseCase(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    sub_process = models.ForeignKey(SubProcess,on_delete=models.CASCADE)
+    sub_process = models.ForeignKey(SubProcess,on_delete=models.CASCADE,related_name="uses_case")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -416,9 +415,9 @@ class UseCase(models.Model):
 class AppelApi(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
-    use_case = models.ForeignKey(UseCase,on_delete=models.CASCADE)
-    api = models.ForeignKey(Api,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="appels_apis")
+    use_case = models.ForeignKey(UseCase,on_delete=models.CASCADE,related_name="appels_apis")
+    api = models.ForeignKey(Api,on_delete=models.CASCADE,related_name="appels_apis")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -436,7 +435,7 @@ class AppelApi(models.Model):
 class DomainName(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    ip_adress = models.ForeignKey(IpAdress,on_delete=models.CASCADE)
+    ip_adress = models.ForeignKey(IpAdress,on_delete=models.CASCADE,related_name="domains_names")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -452,8 +451,8 @@ class DomainName(models.Model):
 class AppServer(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    server = models.ForeignKey(Server,on_delete=models.CASCADE)
-    module_applicatif = models.ManyToManyField(ModuleApplicatif,through="AppDeployment")
+    server = models.ForeignKey(Server,on_delete=models.CASCADE,related_name="apps_servers")
+    module_applicatif = models.ManyToManyField(ModuleApplicatif,through="AppDeployment",related_name="apps_servers")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -515,8 +514,8 @@ class DesktopApp(models.Model):
 class Url(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
-    domain_name = models.ForeignKey(DomainName,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="urls")
+    domain_name = models.ForeignKey(DomainName,on_delete=models.CASCADE,related_name="urls")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -532,7 +531,7 @@ class Url(models.Model):
 class SmppAccount(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="smpps_accounts")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -547,7 +546,7 @@ class SmppAccount(models.Model):
 class SmsShortCode(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    smpp_account = models.ForeignKey(SmppAccount,on_delete=models.CASCADE)
+    smpp_account = models.ForeignKey(SmppAccount,on_delete=models.CASCADE,related_name="sms_short_codes")
     code = models.CharField(max_length=200)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -564,7 +563,7 @@ class SmsShortCode(models.Model):
 class UssdShortCode(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True,blank=True)
-    url = models.ForeignKey(Url,on_delete=models.CASCADE)
+    url = models.ForeignKey(Url,on_delete=models.CASCADE,related_name="ussd_short_codes")
     code = models.CharField(max_length=200)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -577,9 +576,9 @@ class UssdShortCode(models.Model):
         verbose_name = "USSD short code"
         verbose_name_plural = "USSD short codes"
 class ConnexionApp(models.Model):
-    mobile_app = models.ForeignKey(MobileApp,on_delete=models.SET_NULL,blank=True,null=True)
-    desktop_app = models.ForeignKey(DesktopApp,on_delete=models.SET_NULL,blank=True,null=True)
-    url = models.ForeignKey(Url,on_delete=models.CASCADE)
+    mobile_app = models.ForeignKey(MobileApp,on_delete=models.SET_NULL,blank=True,null=True,related_name="connexions_apps")
+    desktop_app = models.ForeignKey(DesktopApp,on_delete=models.SET_NULL,blank=True,null=True,related_name="connexions_apps")
+    url = models.ForeignKey(Url,on_delete=models.CASCADE,related_name="connexions_apps")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -596,7 +595,7 @@ class ConnexionApp(models.Model):
 class TechnicalRecoveryPlan(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    application = models.ForeignKey(Application,on_delete=models.CASCADE)
+    application = models.ForeignKey(Application,on_delete=models.CASCADE,related_name="technicals_recoveries_plans")
     file =  models.FileField(upload_to ='uploads/technical_recovery_plan/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -613,7 +612,7 @@ class TechnicalRecoveryPlan(models.Model):
 class ArchitectureDiagram(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    process = models.ForeignKey(Process,on_delete=models.CASCADE)
+    process = models.ForeignKey(Process,on_delete=models.CASCADE,related_name="architectures_diagrams")
     file =  models.FileField(upload_to ='uploads/architecture_diagram/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -629,7 +628,7 @@ class ArchitectureDiagram(models.Model):
 class CallFlow(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    use_case = models.ForeignKey(UseCase,on_delete=models.CASCADE)
+    use_case = models.ForeignKey(UseCase,on_delete=models.CASCADE,related_name="calls_flows")
     file =  models.FileField(upload_to ='uploads/call_flow/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -645,7 +644,7 @@ class CallFlow(models.Model):
 class ApiSpecification(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    api = models.ForeignKey(UseCase,on_delete=models.CASCADE)
+    api = models.ForeignKey(Api,on_delete=models.CASCADE,related_name="apis_specifications")
     file =  models.FileField(upload_to ='uploads/api_specification/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -662,7 +661,7 @@ class ApiSpecification(models.Model):
 class ApiDocumentation(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    api_specification = models.ForeignKey(ApiSpecification,on_delete=models.CASCADE)
+    api_specification = models.ForeignKey(ApiSpecification,on_delete=models.CASCADE,related_name="apis_documentations")
     file =  models.FileField(upload_to ='uploads/api_documentation/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -695,8 +694,8 @@ class DataDictionnary(models.Model):
 class DataModel(models.Model):
     name = models.CharField(max_length=200)
     description =  models.TextField(null=True, blank=True)
-    database = models.ForeignKey(Database,on_delete=models.CASCADE)
-    data_dictionnary = models.ManyToManyField(DataDictionnary,through="DataDictionnaryModel")
+    database = models.ForeignKey(Database,on_delete=models.CASCADE,related_name="datas_models")
+    data_dictionnary = models.ManyToManyField(DataDictionnary,through="DataDictionnaryModel",related_name="datas_models")
     file =  models.FileField(upload_to ='uploads/data_model/')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -709,8 +708,8 @@ class DataModel(models.Model):
         verbose_name = "Modèle de données"
         verbose_name_plural = "Modèles de données"
 class DataDictionnaryModel(models.Model):
-    data_model = models.ForeignKey(DataModel,on_delete=models.CASCADE)
-    data_dictionnary = models.ForeignKey(DataDictionnary,on_delete=models.CASCADE)
+    data_model = models.ForeignKey(DataModel,on_delete=models.CASCADE,related_name="datas_dictionnaries_models")
+    data_dictionnary = models.ForeignKey(DataDictionnary,on_delete=models.CASCADE,related_name="datas_dictionnaries_models")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()

@@ -87,6 +87,20 @@ path('module_applicatif/<int:pk>/update/', views.ModuleApplicatifUpdateView.as_v
 path('module_applicatif/create', views.ModuleApplicatifCreateView.as_view(), name='create-module_applicatif'),
 path('module_applicatif/<int:pk>/delete/', views.ModuleApplicatifDeleteView.as_view(), name='delete-module_applicatif'),
 
+path('app_server', views.AppServerListView.as_view(), name='app_server-list'),
+path('app_server/<int:pk>/', views.AppServerDetailView.as_view(), name='detail-app_server'),
+path('app_server/<int:pk>/update/', views.AppServerUpdateView.as_view(), name='update-app_server'),
+path('app_server/create', views.AppServerCreateView.as_view(), name='create-app_server'),
+path('app_server/<int:pk>/delete/', views.AppServerDeleteView.as_view(), name='delete-app_server'),
+
+path('connexion_bd', views.ConnexionBDListView.as_view(), name='connexion_bd-list'),
+path('connexion_bd/<int:pk>/', views.ConnexionBDDetailView.as_view(), name='detail-connexion_bd'),
+path('connexion_bd/<int:pk>/update/', views.ConnexionBDUpdateView.as_view(), name='update-connexion_bd'),
+path('connexion_bd/create', views.ConnexionBDCreateView.as_view(), name='create-connexion_bd'),
+path('connexion_bd/<int:pk>/delete/', views.ConnexionBDDeleteView.as_view(), name='delete-connexion_bd'),
+
+
+
 path('ip_adress', views.IpAdressListView.as_view(), name='ip_adress-list'),
 path('ip_adress/<int:pk>/', views.IpAdressDetailView.as_view(), name='detail-ip_adress'),
 path('ip_adress/<int:pk>/update/', views.IpAdressUpdateView.as_view(), name='update-ip_adress'),
@@ -130,5 +144,62 @@ path('sub_process/<int:pk>/update/', views.SubProcessUpdateView.as_view(), name=
 path('sub_process/create', views.SubProcessCreateView.as_view(), name='create-sub_process'),
 path('sub_process/<int:pk>/delete/', views.SubProcessDeleteView.as_view(), name='delete-sub_process'),
 
+path('backupstrategie/', views.BackupStrategieListView.as_view(), name='backupstrategie-list'),
+path('backupstrategie/<int:pk>/', views.BackupStrategieDetailView.as_view(), name='backupstrategie-detail'),
+path('backupstrategie/create/', views.BackupStrategieCreateView.as_view(), name='backupstrategie-create'),
+path('backupstrategie/<int:pk>/update/', views.BackupStrategieUpdateView.as_view(), name='backupstrategie-update'),
+path('backupstrategie/<int:pk>/delete/', views.BackupStrategieDeleteView.as_view(), name='backupstrategie-delete'),
+
+path('data_model', views.DataModelListView.as_view(), name='data_model-list'),
+path('data_model/<int:pk>/', views.DataModelDetailView.as_view(), name='detail-data_model'),
+path('data_model/<int:pk>/update/', views.DataModelUpdateView.as_view(), name='update-data_model'),
+path('data_model/create', views.DataModelCreateView.as_view(), name='create-data_model'),
+path('data_model/<int:pk>/delete/', views.DataModelDeleteView.as_view(), name='delete-data_model'),
+
+path('architecture_diagram', views.ArchitectureDiagramListView.as_view(), name='architecture_diagram-list'),
+path('architecture_diagram/<int:pk>/', views.ArchitectureDiagramDetailView.as_view(), name='detail-architecture_diagram'),
+path('architecture_diagram/<int:pk>/update/', views.ArchitectureDiagramUpdateView.as_view(), name='update-architecture_diagram'),
+path('architecture_diagram/create', views.ArchitectureDiagramCreateView.as_view(), name='create-architecture_diagram'),
+path('architecture_diagram/<int:pk>/delete/', views.ArchitectureDiagramDeleteView.as_view(), name='delete-architecture_diagram'),
+
+path('technical_recovery_plan', views.TechnicalRecoveryPlanListView.as_view(), name='technical_recovery_plan-list'),
+path('technical_recovery_plan/<int:pk>/', views.TechnicalRecoveryPlanDetailView.as_view(), name='detail-technical_recovery_plan'),
+path('technical_recovery_plan/<int:pk>/update/', views.TechnicalRecoveryPlanUpdateView.as_view(), name='update-technical_recovery_plan'),
+path('technical_recovery_plan/create', views.TechnicalRecoveryPlanCreateView.as_view(), name='create-technical_recovery_plan'),
+path('technical_recovery_plan/<int:pk>/delete/', views.TechnicalRecoveryPlanDeleteView.as_view(), name='delete-technical_recovery_plan'),
+
+path('data_dictionnary', views.DataDictionnaryListView.as_view(), name='data_dictionnary-list'),
+path('data_dictionnary/<int:pk>/', views.DataDictionnaryDetailView.as_view(), name='detail-data_dictionnary'),
+path('data_dictionnary/<int:pk>/update/', views.DataDictionnaryUpdateView.as_view(), name='update-data_dictionnary'),
+path('data_dictionnary/create', views.DataDictionnaryCreateView.as_view(), name='create-data_dictionnary'),
+path('data_dictionnary/<int:pk>/delete/', views.DataDictionnaryDeleteView.as_view(), name='delete-data_dictionnary'),
+
+path('api_specification', views.ApiSpecificationListView.as_view(), name='api_specification-list'),
+path('api_specification/<int:pk>/', views.ApiSpecificationDetailView.as_view(), name='detail-api_specification'),
+path('api_specification/<int:pk>/update/', views.ApiSpecificationUpdateView.as_view(), name='update-api_specification'),
+path('api_specification/create', views.ApiSpecificationCreateView.as_view(), name='create-api_specification'),
+path('api_specification/<int:pk>/delete/', views.ApiSpecificationDeleteView.as_view(), name='delete-api_specification'),
+
+path('api_documentation', views.ApiDocumentationListView.as_view(), name='api_documentation-list'),
+path('api_documentation/<int:pk>/', views.ApiDocumentationDetailView.as_view(), name='detail-api_documentation'),
+path('api_documentation/<int:pk>/update/', views.ApiDocumentationUpdateView.as_view(), name='update-api_documentation'),
+path('api_documentation/create', views.ApiDocumentationCreateView.as_view(), name='create-api_documentation'),
+path('api_documentation/<int:pk>/delete/', views.ApiDocumentationDeleteView.as_view(), name='delete-api_documentation'),
+
+path('call_flow', views.CallFlowListView.as_view(), name='call_flow-list'),
+path('call_flow/<int:pk>/', views.CallFlowDetailView.as_view(), name='detail-call_flow'),
+path('call_flow/<int:pk>/update/', views.CallFlowUpdateView.as_view(), name='update-call_flow'),
+path('call_flow/create', views.CallFlowCreateView.as_view(), name='create-call_flow'),
+path('call_flow/<int:pk>/delete/', views.CallFlowDeleteView.as_view(), name='delete-call_flow'),
+
+path('data_dictionnary_model', views.DataDictionnaryModelListView.as_view(), name='data_dictionnary_model-list'),
+path('data_dictionnary_model/<int:pk>/', views.DataDictionnaryModelDetailView.as_view(), name='detail-data_dictionnary_model'),
+path('data_dictionnary_model/<int:pk>/update/', views.DataDictionnaryModelUpdateView.as_view(), name='update-data_dictionnary_model'),
+path('data_dictionnary_model/create', views.DataDictionnaryModelCreateView.as_view(), name='create-data_dictionnary_model'),
+path('data_dictionnary_model/<int:pk>/delete/', views.DataDictionnaryModelDeleteView.as_view(), name='delete-data_dictionnary_model'),
+
+#path('test-pdf', views.HelloPDFView.as_view()),
+
+path('pdf/<int:id>/<str:type_file>/', views.pdf_view, name='pdf-view'),
 path('home', views.home, name='home'),
 ]

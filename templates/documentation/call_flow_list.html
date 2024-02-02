@@ -1,0 +1,52 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Specifications Api</h4>
+            <p class="card-description">
+              Liste de toutes les specifications use_case
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Use case</th>
+                    <th>Fichier</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for call_flow in call_flows %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'base:detail-call_flow' call_flow.pk %}" > {{ call_flow.name }} </a></td> 
+                            <td style="text-align:center">{{call_flow.description}}</td>
+                            <td style="text-align:center"><a href="{% url 'base:detail-use_case' call_flow.use_case.pk %}" >{{call_flow.use_case}} </a></td>
+                            <td style="text-align:center">{{call_flow.file}}</td>
+                            <td style="text-align:center">{{call_flow.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{call_flow.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

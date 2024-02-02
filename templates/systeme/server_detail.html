@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
 
@@ -56,16 +56,16 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-server' server.pk %}" >{{ server.name }} </a></td> 
-                    <td>{{server.type_server}}</td>
-                    <td>{{server.ram}}</td>
-                    <td>{{server.rom}}</td>
-                    <td>{{server.nb_processor}}</td>
-                    <td>{{server.v_processor}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-server' server.pk %}" >{{ server.name }} </a></td> 
+                    <td style="text-align:center">{{server.type_server}}</td>
+                    <td style="text-align:center">{{server.ram}}</td>
+                    <td style="text-align:center">{{server.rom}}</td>
+                    <td style="text-align:center">{{server.nb_processor}}</td>
+                    <td style="text-align:center">{{server.v_processor}}</td>
  
-                    <td><a href="{% url 'base:update-rack' server.rack.pk %}" >{{server.rack}}</td>
-                    <td>{{server.updated}}</td>
-                    <td>{{server.created}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-rack' server.rack.pk %}" >{{server.rack}}</td>
+                    <td style="text-align:center">{{server.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{server.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -76,11 +76,11 @@
         </div>
       </div>
       {% if partitions %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Détails des partitions</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
                 Voir les partitions relié au  {{server.name}}
             </p>
             <div class="table-responsive">
@@ -96,13 +96,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for partition in partitions.all %}
+                  {% for partition in partitions.all.distinct %}
                   <tr>
-                    <td><a href= "{% url 'base:detail-systeme_stockage' partition.pk %}" > {{ partition.name }} </a></td> 
-                    <td> {{ partition.ram }} </td>   
-                    <td> {{ partition.rom}} </td>                 
-                    <td>{{partition.updated}}</td>
-                    <td>{{partition.created}}</td>                
+                    <td style="text-align:center"><a href= "{% url 'base:detail-systeme_stockage' partition.pk %}" > {{ partition.name }} </a></td> 
+                    <td style="text-align:center"> {{ partition.ram }} </td>   
+                    <td style="text-align:center"> {{ partition.rom}} </td>                 
+                    <td style="text-align:center">{{partition.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{partition.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -113,11 +113,11 @@
       </div>
       {% endif %}
       {% if clusters %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Détails des clusters</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
                 Liste des clusters auquels apparteient {{server.name}}
             </p>
             <div class="table-responsive">
@@ -133,13 +133,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for cluster in clusters.all %}
+                  {% for cluster in clusters.all.distinct %}
                   <tr>
-                    <td><a href= "{% url 'base:detail-cluster' cluster.pk %}" > {{ cluster.name }} </a></td> 
+                    <td style="text-align:center"><a href= "{% url 'base:detail-cluster' cluster.pk %}" > {{ cluster.name }} </a></td> 
                     
                 
-                    <td>{{cluster.updated}}</td>
-                    <td>{{cluster.created}}</td>                
+                    <td style="text-align:center">{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{cluster.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -149,11 +149,11 @@
         </div>
       </div>
       {% endif %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Historique des modifications portant sur le server : {{server.name}}
             </p>
             <div class="table-responsive">
@@ -178,68 +178,68 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for server_history in server.history.all %}
+                  {% for server_history in server.history.all.distinct %}
                   {% if server_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{server_history.history_id}}</td>
-                    <td>{{server_history.history_date}}</td>
-                    <td>{{server_history.history_user}}</td>
-                    <td>{{server_history.history_change_reason}}</td>
-                    <td>{{server_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{server_history.history_id}}</td>
+                    <td style="text-align:center">{{server_history.history_date}}</td>
+                    <td style="text-align:center">{{server_history.history_user}}</td>
+                    <td style="text-align:center">{{server_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{server_history.get_history_type_display}}</td>
                     {% if server_history.prev_record.name != server_history.name %}
-                        <td>valeur après modification : {{server_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{server_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.name}}</td>
                     {% endif %}
                     {% if server_history.prev_record.type_server != server_history.type_server %}
-                    <td>valeur après modification : {{server_history.type_server}}</td>
+                    <td style="text-align:center">valeur après modification : {{server_history.type_server}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.type_server}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.type_server}}</td>
                     {% endif %}
                     {% if server_history.prev_record.ram != server_history.ram %}
-                        <td>valeur après modification : {{server_history.ram}}</td>
+                        <td style="text-align:center">valeur après modification : {{server_history.ram}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.ram}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.ram}}</td>
                     {% endif %}
                     {% if server_history.prev_record.rom != server_history.rom %}
-                        <td>valeur après modification : {{server_history.rom}}</td>
+                        <td style="text-align:center">valeur après modification : {{server_history.rom}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.rom}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.rom}}</td>
                     {% endif %}
                     {% if server_history.prev_record.nb_processor != server_history.nb_processor %}
-                    <td>valeur après modification : {{server_history.nb_processor}}</td>
+                    <td style="text-align:center">valeur après modification : {{server_history.nb_processor}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.nb_processor}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.nb_processor}}</td>
                     {% endif %}
                     {% if server_history.prev_record.v_processor != server_history.v_processor %}
-                    <td>valeur après modification : {{server_history.v_processor}}</td>
+                    <td style="text-align:center">valeur après modification : {{server_history.v_processor}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.v_processor}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.v_processor}}</td>
                     {% endif %}
                     
                    
                     {% if server_history.prev_record.rack != server_history.rack %}
-                    <td>valeur après modification : {{server_history.rack}}</td>
+                    <td style="text-align:center">valeur après modification : {{server_history.rack}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{server_history.rack}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{server_history.rack}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{server_history.history_id}}</td>
-                    <td>{{server_history.history_date}}</td>
-                    <td>{{server_history.history_user}}</td>
-                    <td>{{server_history.history_change_reason}}</td>
-                    <td>{{server_history.get_history_type_display}}</td>
-                    <td>Valeur à la création : {{ server.name }}</td> 
-                    <td>Valeur à la création : {{server.type_server}}</td>
-                    <td>Valeur à la création : {{server.ram}}</td>
-                    <td>Valeur à la création : {{server.rom}}</td>
-                    <td>Valeur à la création : {{server.nb_processor}}</td>
-                    <td>Valeur à la création : {{server.v_processor}}</td>
+                    <td style="text-align:center">{{server_history.history_id}}</td>
+                    <td style="text-align:center">{{server_history.history_date}}</td>
+                    <td style="text-align:center">{{server_history.history_user}}</td>
+                    <td style="text-align:center">{{server_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{server_history.get_history_type_display}}</td>
+                    <td style="text-align:center">Valeur à la création : {{ server.name }}</td> 
+                    <td style="text-align:center">Valeur à la création : {{server.type_server}}</td>
+                    <td style="text-align:center">Valeur à la création : {{server.ram}}</td>
+                    <td style="text-align:center">Valeur à la création : {{server.rom}}</td>
+                    <td style="text-align:center">Valeur à la création : {{server.nb_processor}}</td>
+                    <td style="text-align:center">Valeur à la création : {{server.v_processor}}</td>
                  
-                    <td>Valeur à la création : {{server.rack}}</td>
+                    <td style="text-align:center">Valeur à la création : {{server.rack}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -250,11 +250,11 @@
         </div>
       </div> 
 
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Détails des composant de  : {{server.name}}
             </p>
             <div class="table-responsive">

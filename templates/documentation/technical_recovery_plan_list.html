@@ -1,0 +1,51 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Plan de reprise technique</h4>
+            <p class="card-description">
+              Liste de tous les plans de reprise technique
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Application</th>
+                    <th>Fichier</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for technical_recovery_plan in technical_recovery_plans %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'base:detail-technical_recovery_plan' technical_recovery_plan.pk %}" > {{ technical_recovery_plan.name }} </a></td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-application' technical_recovery_plan.application.pk %}" >{{technical_recovery_plan.application}} </a></td>
+                            <td style="text-align:center">{{technical_recovery_plan.file}}</td>
+                            <td style="text-align:center">{{technical_recovery_plan.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{technical_recovery_plan.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Diagrammes d'architecture</h4>
+            <p class="card-description">
+              Liste de tous les diagrammes d'architecture
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Process</th>
+                    <th>Fichier</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for architecture_diagram in architecture_diagrams %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'base:detail-architecture_diagram' architecture_diagram.pk %}" > {{ architecture_diagram.name }} </a></td> 
+                            <td style="text-align:center">{{architecture_diagram.description}}</td>
+
+                            <td style="text-align:center"><a href="{% url 'base:detail-process' architecture_diagram.process.pk %}" >{{architecture_diagram.process}} </a></td>
+                            <td style="text-align:center">{{architecture_diagram.file}}</td>
+                            <td style="text-align:center">{{architecture_diagram.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{architecture_diagram.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

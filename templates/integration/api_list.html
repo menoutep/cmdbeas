@@ -5,7 +5,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             
@@ -30,12 +30,12 @@
                   {% for api in apis %}
                   
                         <tr>
-                            <td><a href="{% url 'base:detail-api' api.pk %}" >{{ api.name }} </a></td> 
-                            <td><a href="{% url 'base:detail-process' api.module_applicatif.pk %}" >{{api.module_applicatif.name}}</a></td>
+                            <td style="text-align:center"><a href="{% url 'base:detail-api' api.pk %}" >{{ api.name }} </a></td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-process' api.module_applicatif.pk %}" >{{api.module_applicatif.name}}</a></td>
 
-                            <td>{{api.description}}</td>
-                            <td>{{api.updated}}</td>
-                            <td>{{api.created}}</td>                    
+                            <td style="text-align:center">{{api.description}}</td>
+                            <td style="text-align:center">{{api.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{api.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

@@ -1,0 +1,48 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos applications desktops</h4>
+            <p class="card-description">
+              Liste de toutes les applications desktops
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for desktop_app in desktop_apps %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'base:detail-desktop_app' desktop_app.pk %}" > {{ desktop_app.name }} </a></td> 
+                            <td style="text-align:center">{{desktop_app.description}}</td>
+                            <td style="text-align:center">{{desktop_app.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{desktop_app.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

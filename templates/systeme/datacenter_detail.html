@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{datacenter.name}}</h4>
@@ -16,6 +16,7 @@
                 <thead>
                   <tr>
                     <th>Nom</th>
+                    <th>Nombre de salle serveur</th>
                     <th>Localisation</th>
                     <th>modifié le</th>
                     <th>créer le</th>
@@ -25,11 +26,13 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
-                    <td>{{datacenter.localisation}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
+                    <td style="text-align:center">{{datacenter.servers_rooms.all.distinct.count}}</td>
 
-                    <td>{{datacenter.updated}}</td>
-                    <td>{{datacenter.created}}</td>
+                    <td style="text-align:center">{{datacenter.localisation}}</td>
+
+                    <td style="text-align:center">{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{datacenter.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -39,7 +42,87 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      {%if datacenter.servers_rooms.all.distinct%}
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Salle serveurs situé sur le datacenter :{{datacenter.name}}</h4>
+            <p class="card-description">
+              Liste de toutes les salles serveurs situé sur le datacenter : {{datacenter.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nombre de racks</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for server_room in datacenter.servers_rooms.all.distinct %}
+                  <tr>
+                    <td style="text-align:center"><a href="{% url 'base:detail-server_room' server_room.pk %}" >{{server_room.name}}</td> 
+                    <td style="text-align:center">{{server_room.racks.all.distinct.count}}</td>
+
+                    <td style="text-align:center">{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{server_room.created|date:"DATETIME_FORMAT"}}</td>
+                    
+                  </tr>
+                 {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      {%if datacenter.servers_rooms%}
+      <div class="col-lg-11 grid-margin stretch-card ">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Racks situé sur le datacenter :{{datacenter.name}}</h4>
+            <p class="card-description">
+                Liste de tous les racks situé sur le datacenter : {{datacenter.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Salle Serveur</th>
+                    <th>Nombre de Serveurs</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for server_room in datacenter.servers_rooms.all.distinct%}
+                    {%for rack in server_room.racks.all.distinct %}
+                  <tr>
+                    <td style="text-align:center"><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
+                    <td style="text-align:center"><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
+                    <td style="text-align:center">
+
+                        {{rack.servers.all.distinct.count}}
+                    </td>
+                    <td style="text-align:center">{{rack.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{rack.created|date:"DATETIME_FORMAT"}}</td>
+                    
+                  </tr>
+                  {%endfor%}
+                 {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -62,35 +145,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for datacenter_history in datacenter.history.all %}
+                  {% for datacenter_history in datacenter.history.all.distinct %}
                   {% if datacenter_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{datacenter_history.history_id}}</td>
-                    <td>{{datacenter_history.history_date}}</td>
-                    <td>{{datacenter_history.history_user}}</td>
-                    <td>{{datacenter_history.history_change_reason}}</td>
-                    <td>{{datacenter_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_id}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_date}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_user}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{datacenter_history.get_history_type_display}}</td>
                     {% if datacenter_history.prev_record.name != datacenter_history.name %}
-                        <td>valeur après modification : {{datacenter_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{datacenter_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{datacenter_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{datacenter_history.name}}</td>
                     {% endif %}
-                    {% if datacenter_history.prev_record.description != datacenter_history.description %}
-                        <td>valeur après modification : {{datacenter_history.description}}</td>
+                    {% if datacenter_history.prev_record.localisation != datacenter_history.localisation %}
+                        <td style="text-align:center">valeur après modification : {{datacenter_history.localisation}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{datacenter_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{datacenter_history.localisation}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{datacenter_history.history_id}}</td>
-                    <td>{{datacenter_history.history_date}}</td>
-                    <td>{{datacenter_history.history_user}}</td>
-                    <td>{{datacenter_history.history_change_reason}}</td>
-                    <td>{{datacenter_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{datacenter_history.name}}</td>
-                    <td>valeur a la création: {{datacenter_history.description}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_id}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_date}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_user}}</td>
+                    <td style="text-align:center">{{datacenter_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{datacenter_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{datacenter_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{datacenter_history.localisation}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -100,12 +183,12 @@
           </div>
         </div>
       </div> 
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
-              Détails des composant de  : {{server.name}}
+            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <p class="card-description">
+              Détails des composant de  : {{datacenter.name}}
             </p>
             <div class="table-responsive">
               <style>

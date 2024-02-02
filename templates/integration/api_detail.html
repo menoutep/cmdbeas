@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             
@@ -28,12 +28,12 @@
                   
                   
                         <tr>
-                            <td><a href="{% url 'base:update-api' api.pk %}" >{{ api.name }} </a></td> 
-                            <td><a href="{% url 'base:detail-module_applicatif' api.module_applicatif.pk %}" >{{api.module_applicatif.name}}</a></td>
+                            <td style="text-align:center"><a href="{% url 'base:update-api' api.pk %}" >{{ api.name }} </a></td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' api.module_applicatif.pk %}" >{{api.module_applicatif.name}}</a></td>
 
-                            <td>{{api.description}}</td>
-                            <td>{{api.updated}}</td>
-                            <td>{{api.created}}</td>                    
+                            <td style="text-align:center">{{api.description}}</td>
+                            <td style="text-align:center">{{api.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{api.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -67,28 +67,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for api_history in api.history.all %}
+                  {% for api_history in api.history.all.distinct %}
                   {% if api_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{api_history.history_id}}</td>
-                    <td>{{api_history.history_date}}</td>
-                    <td>{{api_history.history_user}}</td>
-                    <td>{{api_history.history_change_reason}}</td>
-                    <td>{{api_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{api_history.history_id}}</td>
+                    <td style="text-align:center">{{api_history.history_date}}</td>
+                    <td style="text-align:center">{{api_history.history_user}}</td>
+                    <td style="text-align:center">{{api_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{api_history.get_history_type_display}}</td>
                     {% if api_history.prev_record.name != api_history.name %}
-                        <td>valeur après modification : {{api_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{api_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{api_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{api_history.name}}</td>
                     {% endif %}
                     {% if api_history.prev_record.description != api_history.description %}
-                        <td>valeur après modification : {{api_history.description}}</td>
+                        <td style="text-align:center">valeur après modification : {{api_history.description}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{api_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{api_history.description}}</td>
                     {% endif %}
                     {% if api_history.prev_record.module_applicatif != api_history.module_applicatif %}
-                    <td>valeur après modification : {{api_history.module_applicatif}}</td>
+                    <td style="text-align:center">valeur après modification : {{api_history.module_applicatif}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{api_history.module_applicatif}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{api_history.module_applicatif}}</td>
                     {% endif %}
 
                 
@@ -96,14 +96,14 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{api_history.history_id}}</td>
-                    <td>{{api_history.history_date}}</td>
-                    <td>{{api_history.history_user}}</td>
-                    <td>{{api_history.history_change_reason}}</td>
-                    <td>{{api_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{api_history.name}}</td>
-                    <td>valeur a la création: {{api_history.description}}</td>
-                    <td>valeur a la création: {{api_history.module_applicatif}}</td>
+                    <td style="text-align:center">{{api_history.history_id}}</td>
+                    <td style="text-align:center">{{api_history.history_date}}</td>
+                    <td style="text-align:center">{{api_history.history_user}}</td>
+                    <td style="text-align:center">{{api_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{api_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{api_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{api_history.description}}</td>
+                    <td style="text-align:center">valeur a la création: {{api_history.module_applicatif}}</td>
 
                   </tr>
                   {% endif %}

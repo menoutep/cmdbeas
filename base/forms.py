@@ -1,7 +1,9 @@
 # forms.py
 from django import forms
-from .models import AppelApi,Api,ModuleApplicatif,Departement,AppType,Process,UseCase,CallFlow,SubProcess,Api,Datacenter,ServerRoom,Rack,Cluster,SystemeStockage,Server,Partition,DeploiementCluster,Database,DatabaseServer,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,ArchitectureDiagram,Vendor,Application,BackupStrategie,NetworkInterface,Notifications,IpAdress
+from .models import ConnexionBD,AppServer,AppelApi,Api,ModuleApplicatif,Departement,AppType,Process,UseCase,CallFlow,SubProcess,Api,Datacenter,ServerRoom,Rack,Cluster,SystemeStockage,Server,Partition,DeploiementCluster,Database,DatabaseServer,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,ArchitectureDiagram, UssdShortCode,Vendor,Application,BackupStrategie,NetworkInterface,Notifications,IpAdress
 from base.models import PRIORITY_CHOICES,NAME_APP_TYPE_CHOICES
+from .validators import validate_pdf_magic
+from .models import BackupStrategie,TechnicalRecoveryPlan,ApiSpecification,ApiDocumentation,Url,SmsShortCode,SmppAccount,MobileApp,DesktopApp,ConnexionApp
 
 
 NAME_SERVER_TYPE_CHOICES = (
@@ -369,6 +371,56 @@ class ModuleApplicatifUpdateForm(forms.ModelForm):
             instance.save()
         return instance
    
+
+class ConnexionBDForm(forms.ModelForm):
+    module_applicatif = forms.ModelChoiceField(
+        queryset=ModuleApplicatif.objects.all(),
+        label='Module Applicatif',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+    database = forms.ModelChoiceField(
+        queryset=Database.objects.all(),
+        label='Database',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une base de donnée'}),
+    )
+
+    class Meta:
+        model = ConnexionBD
+        fields = ['module_applicatif', 'database']
+        
+
+class ConnexionBDUpdateForm(forms.ModelForm):
+    module_applicatif = forms.ModelChoiceField(
+        queryset=ModuleApplicatif.objects.all(),
+        label='Module Applicatif',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+    database = forms.ModelChoiceField(
+        queryset=Database.objects.all(),
+        label='Database',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une base de donnée'}),
+    )
+
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = ConnexionBD
+        fields = ['module_applicatif', 'database']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance._change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
 ############# END APPLICATION MODULE FORMS ###############################
 class ProcessForm(forms.ModelForm):
     name = forms.CharField(
@@ -956,6 +1008,75 @@ class NetworkInterfaceForm(forms.ModelForm):
         fields = ['name', 'description','server']
         
 
+class AppServerForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom du app_server",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du app_server'}),      
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description interface réseau','id':'message', 'style': 'height: 100px;'})
+        )
+    server = forms.ModelChoiceField(
+        queryset=Server.objects.all(),
+        label='Serveur',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un serveur'}),
+    )
+    module_applicatif = forms.ModelMultipleChoiceField(
+        queryset= ModuleApplicatif.objects.all(), 
+        widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'ajoutez un ou plusieurs module applicatifs'}), 
+        label='module applicatif',
+    )
+    class Meta:
+        model = AppServer
+        fields = ['name','description','server','module_applicatif']
+        
+
+class AppServerUpdateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom du app_server",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du app_server'}),      
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description interface réseau','id':'message', 'style': 'height: 100px;'})
+        )
+    server = forms.ModelChoiceField(
+        queryset=Server.objects.all(),
+        label='Serveur',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un serveur'}),
+    )
+    module_applicatif = forms.ModelMultipleChoiceField(
+        queryset= ModuleApplicatif.objects.all(), 
+        widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'ajoutez un ou plusieurs module applicatifs'}), 
+        label='module applicatif',
+    )
+    class Meta:
+        model = AppServer
+        fields = ['name','description','server','module_applicatif']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance._change_reason = historical_change_reason
+            instance.module_applicatif.set(self.cleaned_data['module_applicatif'])
+        if commit:
+            instance.save()
+        return instance
+  
+
+
 class NetworkInterfaceUpdateForm(forms.ModelForm):
     name = forms.CharField(
         max_length=150,
@@ -1180,7 +1301,7 @@ class ServerUpdateForm(forms.ModelForm):
             # Ajoutez une explication à la sauvegarde historique
             instance._change_reason = historical_change_reason
             instance.sys_stockage.set(self.cleaned_data['sys_stockage'])
-            instance.cluster.set(self.cleaned_data['cluster'])
+            
         if commit:
             instance.save()
         return instance
@@ -1226,9 +1347,13 @@ class ClusterUpdateForm(forms.ModelForm):
         widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'ajoutez un ou plusieurs serveurs'}), 
         label='Serveurs',
     )
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
     class Meta:
         model = Cluster
-        fields = ['name','ip_address','servers']
+        fields = ['name','ip_address','servers','historical_change_reason']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -1254,6 +1379,7 @@ class DeploiementClusterForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
     )
 
+
     class Meta:
         model = DeploiementCluster
         fields = ['cluster', 'server']
@@ -1276,7 +1402,7 @@ class DeploiementClusterUpdateForm(forms.ModelForm):
     )
     class Meta:
         model = DeploiementCluster
-        fields = ['cluster', 'server']
+        fields = ['cluster', 'server','historical_change_reason']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -1485,10 +1611,807 @@ class DatabaseUpdateForm(forms.ModelForm):
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance._change_reason = historical_change_reason
+            instance.historical_change_reason = historical_change_reason
             instance.module_applicatifs.set(self.cleaned_data['module_applicatifs'])
             
         if commit:
             instance.save()
         return instance
+    
+
 ############# END SYSTEME MODULE FORMS ###############################
+#################Documentation forms###################
+    
+class BackupStrategieCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom de la strategie",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom de la backup strategie'}), 
+
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = BackupStrategie
+        fields = ['name', 'file']
+class BackupStrategieUpdateForm(BackupStrategieCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = BackupStrategie
+        fields = ['name', 'file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+class TechnicalRecoveryPlanCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom du plan",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du plan de reprise tecnique'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description plan de reprise technique', 'style': 'height: 100px;'})
+        )
+    application = forms.ModelChoiceField(
+        queryset=Application.objects.all(),
+        label='Application',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une application'}),
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = TechnicalRecoveryPlan
+        fields = ['name','description','application' ,'file']
+class TechnicalRecoveryPlanUpdateForm(TechnicalRecoveryPlanCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = TechnicalRecoveryPlan
+        fields = ['name','description','application','file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+
+class DataDictionnaryCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom du dictionnaire de données",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du dictionnaire de données'}), 
+
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description dictionnaire de données', 'style': 'height: 100px;'})
+        )
+
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = DataDictionnary
+        fields = ['name','description' ,'file']
+class DataDictionnaryUpdateForm(DataDictionnaryCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = DataDictionnary
+        fields = ['name','description','file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+
+class ArchitectureDiagramCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom du diagramme",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du diagramme d\'architecture'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du diagramme d\'architecture', 'style': 'height: 100px;'})
+        )
+    process = forms.ModelChoiceField(
+        queryset=Process.objects.all(),
+        label='Process',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = ArchitectureDiagram
+        fields = ['name','description','process' ,'file']
+class ArchitectureDiagramUpdateForm(ArchitectureDiagramCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = ArchitectureDiagram
+        fields = ['name','description','process','file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+
+class CallFlowCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom du call flow",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du call flow'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du call flow', 'style': 'height: 100px;'})
+        )
+    use_case = forms.ModelChoiceField(
+        queryset=UseCase.objects.all(),
+        label='use case',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un use case'}),
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = CallFlow
+        fields = ['name','description','use_case' ,'file']
+class CallFlowUpdateForm(CallFlowCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = CallFlow
+        fields = ['name','description','use_case','file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+
+
+class ApiSpecificationCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom ",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom de la spécification'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description interface réseau','id':'message', 'style': 'height: 100px;'})
+        )
+    api = forms.ModelChoiceField(
+        queryset=Api.objects.all(),
+        label='Api',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une api'}),
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = ApiSpecification
+        fields = ['name','description','api' ,'file']
+class ApiSpecificationUpdateForm(ApiSpecificationCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = ApiSpecification
+        fields = ['name','description','api','file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+class ApiDocumentationCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom ",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom de la documentation api'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description de la documentation api', 'style': 'height: 100px;'})
+        )
+    api_specification = forms.ModelChoiceField(
+        queryset=ApiSpecification.objects.all(),
+        label='api spécification',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
+    )
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = ApiDocumentation
+        fields = ['name','description','api_specification' ,'file']
+class ApiDocumentationUpdateForm(ApiDocumentationCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = ApiDocumentation
+        fields = ['name','description','api_specification' ,'file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+
+class DataModelCreateForm(forms.ModelForm):
+    name = forms.CharField(
+    max_length=150,
+    min_length=4,
+    label="Nom ",
+    help_text="Minimum 4 caractères, maximum 150.",
+    widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du modele de données'}), 
+    )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du modèle de donnée', 'style': 'height: 100px;'})
+        )
+    data_dictionnary = forms.ModelMultipleChoiceField(
+        queryset= DataDictionnary.objects.all(), 
+        widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'ajoutez un ou plusieurs dictionnaire de données'}), 
+        label='Dictionnaire de donnée',
+    )
+    database = forms.ModelChoiceField(
+        queryset=Database.objects.all(),
+        label='database',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
+    )
+
+    file = forms.FileField(
+        label="fichier pdf",
+        allow_empty_file= False,
+        help_text="selectionner un fichier pdf",
+        widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
+        validators=[validate_pdf_magic]
+        )
+
+    class Meta:
+        model = DataModel
+        fields = ['name','description','database','data_dictionnary' ,'file']
+class DataModelUpdateForm(DataModelCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = DataModel
+        fields = ['name','description','database','data_dictionnary' ,'file','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            instance.data_dictionnary.set(self.cleaned_data['data_dictionnary'])
+        if commit:
+            instance.save()
+        return instance
+
+
+
+class DataDictionnaryModelCreateForm(forms.ModelForm):
+
+    data_model = forms.ModelChoiceField(
+        queryset=DataModel.objects.all(),
+        label='modele de donnée',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
+    )
+    data_dictionnary = forms.ModelChoiceField(
+        queryset=DataDictionnary.objects.all(),
+        label='dictionnaire de donnée',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner le serveur'}),
+    )
+
+    class Meta:
+        model = DataDictionnaryModel
+        fields = ['data_model','data_dictionnary']
+class DataDictionnaryModelUpdateForm(DataDictionnaryModelCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = DataDictionnaryModel
+        fields = ['data_model','data_dictionnary','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+class DomainNameCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du nom de domaine'}), 
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  nom de domaine', 'style': 'height: 100px;'})
+        )
+    ip_address = forms.ModelChoiceField(
+        queryset=IpAdress.objects.all(),
+        label='adresse ip',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une adresse ip'}),
+    )
+
+    class Meta:
+        model = DomainName
+        fields = ['name','description','ip_adress']
+class DomainNameUpdateForm(DomainNameCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = DomainName
+        fields = ['name','description','ip_adress','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class UrlCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du nom de domaine'}), 
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  nom de domaine', 'style': 'height: 100px;'})
+        )
+    module_applicatif = forms.ModelChoiceField(
+        queryset=ModuleApplicatif.objects.all(),
+        label='module applicatif',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+    domain_name = forms.ModelChoiceField(
+        queryset=DomainName.objects.all(),
+        label='Nom de domaine',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un nom de domaine'}),
+    )
+
+    class Meta:
+        model = Url
+        fields = ['name','description','module_applicatif','domain_name']
+class UrlUpdateForm(UrlCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = Url
+        fields = ['name','description','module_applicatif','domain_name','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class SmppAccountCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du nom de domaine'}), 
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  nom de domaine', 'style': 'height: 100px;'})
+        )
+    module_applicatif = forms.ModelChoiceField(
+        queryset=ModuleApplicatif.objects.all(),
+        label='module applicatif',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+
+
+    class Meta:
+        model = SmppAccount
+        fields = ['name','description','module_applicatif']
+class SmppAccountUpdateForm(SmppAccountCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = SmppAccount
+        fields = ['name','description','module_applicatif','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class SmsShortCodeCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du nom de domaine'}), 
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  compte smpp', 'style': 'height: 100px;'})
+        )
+    code = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="code",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom code du compte smpp'}), 
+        )
+    smpp_account = forms.ModelChoiceField(
+        queryset=SmsShortCode.objects.all(),
+        label='Compte smpp',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+
+
+    class Meta:
+        model = SmsShortCode
+        fields = ['name','description','smpp_account','code']
+class SmsShortCodeUpdateForm(SmsShortCodeCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = SmsShortCode
+        fields = ['name','description','smpp_account','code','historical_change_reason']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class UssdShortCodeCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom du nom de domaine'}), 
+        )
+    description = forms.CharField(
+        label="Description ",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  compte smpp', 'style': 'height: 100px;'})
+        )
+    code = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="code",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom code du compte smpp'}), 
+        )
+    url = forms.ModelChoiceField(
+        queryset=Url.objects.all(),
+        label='url',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une url'}),
+    )
+
+
+    class Meta:
+        model = UssdShortCode
+        fields = ['name','description','url','code']
+class UssdShortCodeUpdateForm(UssdShortCodeCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = UssdShortCode
+        fields = ['name','description','url','code']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class MobileAppCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'nom application mobile'}),      
+        )
+    description = forms.CharField(
+        label="Description",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description application mobile','id':'message', 'style': 'height: 100px;'})
+        )
+
+    class Meta:
+        model = MobileApp
+        fields = ['name', 'description']
+        
+
+class MobileAppUpdateForm(MobileAppCreateForm):
+
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = MobileApp
+        fields = ['name', 'description','historical_change_reason']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance._change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+class DesktopAppCreateForm(forms.ModelForm):
+    name = forms.CharField(
+        max_length=150,
+        min_length=4,
+        label="Nom",
+        help_text="Minimum 4 caractères, maximum 150.",
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'nom application bureau'}),      
+        )
+    description = forms.CharField(
+        label="Description",
+        help_text="Minimum 4 caractères, maximum 150.",      
+        widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description application bureau','id':'message', 'style': 'height: 100px;'})
+        )
+
+    class Meta:
+        model = DesktopApp
+        fields = ['name', 'description']
+        
+
+class DesktopAppUpdateForm(DesktopAppCreateForm):
+
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = DesktopApp
+        fields = ['name', 'description','historical_change_reason']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance._change_reason = historical_change_reason
+        if commit:
+            instance.save()
+        return instance
+
+
+class ConnexionAppCreateForm(forms.ModelForm):
+
+
+    mobile_app = forms.ModelChoiceField(
+        queryset=MobileApp.objects.all(),
+        label='Application Mobile',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une application mobile'}),
+    )
+    desktop_app = forms.ModelChoiceField(
+        queryset=DesktopApp.objects.all(),
+        label='Application Bureau',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une application bureau'}),
+    )
+    url = forms.ModelChoiceField(
+        queryset=Url.objects.all(),
+        label='url',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une url'}),
+    )
+
+    class Meta:
+        model = ConnexionApp
+        fields = ['desktop_app','mobile_app','url']
+class ConnexionAppUpdateForm(ConnexionAppCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = ConnexionApp
+        fields = ['desktop_app','mobile_app','url']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
+#################end documentation forms#############################

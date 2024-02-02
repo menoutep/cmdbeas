@@ -28903,7 +28903,7 @@ div.tagsinput span.tag a {
 
 .content-wrapper {
   background: #F4F5F7;
-  padding: 1.5rem 2.187rem 1.5rem 3.5rem;
+  padding: 1.5rem 2.187rem 1.5rem ;
   width: 100%;
   -webkit-flex-grow: 1;
   flex-grow: 1;
@@ -28921,7 +28921,7 @@ div.tagsinput span.tag a {
   font-family: "Manrope", sans-serif;
   font-weight: 500;
   padding: 0;
-  width: 220px;
+  width: 300px;
   z-index: 11;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -30253,7 +30253,7 @@ div.tagsinput span.tag a {
     flex-direction: row;
   }
   .navbar .navbar-brand-wrapper {
-    width: 55px;
+    width: 65px;
   }
   .navbar .navbar-brand-wrapper .navbar-brand.brand-logo {
     display: none;

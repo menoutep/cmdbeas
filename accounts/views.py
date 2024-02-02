@@ -1,7 +1,15 @@
 from django.shortcuts import render
-
+from rest_framework.views import APIView
+from django.views import View
+from django.db.models import Q
+import json
+from django.urls import reverse_lazy
 # Create your views here.
+from .serializers import GroupSerializer
+from django.utils import timezone
 from django.shortcuts import render
+from .forms import PermissionCreationForm
+from django.views.generic import ListView,DetailView,UpdateView,DeleteView
 from accounts.models import User
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
@@ -14,7 +22,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import  assign_perm
 from django.contrib import messages
-from accounts.forms import PermissionForm, GroupCreationForm,GroupAddForm, AdminResetUserPassword ,CustomUserLoginForm,CustomPasswordChangeForm
+
+from accounts.forms import PermissionForm,CustomUserUpdateForm, GroupUpdateForm, GroupCreationForm,GroupAddForm, AdminResetUserPassword ,CustomUserLoginForm,CustomPasswordChangeForm
 from django.utils import timezone
 import random
 import string
@@ -84,9 +93,20 @@ def signup(request):
                 password = generate_random_password(12)
                 form.cleaned_data["password1"]=password
             user = form.save(commit=False)
+            selected_groups  = form.cleaned_data["groups"]
+            
             print(user)
-            user.reset_by_admin = True      
+            user.reset_by_admin = True   
+
             user.save()
+            if selected_groups:
+                for group in selected_groups:
+                    
+                    user.groups.add(group)
+                    user.save()
+                    for permission_ in group.permissions.all():
+                        assign_perm(permission_, user)
+                        user.save()  
             send_password_email(user.email,password)
             logger.info('user email: %s user id: %s user date joined: %s account status: %s  compte utilisateur creer par admin  to ip adress :%s ',user.email,user.pk,user.date_joined.date(),user.is_active,user_ip)
             return redirect('base:index')  # Remplacez 'home' par le nom de votre page d'accueil
@@ -197,6 +217,50 @@ def custom_login(request):
 
 
 
+def list_groups(request):
+    groups = Group.objects.all()
+    return render(request, 'list_groups.html', {'groups': groups})
+
+class GroupListView(ListView):
+    model = Permission
+    template_name = 'accounts/list_groups.html'
+    context_object_name = 'groups'
+    def get(self, request, *args, **kwargs):
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Group.objects.all()
+        # Vérifier le type du paramètre et trier en conséquence
+        if q : 
+           
+          queryset = Group.objects.filter(
+                              Q(name__icontains=q) |
+                              Q(permissions__content_type__model__icontains=q) | 
+                              Q(permissions__codename__icontains=q) |    
+                              Q(permissions__name__icontains=q)).distinct()
+        # Passer le queryset trié au template
+        
+        context = {'groups': queryset}
+        return render(request, self.template_name, context)
+
+
+
+class GroupDetailView(DetailView):
+    model = Group
+    template_name = 'accounts/detail_groups.html'
+    context_object_name = 'group'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Récupérer l'historique de la relation many-to-many 'cluster'
+        permissions = self.object.permissions.all()
+        
+        
+        serializer = GroupSerializer(self.object)
+        #serializer_data=json.dumps(serializer.data)
+        #context['serializer_data'] = serializer_data      
+        context['permissions'] = permissions
+        return context
 
 @login_required
 @user_passes_test(is_superuser)
@@ -214,7 +278,10 @@ def create_group(request):
             selected_permissions = request.POST.getlist('permissions')
             name = form.cleaned_data["name"]
             group = Group.objects.create(name=name)
+            group.created = timezone.now() 
             group.permissions.set(selected_permissions)
+            group.save()
+            return redirect('base:index')
             logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s  nouveau groupe :%s creer par admin ',user.email,user.pk,user.date_joined.date(),user.is_active,user.last_login.date(),user.last_password_change,user_ip,name)
         # Attribuer les permissions à l'utilisateur
         else:
@@ -223,6 +290,46 @@ def create_group(request):
         form = GroupCreationForm()
     context = {'form':form}
     return render(request, 'accounts/create_groupe.html',context)
+
+@permission_required('accounts.delete_permission', raise_exception=True)
+
+def edit_group(request, group_id):
+    user = User.objects.get(email=request.user.email)
+    user_ip = get_client_ip(request)
+    
+    group = get_object_or_404(Group, id=group_id)
+    original_permissions = list(group.permissions.all())
+    
+    if request.method == 'POST':
+        form = GroupUpdateForm(request.POST)
+        if form.is_valid():
+            selected_permissions = request.POST.getlist('permissions')
+            name = form.cleaned_data["name"]
+            historical_change_reason = form.cleaned_data["historical_change_reason"]
+
+            # Appliquez les modifications au groupe
+            group.name = name
+            group.save()
+            group.permissions.set(selected_permissions)
+            group.updated = timezone.now() 
+            group.save()
+            # Enregistrez l'historique des modifications avec la raison du changement
+            history_snapshot = group.history.latest()
+            history_snapshot.history_change_reason = historical_change_reason
+            history_snapshot.save()
+
+            logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s groupe modifie :%s par admin. Historique des modifications avec raison : %s', user.email, user.pk, user.date_joined.date(), user.is_active, user.last_login.date(), user.last_password_change, user_ip, name, historical_change_reason)
+            return redirect('accounts:list-groups')
+        else:
+            logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s echecs de la tentative de modification de groupe par admin, entrée invalide ', user.email, user.pk, user.date_joined.date(), user.is_active, user.last_login.date(), user.last_password_change, user_ip)
+    else:
+        # Pré-remplissez le formulaire avec les données actuelles du groupe
+        form = GroupUpdateForm(initial={'name': group.name, 'historical_change_reason': ''})
+        form.fields['permissions'].queryset = Permission.objects.all()
+        form.fields['permissions'].initial = [perm.id for perm in original_permissions]
+
+    context = {'form': form, 'group': group}
+    return render(request, 'accounts/create_groupe.html', context)
 
 @login_required
 @user_passes_test(is_superuser)
@@ -245,12 +352,14 @@ def add_user_to_group(request):
                 group_ = Group.objects.get(id=group)
                 name = group_.name
                 print(group_)
+                user.save()
                 user.groups.add(group_)
                 for permission_ in group_.permissions.all():
                     assign_perm(permission_, user)
                     user.save()
                 #assign_perm(group_, user)
                 logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s groupe:%s attribuer à  :%s par admin ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip,name,user.username)
+                return redirect('base:index')
         else:
             logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s echec attribution groupe à  :%s par admin ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip,user.username)
     else:
@@ -284,6 +393,7 @@ def assign_permissions(request):
                 assign_perm(permission_, user)
                 logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s permission:%s attribuer à  :%s par admin ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip,name,user.username)
             messages.success(request, 'Permissions attribuées avec succès.')
+            return redirect('accounts:list-permissions')
     else:
         if q:
             user_instance = User.objects.get(username = q)
@@ -296,9 +406,125 @@ def assign_permissions(request):
     return render(request, 'accounts/assign_permissions.html',context)
 
 
+
+
+
+class PermissionListView(ListView):
+    model = Permission
+    template_name = 'accounts/list_permissions.html'
+    context_object_name = 'permissions'
+    def get(self, request, *args, **kwargs):
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Permission.objects.all()
+        # Vérifier le type du paramètre et trier en conséquence
+        if q : 
+          queryset = Permission.objects.filter(
+                              Q(name__icontains=q) |
+                              Q(codename__icontains=q) |    
+                              Q(content_type__model__icontains=q) | 
+                              Q(group__name__icontains=q)      
+                              )
+        # Passer le queryset trié au template
+        
+        context = {'permissions': queryset}
+        return render(request, self.template_name, context)
+
+@permission_required('auth.add_permission')
+def create_permission(request):
+    user = User.objects.get(email=request.user.email)
+    user_ip = get_client_ip(request)
+    
+    if request.method == 'POST':
+        form = PermissionCreationForm(request.POST)
+        if form.is_valid():
+            # Enregistrez la permission
+            permission = form.save(commit=False)
+            permission.created = timezone.now() 
+            permission.save()
+            logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s nouvelle permission creee : %s par admin', user.email, user.pk, user.date_joined.date(), user.is_active, user.last_login.date(), user.last_password_change, user_ip, form.cleaned_data["name"])
+
+            return redirect('accounts:list-permissions')
+        else:
+            logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s echecs de la tentative de creation de permission par admin, entree invalide ', user.email, user.pk, user.date_joined.date(), user.is_active, user.last_login.date(), user.last_password_change, user_ip)
+    else:
+        form = PermissionCreationForm()
+
+    context = {'form': form}
+    return render(request, 'accounts/create_permission.html', context)
+
+
+@permission_required('auth.change_permission')
+def edit_permission(request, permission_id):
+    permission = get_object_or_404(Permission, id=permission_id)
+
+    if request.method == 'POST':
+        form = PermissionForm(request.POST, instance=permission)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:list_permissions')
+    else:
+        form = PermissionForm(instance=permission)
+
+    return render(request, 'accounts/edit_permission.html', {'form': form, 'permission': permission})
+
+
+
 def logout_view(request):
     user_ip = get_client_ip(request)
     user_ = User.objects.get(email=request.user.email)
     logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s  disconnected ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip)
     logout(request)
     return redirect('base:index')  # logout
+
+
+#######################user management views##############
+class UserListView(View):
+    template_name = 'accounts/list_users.html'
+
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        parametre = request.GET.get('parametre')
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = User.objects.all()
+
+        # Vérifier le type du paramètre et trier en conséquence
+        if parametre:
+            group = Group.objects.get(pk=parametre)
+            
+            # Afficher les users liées à un objet Cluster
+            queryset = group.user_set.all()
+            print(queryset)
+        elif q : 
+            queryset = User.objects.filter(
+                            Q(first_name__icontains=q) |
+                            Q(last_name__icontains=q) |
+                            Q(username__icontains=q) |  
+                            Q(email__icontains=q) |   
+                            Q(departement__icontains=q) |         
+                            Q(groups__name__icontains=q)|
+                            Q(user_permissions__name__icontains=q)|
+                            Q(user_permissions__codename__icontains=q))  
+        # Passer le queryset trié au template
+        print(queryset)
+        groups =  Group.objects.all()
+        context = {'users': queryset,
+                   'groups':groups
+                   }
+        return render(request, self.template_name, context)
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'accounts/user_detail.html'
+    context_object_name = 'user'
+  
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = CustomUserUpdateForm
+    template_name = 'accounts/sign.html'
+    success_url = reverse_lazy('accounts:user-list')
+  
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = 'accounts/user_confirm_delete.html'
+    success_url = reverse_lazy('accounts:user-list')

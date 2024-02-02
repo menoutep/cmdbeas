@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block content %}
+{{ form.media.css }}
 <div class="content-wrapper">
     <div class="row">
 
       <div class="col-md-9 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Nouvel utilisateur</h4>
+            <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}un utilisateur</h4>
             <p class="card-description">
               Veuillez saisir les informations relatives à l'utilisateur
             </p>
@@ -70,6 +71,22 @@
                     {{ form.is_staff.label}}
                 </label>
               </div>
+              {% if form.instance.pk %}
+
+              <div class="form-check form-check-flat form-check-primary">
+                <label class="form-check-label"> 
+                    {{ form.is_active.label}}
+                    {{ form.is_active}}
+                </label>
+                
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.historical_change_reason.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.historical_change_reason }}
+                </div>
+              </div>
+              {% endif %}
               <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
               <button class="btn btn-light">Cancel</button>
             </form>
@@ -78,4 +95,5 @@
       </div>
     </div>
   </div>
+  {{ form.media.js }}
   {% endblock %}

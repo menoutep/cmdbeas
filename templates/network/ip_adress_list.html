@@ -5,7 +5,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             
@@ -30,13 +30,13 @@
                   {% for ip_adress in ip_adresses %}
                   
                         <tr>
-                            <td><a href="{% url 'base:detail-ip_adress' ip_adress.pk %}" >{{ ip_adress.name }} </a></td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-ip_adress' ip_adress.pk %}" >{{ ip_adress.name }} </a></td> 
                             
-                            <td>{{ip_adress.description}}</td>
-                            <td><a href="{% url 'base:detail-network_interface' ip_adress.interface.pk %}" >{{ip_adress.interface}}</a></td>
-                            <td>{{ip_adress.ipv4}}</td>
-                            <td>{{ip_adress.updated}}</td>
-                            <td>{{ip_adress.created}}</td>                    
+                            <td style="text-align:center">{{ip_adress.description}}</td>
+                            <td style="text-align:center"><a href="{% url 'base:detail-network_interface' ip_adress.interface.pk %}" >{{ip_adress.interface}}</a></td>
+                            <td style="text-align:center">{{ip_adress.ipv4}}</td>
+                            <td style="text-align:center">{{ip_adress.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{ip_adress.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

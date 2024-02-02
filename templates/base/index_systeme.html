@@ -363,7 +363,7 @@
   <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-lg-11 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title"> Vos Serveurs</h4>
@@ -391,21 +391,21 @@
                       <tbody>
                         {% for serveur in serveurs %}
                         <tr>
-                          <td>{{serveur.name}}</td>
-                          <td>{{serveur.type_server}}</td>
-                          <td>{{serveur.ram}}</td>
-                          <td>{{serveur.rom}}</td>
-                          <td>{{serveur.nb_processor}}</td>
-                          <td>{{serveur.v_processor}}</td>
-                          <td>
-                            {% for partition in serveur.sys_stockage.all %}
+                          <td style="text-align:center">{{serveur.name}}</td>
+                          <td style="text-align:center">{{serveur.type_server}}</td>
+                          <td style="text-align:center">{{serveur.ram}}</td>
+                          <td style="text-align:center">{{serveur.rom}}</td>
+                          <td style="text-align:center">{{serveur.nb_processor}}</td>
+                          <td style="text-align:center">{{serveur.v_processor}}</td>
+                          <td style="text-align:center">
+                            {% for partition in serveur.sys_stockage.all.distinct %}
                             {{partition.name}},
                             {% endfor %}
                           </td>
-                          <td>{{serveur.cluster}}</td>
-                          <td>{{serveur.rack}}</td>
-                          <td>{{serveur.updated}}</td>
-                          <td>{{serveur.created}}</td>
+                          <td style="text-align:center">{{serveur.cluster}}</td>
+                          <td style="text-align:center">{{serveur.rack}}</td>
+                          <td style="text-align:center">{{serveur.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{serveur.created|date:"DATETIME_FORMAT"}}</td>
                           
                         </tr>
                         {% endfor %}
@@ -415,7 +415,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-lg-11 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title"> Vos Datacenters</h4>
@@ -436,11 +436,11 @@
                       <tbody>
                         {% for datacenter in datacenters %}
                         <tr>
-                          <td>{{datacenter.name}}</td>
-                          <td>{{datacenter.localisation}}</td>
+                          <td style="text-align:center">{{datacenter.name}}</td>
+                          <td style="text-align:center">{{datacenter.localisation}}</td>
 
-                          <td>{{datacenter.updated}}</td>
-                          <td>{{datacenter.created}}</td>
+                          <td style="text-align:center">{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{datacenter.created|date:"DATETIME_FORMAT"}}</td>
                           
                         </tr>
                         {% endfor %}
@@ -450,7 +450,7 @@
                 </div>
               </div>
             </div> 
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-lg-11 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title"> Vos Systeme de stockage</h4>
@@ -472,11 +472,11 @@
                       <tbody>
                         {% for stockage in stockages %}
                         <tr>
-                          <td>{{stockage.name}}</td>
-                          <td>{{stockage.ram}}</td>
-                          <td>{{stockage.rom}}</td>
-                          <td>{{stockage.updated}}</td>
-                          <td>{{stockage.created}}</td>
+                          <td style="text-align:center">{{stockage.name}}</td>
+                          <td style="text-align:center">{{stockage.ram}}</td>
+                          <td style="text-align:center">{{stockage.rom}}</td>
+                          <td style="text-align:center">{{stockage.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{stockage.created|date:"DATETIME_FORMAT"}}</td>
                           
                         </tr>
                         {% endfor %}
@@ -486,7 +486,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-lg-11 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title"> Vos serveurs de base données</h4>
@@ -510,13 +510,13 @@
                       <tbody>
                         {% for database_serveur in database_serveurs %}
                         <tr>
-                          <td>{{database_serveur.name}}</td>
-                          <td>{{database_serveur.ram}}</td>
-                          <td>{{database_serveur.rom}}</td>
-                          <td>{{ database_serveur.cluster|default:"none" }}</td>
-                          <td>{{database_serveur.server|default:"none" }}</td>
-                          <td>{{database_serveur.updated}}</td>
-                          <td>{{database_serveur.created}}</td>
+                          <td style="text-align:center">{{database_serveur.name}}</td>
+                          <td style="text-align:center">{{database_serveur.ram}}</td>
+                          <td style="text-align:center">{{database_serveur.rom}}</td>
+                          <td style="text-align:center">{{ database_serveur.cluster|default:"none" }}</td>
+                          <td style="text-align:center">{{database_serveur.server|default:"none" }}</td>
+                          <td style="text-align:center">{{database_serveur.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{database_serveur.created|date:"DATETIME_FORMAT"}}</td>
                           
                         </tr>
                         {% endfor %}

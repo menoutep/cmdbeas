@@ -39,14 +39,14 @@
 
     <div class="content-wrapper">
       <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
+        <div class="col-lg-11 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-9">
-                  <h4 class="card-title"> Vos Serveurs</h4>
+                  <h4 class="card-title"> Vos serveurs de base de données</h4>
                   <p class="card-description">
-                    Liste de tous les serveurs
+                    Liste de tous les serveurs de base de données
                   </p>
                 </div>
        
@@ -68,21 +68,21 @@
                     {% for database_server in database_servers %}
                     
                           <tr>
-                            <td><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
-                            <td>{{database_server.ram}}</td>
-                            <td>{{database_server.rom}}</td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
+                            <td style="text-align:center">{{database_server.ram}}</td>
+                            <td style="text-align:center">{{database_server.rom}}</td> 
                             {%if database_server.server%}
-                            <td><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
                             {%else%} 
-                            <td>pas hebergé sur serveur</td> 
+                            <td style="text-align:center">pas hebergé sur serveur</td> 
                             {%endif%}
                             {%if database_server.cluster%}
-                            <td><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
+                            <td style="text-align:center"><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
                               {%else%} 
-                            <td>pas hebergé sur cluster</td> 
+                            <td style="text-align:center">pas hebergé sur cluster</td> 
                             {%endif%}
-                            <td>{{database_server.updated}}</td>
-                            <td>{{database_.created}}</td>                 
+                            <td style="text-align:center">{{database_server.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{database_server.created|date:"DATETIME_FORMAT"}}</td>                 
                           </tr>
                      
                     {% endfor %}

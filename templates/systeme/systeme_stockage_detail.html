@@ -4,18 +4,19 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{systeme_stockage.name}}</h4>
-            <p class="card-datacenter">
-                Detail de la systeme de stockage: {{systeme_stockage.name}}
+            <p class="card-description">
+                Detail du systeme de stockage: {{systeme_stockage.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
                     <th>Nom</th>
+                    <th>Nombre de Serveurs liées</th>
                     <th>Memoire Ram (gb)</th>
                     <th>Memoire Rom (tera)</th>
                     <th>modifié le</th>
@@ -26,11 +27,14 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-systeme_stockage' systeme_stockage.pk %}" >{{ systeme_stockage.name }} </a></td> 
-                    <td>{{systeme_stockage.ram}}</td>
-                    <td>{{systeme_stockage.rom}}</td>
-                    <td>{{systeme_stockage.updated}}</td>
-                    <td>{{systeme_stockage.created}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-systeme_stockage' systeme_stockage.pk %}" >{{ systeme_stockage.name }} </a></td> 
+                    <td style="text-align:center" >
+                     {{systeme_stockage.servers.all.distinct.count}}
+                    </td>
+                    <td style="text-align:center">{{systeme_stockage.ram}}</td>
+                    <td style="text-align:center">{{systeme_stockage.rom}}</td>
+                    <td style="text-align:center">{{systeme_stockage.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{systeme_stockage.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -40,11 +44,60 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      {%if systeme_stockage.servers.all.distinct%}
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Serveurs liées au systeme de stockage :{{systeme_stockage.name}}</h4>
+            <p class="card-description">
+                Liste de tous les serveurs liées au systeme de stockage: {{systeme_stockage.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Type de serveur</th>
+                    <th>Memoire Rom (tera)</th>
+                    <th>Memoire Ram (gb)</th>
+                    <th>Nombre de processeur </th>
+                    <th>Vitesseur des processeur</th>
+           
+                    <th>Rack</th>
+                    <th>modifié le</th>
+
+                    <th>créer le</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for server in systeme_stockage.servers.all.distinct.distinct %}
+                  
+                        <tr>
+                          <td style="text-align:center"><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
+                          <td style="text-align:center">{{server.type_server}}</td>
+                          <td style="text-align:center">{{server.ram}}</td>
+                          <td style="text-align:center">{{server.rom}}</td>
+                          <td style="text-align:center">{{server.nb_processor}}</td>
+                          <td style="text-align:center">{{server.v_processor}}</td>
+       
+                          <td style="text-align:center"><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
+                          <td style="text-align:center">{{server.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{server.created|date:"DATETIME_FORMAT"}}</td>                 
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Historique des modifications portant sur le systeme_stockage : {{systeme_stockage.name}}
             </p>
             <div class="table-responsive">
@@ -64,41 +117,41 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for systeme_stockage_history in systeme_stockage.history.all %}
+                  {% for systeme_stockage_history in systeme_stockage.history.all.distinct %}
                   {% if systeme_stockage_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{systeme_stockage_history.history_id}}</td>
-                    <td>{{systeme_stockage_history.history_date}}</td>
-                    <td>{{systeme_stockage_history.history_user}}</td>
-                    <td>{{systeme_stockage_history.history_change_reason}}</td>
-                    <td>{{systeme_stockage_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_id}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_date}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_user}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.get_history_type_display}}</td>
                     {% if systeme_stockage_history.prev_record.name != systeme_stockage_history.name %}
-                        <td>valeur après modification : {{systeme_stockage_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{systeme_stockage_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{systeme_stockage_history.name}}</td>
                     {% endif %}
                     {% if systeme_stockage_history.prev_record.ram != systeme_stockage_history.ram %}
-                        <td>valeur après modification : {{systeme_stockage_history.ram}}</td>
+                        <td style="text-align:center">valeur après modification : {{systeme_stockage_history.ram}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.ram}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{systeme_stockage_history.ram}}</td>
                     {% endif %}
                     {% if systeme_stockage_history.prev_record.rom != systeme_stockage_history.rom %}
-                        <td>valeur après modification : {{systeme_stockage_history.rom}}</td>
+                        <td style="text-align:center">valeur après modification : {{systeme_stockage_history.rom}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.rom}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{systeme_stockage_history.rom}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{systeme_stockage_history.history_id}}</td>
-                    <td>{{systeme_stockage_history.history_date}}</td>
-                    <td>{{systeme_stockage_history.history_user}}</td>
-                    <td>{{systeme_stockage_history.history_change_reason}}</td>
-                    <td>{{systeme_stockage_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{systeme_stockage_history.name}}</td>
-                    <td>valeur a la création: {{systeme_stockage_history.ram}}</td>
-                    <td>valeur a la création: {{systeme_stockage_history.rom}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_id}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_date}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_user}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{systeme_stockage_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{systeme_stockage_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{systeme_stockage_history.ram}}</td>
+                    <td style="text-align:center">valeur a la création: {{systeme_stockage_history.rom}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -112,7 +165,7 @@
       
       {%endif %}
       {%if servers%}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <div class="row">
@@ -146,16 +199,16 @@
                   {% for server in servers %}
                   
                         <tr>
-                          <td><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
-                          <td>{{server.type_server}}</td>
-                          <td>{{server.ram}}</td>
-                          <td>{{server.rom}}</td>
-                          <td>{{server.nb_processor}}</td>
-                          <td>{{server.v_processor}}</td>
+                          <td style="text-align:center"><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
+                          <td style="text-align:center">{{server.type_server}}</td>
+                          <td style="text-align:center">{{server.ram}}</td>
+                          <td style="text-align:center">{{server.rom}}</td>
+                          <td style="text-align:center">{{server.nb_processor}}</td>
+                          <td style="text-align:center">{{server.v_processor}}</td>
        
-                          <td><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
-                          <td>{{server.updated}}</td>
-                          <td>{{server.created}}</td>                 
+                          <td style="text-align:center"><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
+                          <td style="text-align:center">{{server.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{server.created|date:"DATETIME_FORMAT"}}</td>                 
                         </tr>
                    
                   {% endfor %}
@@ -166,11 +219,11 @@
         </div>
       </div>
       {%endif %}
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Détails des composant de  : {{server.name}}
             </p>
             <div class="table-responsive">

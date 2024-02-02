@@ -1,0 +1,91 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+{%block categories%}
+<li class="nav-item dropdown d-none d-lg-block">
+  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
+    data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
+  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+    aria-labelledby="messageDropdown">
+    <a class="dropdown-item py-3">
+      <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
+    </a>
+    <div class="dropdown-divider"></div>
+    {% for group in groups %}
+    <a class="dropdown-item preview-item" href="{% url 'accounts:user-list' %}?parametre={{group.pk}}">
+      <div class="preview-item-content flex-grow py-2">
+        <p class="preview-subject ellipsis font-weight-medium text-dark">{{group.name}}</p>
+        <p class="fw-light small-text mb-0">Afficher seulement les membres du groupe : {{group.name}}</p>
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
+</li>
+{%endblock%}
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'accounts:list-permissions' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+     
+          
+            
+    
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les Utilisateurs</h4>
+            <p class="card-description">
+              Liste de tous les utilsateurs
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prenoms</th>
+                    <th>Email</th>
+                    <th>Nom utilisateur</th>
+                    <th>Contact</th>
+                    <th>Departement</th>
+                    <th>Statut</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in users %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'accounts:detail-user' user.pk %}" >{{ user.first_name }} </a></td>
+                            <td style="text-align:center">{{ user.last_name }}</td>
+                            <td style="text-align:center">{{ user.email }}</td>
+                            <td style="text-align:center">{{ user.username }}</td>
+                            <td style="text-align:center">{{ user.contact }}</td>
+                            <td style="text-align:center">{{ user.departement }}</td>
+                            <td style="text-align:center">{{ user.is_active }}</td>
+                            <td style="text-align:center">{{ user.updated|date:"DATETIME_FORMAT" }}</td>
+                            <td style="text-align:center">{{ user.date_joined }}</td>                    
+                        </tr>
+                    
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+  
+
+    </div>
+  </div>
+  {% endblock %}

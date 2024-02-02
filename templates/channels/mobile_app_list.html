@@ -1,0 +1,48 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos applications mobiles</h4>
+            <p class="card-description">
+              Liste de toutes les applications mobiles
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for mobile_app in mobile_apps %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'base:detail-mobile_app' mobile_app.pk %}" > {{ mobile_app.name }} </a></td> 
+                            <td style="text-align:center">{{mobile_app.description}}</td>
+                            <td style="text-align:center">{{mobile_app.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{mobile_app.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{partition}}</h4>
@@ -26,11 +26,11 @@
                   
                   <tr>
                     
-                    <td><a href="{% url 'base:update-partition' partition.pk %}">{{ partition.serveur }} </a></td> 
-                    <td><a href="{% url 'base:update-partition' partition.pk %}">{{partition.stockage}}</a></td>
+                    <td style="text-align:center"><a href="{% url 'base:update-partition' partition.pk %}">{{ partition.serveur }} </a></td> 
+                    <td style="text-align:center"><a href="{% url 'base:update-partition' partition.pk %}">{{partition.stockage}}</a></td>
 
-                    <td>{{partition.updated}}</td>
-                    <td>{{partition.created}}</td>
+                    <td style="text-align:center">{{partition.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{partition.created|date:"DATETIME_FORMAT"}}</td>
                   </a>
                   </tr>
                  
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -63,35 +63,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for partition_history in partition.history.all %}
+                  {% for partition_history in partition.history.all.distinct %}
                   {% if partition_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{partition_history.history_id}}</td>
-                    <td>{{partition_history.history_date}}</td>
-                    <td>{{partition_history.history_user}}</td>
-                    <td>{{partition_history.history_change_reason}}</td>
-                    <td>{{partition_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{partition_history.history_id}}</td>
+                    <td style="text-align:center">{{partition_history.history_date}}</td>
+                    <td style="text-align:center">{{partition_history.history_user}}</td>
+                    <td style="text-align:center">{{partition_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{partition_history.get_history_type_display}}</td>
                     {% if partition_history.prev_record.serveur != partition_history.serveur %}
-                        <td>valeur après modification : {{partition_history.serveur}}</td>
+                        <td style="text-align:center">valeur après modification : {{partition_history.serveur}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{partition_history.serveur}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{partition_history.serveur}}</td>
                     {% endif %}
                     {% if partition_history.prev_record.stockage != partition_history.stockage %}
-                        <td>valeur après modification : {{partition_history.stockage}}</td>
+                        <td style="text-align:center">valeur après modification : {{partition_history.stockage}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{partition_history.stockage}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{partition_history.stockage}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{partition_history.history_id}}</td>
-                    <td>{{partition_history.history_date}}</td>
-                    <td>{{partition_history.history_user}}</td>
-                    <td>{{partition_history.history_change_reason}}</td>
-                    <td>{{partition_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{partition_history.serveur}}</td>
-                    <td>valeur a la création: {{partition_history.stockage}}</td>
+                    <td style="text-align:center">{{partition_history.history_id}}</td>
+                    <td style="text-align:center">{{partition_history.history_date}}</td>
+                    <td style="text-align:center">{{partition_history.history_user}}</td>
+                    <td style="text-align:center">{{partition_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{partition_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{partition_history.serveur}}</td>
+                    <td style="text-align:center">valeur a la création: {{partition_history.stockage}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -105,7 +105,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Détails des composant de  : {{server.name}}
             </p>
             <div class="table-responsive">

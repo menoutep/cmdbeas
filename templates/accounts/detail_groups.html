@@ -1,0 +1,182 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{group.name}}</h4>
+            <p class="card-description">
+                Detail du group : {{group.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nombre de membre</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr>
+                    <td style="text-align:center"><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ group.name }} </a></td> 
+                    <td style="text-align:center">{{group.user_set.count}}</td>
+                    <td style="text-align:center">{{group.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{group.created|date:"DATETIME_FORMAT"}}</td>
+                    
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les Permissions</h4>
+            <p class="card-description">
+              Liste de toute les permissions
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nom de code</th>
+                    <th>Model</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for permission in permissions %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="" >{{ permission.name }} </a></td>
+                            <td style="text-align:center">{{permission.codename}}</td>
+                            <td style="text-align:center">{{permission.content_type.model}}</td>
+                            <td style="text-align:center">{{permission.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les Utilisateurs</h4>
+            <p class="card-description">
+              Liste de toute les utilsateurs
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prenoms</th>
+                    <th>Email</th>
+                    <th>Nom utilisateur</th>
+                    <th>Contact</th>
+                    <th>Departement</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in group.user_set.all.distinct %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ user.first_name }} </a></td>
+                            <td style="text-align:center">{{ user.last_name }}</td>
+                            <td style="text-align:center">{{ user.email }}</td>
+                            <td style="text-align:center">{{ user.username }}</td>
+                            <td style="text-align:center">{{ user.contact }}</td>
+                            <td style="text-align:center">{{ user.departement }}</td>
+                            <td style="text-align:center">{{ user.last_password_change }}</td>
+                            <td style="text-align:center">{{ user.date_joined }}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Historique </h4>
+            <p class="card-description">
+              Historique des modifications portant sur le group : {{group.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Modifié le</th>
+                    <th>Modifier par</th>
+                    <th>Raison de la modifications</th>
+                    <th>action effectué</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for group_history in group.history.all.distinct %}
+                  {% if group_history.get_history_type_display != "Created" %}
+                  <tr>
+                    <td style="text-align:center">{{group_history.history_id}}</td>
+                    <td style="text-align:center">{{group_history.history_date}}</td>
+                    <td style="text-align:center">{{group_history.history_user}}</td>
+                    <td style="text-align:center">{{group_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{group_history.get_history_type_display}}</td>
+                    {% if group_history.prev_record.name != group_history.name %}
+                        <td style="text-align:center">valeur après modification : {{group_history.name}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{group_history.name}}</td>
+                    {% endif %}
+                    
+
+                  </tr>
+                  {%else%}
+                  <tr>
+                    <td style="text-align:center">{{group_history.history_id}}</td>
+                    <td style="text-align:center">{{group_history.history_date}}</td>
+                    <td style="text-align:center">{{group_history.history_user}}</td>
+                    <td style="text-align:center">{{group_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{group_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{group_history.name}}</td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+ 
+    </div>
+  </div>
+  {% endblock %}

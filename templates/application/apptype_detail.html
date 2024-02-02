@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{apptype.name}}</h4>
@@ -25,11 +25,11 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-apptype' apptype.pk %}" >{{ apptype.name }} </a></td> 
-                    <td>{{apptype.description}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-apptype' apptype.pk %}" >{{ apptype.name }} </a></td> 
+                    <td style="text-align:center">{{apptype.description}}</td>
 
-                    <td>{{apptype.updated}}</td>
-                    <td>{{apptype.created}}</td>
+                    <td style="text-align:center">{{apptype.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{apptype.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -39,7 +39,55 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      {%if apptype.applications.all%}
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{apptype.name}}</h4>
+            <p class="card-description">
+                Detail des  applications du type  : {{apptype.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Replication</th>
+                    <th>Priorité d'exécution</th>
+                    <th>control name</th>
+                    <th>année de deployement</th>
+                    <th>type d'application</th>
+                    <th>Backup strategie</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  {%for application in apptype.applications.all%}
+                  <tr>
+                    <td style="text-align:center"><a href= "{% url 'base:update-application' application.pk %}"> {{ application.name }} </a></td> 
+                    <td style="text-align:center">{{application.description}}</td>
+                    <td style="text-align:center">{{application.replication}}</td>
+                    <td style="text-align:center">{{application.priority}}</td>
+                    <td style="text-align:center">{{application.control_name}}</td>
+                    <td style="text-align:center">{{application.deployement_year}}</td>
+                    <td style="text-align:center"><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}} </a></td>
+                    <td style="text-align:center"><a href= "">{{application.backup_strategie}}</a></td>
+                    <td style="text-align:center">{{application.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{application.created|date:"DATETIME_FORMAT"}}</td>                
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -62,35 +110,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for apptype_history in apptype.history.all %}
+                  {% for apptype_history in apptype.history.all.distinct %}
                   {% if apptype_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{apptype_history.history_id}}</td>
-                    <td>{{apptype_history.history_date}}</td>
-                    <td>{{apptype_history.history_user}}</td>
-                    <td>{{apptype_history.history_change_reason}}</td>
-                    <td>{{apptype_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{apptype_history.history_id}}</td>
+                    <td style="text-align:center">{{apptype_history.history_date}}</td>
+                    <td style="text-align:center">{{apptype_history.history_user}}</td>
+                    <td style="text-align:center">{{apptype_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{apptype_history.get_history_type_display}}</td>
                     {% if apptype_history.prev_record.name != apptype_history.name %}
-                        <td>valeur après modification : {{apptype_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{apptype_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{apptype_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{apptype_history.name}}</td>
                     {% endif %}
                     {% if apptype_history.prev_record.description != apptype_history.description %}
-                        <td>valeur après modification : {{apptype_history.description}}</td>
+                        <td style="text-align:center">valeur après modification : {{apptype_history.description}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{apptype_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{apptype_history.description}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{apptype_history.history_id}}</td>
-                    <td>{{apptype_history.history_date}}</td>
-                    <td>{{apptype_history.history_user}}</td>
-                    <td>{{apptype_history.history_change_reason}}</td>
-                    <td>{{apptype_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{apptype_history.name}}</td>
-                    <td>valeur a la création: {{apptype_history.description}}</td>
+                    <td style="text-align:center">{{apptype_history.history_id}}</td>
+                    <td style="text-align:center">{{apptype_history.history_date}}</td>
+                    <td style="text-align:center">{{apptype_history.history_user}}</td>
+                    <td style="text-align:center">{{apptype_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{apptype_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{apptype_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{apptype_history.description}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -100,12 +148,12 @@
           </div>
         </div>
       </div> 
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card  ">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
-              Détails des composant de  : {{server.name}}
+            <h4 class="card-title">Structure arborescente de l'objet : {{app_type.name}}</h4>
+            <p class="card-description">
+              Détails des composant de  : {{app_type.name}}
             </p>
             <div class="table-responsive">
               <style>

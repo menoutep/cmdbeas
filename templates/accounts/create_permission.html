@@ -1,0 +1,49 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      {{ form.media.css }}
+      <div class="col-md-9 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Nouvel permission</h4>
+            <p class="card-description">
+              Veuillez saisir les informations relatives à la permission
+            </p>
+            <form  method="post" class="forms-sample">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.name.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.name }}
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="exampleInputMobile" class="col-sm-3 col-form-label">{{ form.codename.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.codename}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="exampleInputMobile" class="col-sm-3 col-form-label">{{ form.content_type.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.content_type}}
+                </div>
+              </div>
+
+              <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  {{ form.media.js }}
+  {% endblock %}

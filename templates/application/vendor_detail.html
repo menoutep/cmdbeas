@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{vendor.name}}</h4>
@@ -25,11 +25,11 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-vendor' vendor.pk %}" >{{ vendor.name }} </a></td> 
-                    <td>{{vendor.description}}</td>
+                    <td style="text-align:center"><a href="{% url 'base:update-vendor' vendor.pk %}" >{{ vendor.name }} </a></td> 
+                    <td style="text-align:center">{{vendor.description}}</td>
 
-                    <td>{{vendor.updated}}</td>
-                    <td>{{vendor.created}}</td>
+                    <td style="text-align:center">{{vendor.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{vendor.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -40,11 +40,11 @@
         </div>
       </div>
       {%if modules %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Détails des modules applicatif fournie par {{vendor.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
                 Voir les modules applicatifs relié au  {{module.name}}
             </p>
             <div class="table-responsive">
@@ -65,13 +65,13 @@
                 <tbody>
                   {% for module in modules %}
                   <tr>
-                    <td><a href= ""> {{ module.name }} </a></td> 
-                    <td> {{ module.description }} </td>   
-                    <td> {{ module.application}} </td> 
-                    <td> {{ module.vendor}} </td>   
-                    <td> {{ partition.departement }} </td>                      
-                    <td> {{partition.updated}} </td>
-                    <td> {{partition.created}} </td>                
+                    <td style="text-align:center"><a href= ""> {{ module.name }} </a></td> 
+                    <td style="text-align:center"> {{ module.description }} </td>   
+                    <td style="text-align:center"> {{ module.application}} </td> 
+                    <td style="text-align:center"> {{ module.vendor}} </td>   
+                    <td style="text-align:center"> {{ partition.departement }} </td>                      
+                    <td style="text-align:center"> {{partition.updated|date:"DATETIME_FORMAT"}} </td>
+                    <td style="text-align:center"> {{partition.created|date:"DATETIME_FORMAT"}} </td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -81,11 +81,11 @@
         </div>
       </div>
       {% endif  %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Détails des applications liées à la base de données</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
                 Liste des applications connecté à  {{database.name}}
             </p>
             <div class="table-responsive">
@@ -108,16 +108,16 @@
                 <tbody>
                   {% for application in applications %}
                   <tr>
-                    <td><a href= "" > {{ application.name }} </a></td> 
-                    <td>{{application.description}}</td>
-                    <td>{{application.replication}}</td>
-                    <td>{{application.priority}}</td>
-                    <td>{{application.control_name}}</td>
-                    <td>{{application.deployement_year}}</td>
-                    <td>{{application.app_type}}</td>
-                    <td>{{application.backup_strategie}}</td>
-                    <td>{{cluster.updated}}</td>
-                    <td>{{cluster.created}}</td>                
+                    <td style="text-align:center"><a href= "" > {{ application.name }} </a></td> 
+                    <td style="text-align:center">{{application.description}}</td>
+                    <td style="text-align:center">{{application.replication}}</td>
+                    <td style="text-align:center">{{application.priority}}</td>
+                    <td style="text-align:center">{{application.control_name}}</td>
+                    <td style="text-align:center">{{application.deployement_year}}</td>
+                    <td style="text-align:center">{{application.app_type}}</td>
+                    <td style="text-align:center">{{application.backup_strategie}}</td>
+                    <td style="text-align:center">{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{cluster.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -127,7 +127,7 @@
         </div>
       </div>
       {% endif %}
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -150,35 +150,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for vendor_history in vendor.history.all %}
+                  {% for vendor_history in vendor.history.all.distinct %}
                   {% if vendor_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{vendor_history.history_id}}</td>
-                    <td>{{vendor_history.history_date}}</td>
-                    <td>{{vendor_history.history_user}}</td>
-                    <td>{{vendor_history.history_change_reason}}</td>
-                    <td>{{vendor_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{vendor_history.history_id}}</td>
+                    <td style="text-align:center">{{vendor_history.history_date}}</td>
+                    <td style="text-align:center">{{vendor_history.history_user}}</td>
+                    <td style="text-align:center">{{vendor_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{vendor_history.get_history_type_display}}</td>
                     {% if vendor_history.prev_record.name != vendor_history.name %}
-                        <td>valeur après modification : {{vendor_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{vendor_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{vendor_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{vendor_history.name}}</td>
                     {% endif %}
                     {% if vendor_history.prev_record.description != vendor_history.description %}
-                        <td>valeur après modification : {{vendor_history.description}}</td>
+                        <td style="text-align:center">valeur après modification : {{vendor_history.description}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{vendor_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{vendor_history.description}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{vendor_history.history_id}}</td>
-                    <td>{{vendor_history.history_date}}</td>
-                    <td>{{vendor_history.history_user}}</td>
-                    <td>{{vendor_history.history_change_reason}}</td>
-                    <td>{{vendor_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{vendor_history.name}}</td>
-                    <td>valeur a la création: {{vendor_history.description}}</td>
+                    <td style="text-align:center">{{vendor_history.history_id}}</td>
+                    <td style="text-align:center">{{vendor_history.history_date}}</td>
+                    <td style="text-align:center">{{vendor_history.history_user}}</td>
+                    <td style="text-align:center">{{vendor_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{vendor_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{vendor_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{vendor_history.description}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -192,7 +192,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Détails des composant de  : {{server.name}}
             </p>
             <div class="table-responsive">

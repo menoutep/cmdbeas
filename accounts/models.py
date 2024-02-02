@@ -10,6 +10,8 @@ class User(AbstractUser,GuardianUserMixin):
     email = models.EmailField(unique=True, blank=True)
     departement =  models.ForeignKey(Departement,on_delete=models.CASCADE,default=1)
     last_password_change = models.DateField(null=True,blank=True)
+    updated = models.DateTimeField(null=True,blank=True)
+
     reset_by_admin = models.BooleanField(default=False)
     history = HistoricalRecords() 
     USERNAME_FIELD = "email"

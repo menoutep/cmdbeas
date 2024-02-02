@@ -1,0 +1,220 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-11 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                
+                <h4 class="card-title"> Les Utilisateurs</h4>
+                <p class="card-description">
+                  Liste de toute les utilsateurs
+                </p>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nom</th>
+                        <th>Prenoms</th>
+                        <th>Email</th>
+                        <th>Nom utilisateur</th>
+                        <th>Contact</th>
+                        <th>Departement</th>
+                        <th>Statut</th>
+                        <th>modifié le</th>
+                        <th>créer le</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td style="text-align:center"><a href="{% url 'accounts:update-user' user.pk %}" >{{ user.first_name }} </a></td>
+                                <td style="text-align:center">{{ user.last_name }}</td>
+                                <td style="text-align:center">{{ user.email }}</td>
+                                <td style="text-align:center">{{ user.username }}</td>
+                                <td style="text-align:center">{{ user.contact }}</td>
+                                <td style="text-align:center">{{ user.departement }}</td>
+                                <td style="text-align:center">{{ user.is_active }}</td>
+                                <td style="text-align:center">{{ user.updated|date:"DATETIME_FORMAT" }}</td>
+                                <td style="text-align:center">{{ user.date_joined }}</td>                    
+                            </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les Permissions</h4>
+            <p class="card-description">
+              Liste de toute les permissions
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nom de code</th>
+                    <th>Model</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for permission in user.user_permissions.all.distinct %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="" >{{ permission.name }} </a></td>
+                            <td style="text-align:center">{{permission.codename}}</td>
+                            <td style="text-align:center">{{permission.content_type.model}}</td>
+                            <td style="text-align:center">{{permission.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les groupes</h4>
+            <p class="card-description">
+              Liste de tous les groupes de l'utilisateur
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nombre de membre</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for group in user.groups.all.distinct %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="{% url 'accounts:detail-groups' group.pk %}" >{{ group.name }} </a></td>
+                            <td style="text-align:center"> {{group.user_set.count}} </td>
+
+                            <td style="text-align:center">{{group.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{group.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Historique </h4>
+            <p class="card-description">
+              Historique des modifications portant sur le group : {{group.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Modifié le</th>
+                    <th>Modifier par</th>
+                    <th>Raison de la modifications</th>
+                    <th>action effectué</th>
+                    <th>Nom</th>
+                    <th>Prenoms</th>
+                    <th>Email</th>
+                    <th>Nom utilisateur</th>
+                    <th>Contact</th>
+                    <th>Departement</th>
+                    <th>Statut</th>     
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user_history in user.history.all.distinct %}
+                  {% if user_history.get_history_type_display != "Created" %}
+                  <tr>
+                    <td style="text-align:center">{{user_history.history_id}}</td>
+                    <td style="text-align:center">{{user_history.history_date}}</td>
+                    <td style="text-align:center">{{user_history.history_user}}</td>
+                    <td style="text-align:center">{{user_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{user_history.get_history_type_display}}</td>
+                    {% if user_history.prev_record.first_name != user_history.first_name %}
+                    <td style="text-align:center">valeur après modification : {{user_history.first_name}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.first_name}}</td>
+                    {% endif %}
+                    {% if user_history.prev_record.last_name != user_history.last_name %}
+                    <td style="text-align:center">valeur après modification : {{user_history.last_name}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.last_name}}</td>
+                    {% endif %}
+                    {% if user_history.prev_record.email != user_history.email %}
+                    <td style="text-align:center">valeur après modification : {{user_history.email}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.email}}</td>
+                    {% endif %}
+                    {% if user_history.prev_record.username != user_history.username %}
+                    <td style="text-align:center">valeur après modification : {{user_history.username}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.username}}</td>
+                    {% endif %}
+                    {% if user_history.prev_record.contact != user_history.contact %}
+                    <td style="text-align:center">valeur après modification : {{user_history.contact}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.contact}}</td>
+                    {% endif %}
+                    {% if user_history.prev_record.departement != user_history.departement %}
+                    <td style="text-align:center">valeur après modification : {{user_history.departement}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.departement}}</td>
+                    {% endif %} 
+                    {% if user_history.prev_record.is_active != user_history.is_active %}
+                    <td style="text-align:center">valeur après modification : {{user_history.is_active}}</td>
+                    {% else %}
+                    <td style="text-align:center"> valeur inchangé :  {{user_history.is_active}}</td>
+                    {% endif %}      
+                  </tr>
+                  {%else%}
+                  <tr>
+                    <td style="text-align:center">{{user_history.history_id}}</td>
+                    <td style="text-align:center">{{user_history.history_date}}</td>
+                    <td style="text-align:center">{{user_history.history_user}}</td>
+                    <td style="text-align:center">{{user_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{user_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.first_name}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.last_name}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.email}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.username}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.contact}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.departement}}</td>
+                    <td style="text-align:center"> valeur a la création : {{user_history.is_active}}</td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+ 
+    </div>
+  </div>
+  {% endblock %}

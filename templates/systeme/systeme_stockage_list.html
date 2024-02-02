@@ -1,46 +1,10 @@
 {% extends 'systeme/index.html' %}
 {% load static %}
     <!-- partial:partials/_navbar.html -->
-    {%block categories%}
-    <li class="nav-item dropdown d-none d-lg-block">
-      <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#"
-        data-bs-toggle="dropdown" aria-expanded="false"> Filtre de recherche </a>
-      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
-        aria-labelledby="messageDropdown">
-        <a class="dropdown-item py-3">
-          <p class="mb-0 font-weight-medium float-left">Choisissez un filtre de recherche</p>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item preview-item" href="{% url 'base:server-list' %}?parametre=physique">
-          <div class="preview-item-content flex-grow py-2">
-            <p class="preview-subject ellipsis font-weight-medium text-dark">Serveurs physique</p>
-            <p class="fw-light small-text mb-0">Afficher seulement les serveurs physiques</p>
-          </div>
-        </a>
-        <a class="dropdown-item preview-item" href="{% url 'base:server-list' %}?parametre=virtuel">
-          <div class="preview-item-content flex-grow py-2">
-            <p class="preview-subject ellipsis font-weight-medium text-dark">Serveurs virtuels</p>
-            <p class="fw-light small-text mb-0">Afficher seulement les serveurs virtuels</p>
-          </div>
-        </a>
-        <a class="dropdown-item preview-item">
-          <div class="preview-item-content flex-grow py-2">
-            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
-            <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p>
-          </div>
-        </a>
-        <a class="dropdown-item preview-item">
-          <div class="preview-item-content flex-grow py-2">
-            <p class="preview-subject ellipsis font-weight-medium text-dark">React Bundle</p>
-            <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p>
-          </div>
-        </a>
-      </div>
-    </li>
-    {%endblock%}
+
     {%block form-search%}
     <li class="nav-item">
-      <form method="GET" class="search-form" action="{% url 'base:server-list' %}">
+      <form method="GET" class="search-form" action="{% url 'base:systeme_stockage-list' %}">
         <i class="icon-search"></i>
         <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
       </form>
@@ -50,12 +14,12 @@
 
     <div class="content-wrapper">
       <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
+        <div class="col-lg-11 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">{{systeme_stockage.name}}</h4>
-                <p class="card-datacenter">
-                    Detail de la systeme de stockage: {{systeme_stockage.name}}
+                <h4 class="card-title">Liste de tous les systemes de stockages</h4>
+                <p class="card-description">
+                    Voir la liste de tous nos systemes de stockages 
                 </p>
                 <div class="table-responsive">
                   <table class="table">
@@ -72,11 +36,11 @@
                     <tbody>
                         {% for systeme_stockage in systeme_stockages %}
                       <tr>
-                        <td><a href="{% url 'base:detail-systeme_stockage' systeme_stockage.pk %}" >{{ systeme_stockage.name }} </a></td> 
-                        <td>{{systeme_stockage.ram}}</td>
-                        <td>{{systeme_stockage.rom}}</td>
-                        <td>{{systeme_stockage.updated}}</td>
-                        <td>{{systeme_stockage.created}}</td>
+                        <td style="text-align:center"><a href="{% url 'base:detail-systeme_stockage' systeme_stockage.pk %}" >{{ systeme_stockage.name }} </a></td> 
+                        <td style="text-align:center">{{systeme_stockage.ram}}</td>
+                        <td style="text-align:center">{{systeme_stockage.rom}}</td>
+                        <td style="text-align:center">{{systeme_stockage.updated|date:"DATETIME_FORMAT"}}</td>
+                        <td style="text-align:center">{{systeme_stockage.created|date:"DATETIME_FORMAT"}}</td>
                         
                       </tr>
                       {% endfor %}

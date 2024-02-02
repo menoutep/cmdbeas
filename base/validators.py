@@ -12,6 +12,8 @@ import magic
 
 
 
+
+
 def validate_pdf_magic(value):
     # Valider l'extension du fichier à l'aide de FileExtensionValidator
     validateur_extension = FileExtensionValidator(allowed_extensions=['pdf'])
@@ -21,21 +23,25 @@ def validate_pdf_magic(value):
         raise ValidationError("Extension de fichier non autorisée. Seuls les fichiers PDF sont autorisés.") from e
 
     # Valider le type MIME réel du fichier à l'aide de python-magic
+
     mime = magic.Magic()
     type_mimetype = mime.from_buffer(value.read(1024))
-
-    if not type_mimetype.startswith('application/pdf'):
+    print(f"type mime : {type_mimetype}")
+    if  type_mimetype.startswith('application/pdf') or type_mimetype.startswith('PDF document'):
+        print("ok")  
+    else:
         raise ValidationError("Type de fichier non autorisé. Seuls les fichiers PDF sont autorisés.")
     
     # Vérifier le contenu spécifique d'un fichier PDF
     value.seek(0)  # Revenir au début du fichier
     magic_header = value.read(4)  # Lire les 4 premiers octets
-
+    print(f"magic header : {magic_header}")
     if magic_header != b'%PDF':
         raise ValidationError("Le contenu du fichier ne correspond pas à un fichier PDF.")
     
     try:
-        pdf_reader = PyPDF2.PdfReader(value)
+        print("ok2")
+        pdf_reader = PyPDF2.PdfFileReader(value)
         # = pdf_reader.metadata
         #print(meta.author)
         num_pages = len(pdf_reader.pages)

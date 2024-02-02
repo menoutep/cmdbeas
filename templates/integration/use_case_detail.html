@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             
@@ -29,12 +29,12 @@
                 
                   
                         <tr>
-                            <td><a href="{% url 'base:update-use_case' use_case.pk %}" >{{ use_case.name }} </a></td> 
-                            <td><a href="{% url 'base:detail-sub_process' use_case.sub_process.pk %}" >{{use_case.sub_process.name}}</a></td>
+                            <td style="text-align:center"><a href="{% url 'base:update-use_case' use_case.pk %}" >{{ use_case.name }} </a></td> 
+                            <td style="text-align:center"><a href="{% url 'base:detail-sub_process' use_case.sub_process.pk %}" >{{use_case.sub_process.name}}</a></td>
 
-                            <td>{{use_case.description}}</td>
-                            <td>{{use_case.updated}}</td>
-                            <td>{{use_case.created}}</td>                    
+                            <td style="text-align:center">{{use_case.description}}</td>
+                            <td style="text-align:center">{{use_case.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{use_case.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
@@ -68,28 +68,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for use_case_history in use_case.history.all %}
+                  {% for use_case_history in use_case.history.all.distinct %}
                   {% if use_case_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{use_case_history.history_id}}</td>
-                    <td>{{use_case_history.history_date}}</td>
-                    <td>{{use_case_history.history_user}}</td>
-                    <td>{{use_case_history.history_change_reason}}</td>
-                    <td>{{use_case_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{use_case_history.history_id}}</td>
+                    <td style="text-align:center">{{use_case_history.history_date}}</td>
+                    <td style="text-align:center">{{use_case_history.history_user}}</td>
+                    <td style="text-align:center">{{use_case_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{use_case_history.get_history_type_display}}</td>
                     {% if use_case_history.prev_record.name != use_case_history.name %}
-                        <td>valeur après modification : {{use_case_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{use_case_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{use_case_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{use_case_history.name}}</td>
                     {% endif %}
                     {% if use_case_history.prev_record.description != use_case_history.description %}
-                        <td>valeur après modification : {{use_case_history.description}}</td>
+                        <td style="text-align:center">valeur après modification : {{use_case_history.description}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{use_case_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{use_case_history.description}}</td>
                     {% endif %}
                     {% if use_case_history.prev_record.sub_process != use_case_history.sub_process %}
-                    <td>valeur après modification : {{use_case_history.sub_process}}</td>
+                    <td style="text-align:center">valeur après modification : {{use_case_history.sub_process}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{use_case_history.sub_process}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{use_case_history.sub_process}}</td>
                     {% endif %}
 
                 
@@ -97,14 +97,14 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{use_case_history.history_id}}</td>
-                    <td>{{use_case_history.history_date}}</td>
-                    <td>{{use_case_history.history_user}}</td>
-                    <td>{{use_case_history.history_change_reason}}</td>
-                    <td>{{use_case_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{use_case_history.name}}</td>
-                    <td>valeur a la création: {{use_case_history.description}}</td>
-                    <td>valeur a la création: {{use_case_history.sub_process}}</td>
+                    <td style="text-align:center">{{use_case_history.history_id}}</td>
+                    <td style="text-align:center">{{use_case_history.history_date}}</td>
+                    <td style="text-align:center">{{use_case_history.history_user}}</td>
+                    <td style="text-align:center">{{use_case_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{use_case_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{use_case_history.name}}</td>
+                    <td style="text-align:center">valeur a la création: {{use_case_history.description}}</td>
+                    <td style="text-align:center">valeur a la création: {{use_case_history.sub_process}}</td>
 
                   </tr>
                   {% endif %}

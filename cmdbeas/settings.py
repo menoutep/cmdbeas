@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-afv^$)pcd=u7m(in5$z4mp0484y*#5%qj@dqm&*%mo-7x-)m1*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'axes',
     'simple_history',
     'base',
-    
+    'easy_pdf',
     'rest_framework',
     'accounts',
     'guardian',
@@ -230,3 +230,4 @@ CACHES = {
 }
 # Tell select2 which cache configuration to use:
 SELECT2_CACHE_BACKEND = "select2"
+X_FRAME_OPTIONS = 'SAMEORIGIN'

@@ -1,0 +1,57 @@
+{% extends 'accounts/index.html' %}
+{% load static %}
+
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'accounts:list-permissions' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Les Permissions</h4>
+            <p class="card-description">
+              Liste de tous les Racks
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Nom de code</th>
+                    <th>Model</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for permission in permissions %}
+                  
+                        <tr>
+                            <td style="text-align:center"><a href="" >{{ permission.name }} </a></td>
+                            <td style="text-align:center">{{permission.codename}}</td>
+                            <td style="text-align:center">{{permission.content_type.model}}</td>
+                            <td style="text-align:center">{{permission.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td style="text-align:center">{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

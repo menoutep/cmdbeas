@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
 
@@ -52,21 +52,21 @@
                   
                   
                         <tr>
-                          <td><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
-                          <td>{{database_server.ram}}</td>
-                          <td>{{database_server.rom}}</td> 
+                          <td style="text-align:center"><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
+                          <td style="text-align:center">{{database_server.ram}}</td>
+                          <td style="text-align:center">{{database_server.rom}}</td> 
                           {%if database_server.server%}
-                          <td><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
+                          <td style="text-align:center"><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
                           {%else%} 
-                          <td>pas hebergé sur serveur</td> 
+                          <td style="text-align:center">pas hebergé sur serveur</td> 
                           {%endif%}
                           {%if database_server.cluster%}
-                          <td><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
+                          <td style="text-align:center"><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
                             {%else%} 
-                          <td>pas hebergé sur cluster</td> 
+                          <td style="text-align:center">pas hebergé sur cluster</td> 
                           {%endif%}
-                          <td>{{database_server.updated}}</td>
-                          <td>{{database_server.created}}</td>                 
+                          <td style="text-align:center">{{database_server.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{database_server.created|date:"DATETIME_FORMAT"}}</td>                 
                         </tr>
                    
                  
@@ -77,12 +77,12 @@
         </div>
       </div>
       
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Détails des bases de données hebergé sur le serveur de base de donnée</h4>
-            <p class="card-datacenter">
-                Voir les partitions relié au  {{database_server.name}}
+            <p class="card-description">
+                Voir les bases de données relié au  {{database_server.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -90,7 +90,7 @@
                   <tr>
                     <th>Nom</th>
                    
-                    <th>module applicatif</th>
+                    <th>Nombre de module applicatif</th>
                     <th>modifié le</th>
                     <th>créer le</th>
                     
@@ -99,14 +99,14 @@
                 <tbody>
                   {% for database in databases %}
                   <tr>
-                    <td><a href= "{% url 'base:detail-database' database.pk %}" > {{ database.name }} </a></td> 
-                    <td> {%for module in database.module_applicatifs.all%} 
-                            {{module.name}} , 
-                          {%endfor%}
+                    <td style="text-align:center"><a href= "{% url 'base:detail-database' database.pk %}" > {{ database.name }} </a></td> 
+                    <td style="text-align:center"> 
+                            {{database.module_applicatifs.all.distinct.count}} 
+                          
                     </td>   
                                    
-                    <td>{{database.updated}}</td>
-                    <td>{{database.created}}</td>                
+                    <td style="text-align:center">{{database.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{database.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -117,11 +117,11 @@
       </div>
       
     
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Module applicatif dépendant du serveur</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
                 Liste des modules applicatifs utilisant une base de donnée hébergé sur {{database_server.name}}
             </p>
             <div class="table-responsive">
@@ -141,13 +141,13 @@
                 <tbody>
                   {% for module in modules %}
                   <tr>
-                    <td><a href= "" > {{ module.name }} </a></td> 
-                    <td><a href= "" > {{ module.server }} </a></td> 
-                    <td><a href= "" > {{ module.description}} </a></td>
-                    <td><a href= "" > {{ module.vendor }} </a></td>
-                    <td><a href= "" > {{ module.departement }} </a></td>
-                    <td>{{module.updated}}</td>
-                    <td>{{module.created}}</td>                
+                    <td style="text-align:center"><a href= "" > {{ module.name }} </a></td> 
+                    <td style="text-align:center"><a href= "" > {{ module.server }} </a></td> 
+                    <td style="text-align:center"><a href= "" > {{ module.description}} </a></td>
+                    <td style="text-align:center"><a href= "" > {{ module.vendor }} </a></td>
+                    <td style="text-align:center"><a href= "" > {{ module.departement }} </a></td>
+                    <td style="text-align:center">{{module.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{module.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -157,11 +157,11 @@
         </div>
       </div>
       
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Historique des modifications portant sur le server de base de donnée : {{database_server.name}}
             </p>
             <div class="table-responsive">
@@ -182,39 +182,39 @@
                   </tr>
                 </thead>
                 <tbody>
-                {% for database_server_history in database_server.history.all %}
+                {% for database_server_history in database_server.history.all.distinct %}
                   {% if database_server_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{database_server_history.history_id}}</td>
-                    <td>{{database_server_history.history_date}}</td>
-                    <td>{{database_server_history.history_user}}</td>
-                    <td>{{database_server_history.history_change_reason}}</td>
-                    <td>{{database_server_history.get_history_type_display}}</td>
+                    <td style="text-align:center">{{database_server_history.history_id}}</td>
+                    <td style="text-align:center">{{database_server_history.history_date}}</td>
+                    <td style="text-align:center">{{database_server_history.history_user}}</td>
+                    <td style="text-align:center">{{database_server_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{database_server_history.get_history_type_display}}</td>
                     {% if database_server_history.prev_record.name != database_server_history.name %}
-                        <td>valeur après modification : {{database_server_history.name}}</td>
+                        <td style="text-align:center">valeur après modification : {{database_server_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{database_server_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{database_server_history.name}}</td>
                     {% endif %}
                 
                     {% if database_server_history.prev_record.ram != database_server_history.ram %}
-                        <td>valeur après modification : {{database_server_history.ram}}</td>
+                        <td style="text-align:center">valeur après modification : {{database_server_history.ram}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{database_server_history.ram}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{database_server_history.ram}}</td>
                     {% endif %}
                     {% if database_server_history.prev_record.rom != database_server_history.rom %}
-                        <td>valeur après modification : {{database_server_history.rom}}</td>
+                        <td style="text-align:center">valeur après modification : {{database_server_history.rom}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{database_server_history.rom}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{database_server_history.rom}}</td>
                     {% endif %}
                     {% if database_server_history.server != database_server_history.server %}
-                    <td>valeur après modification : {{database_server_history.server}}</td>
+                    <td style="text-align:center">valeur après modification : {{database_server_history.server}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{database_server_history.server}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{database_server_history.server}}</td>
                     {% endif %}
                     {% if database_server_history.prev_record.cluster != database_server_history.cluster %}
-                    <td>valeur après modification : {{database_server_history.cluster}}</td>
+                    <td style="text-align:center">valeur après modification : {{database_server_history.cluster}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{database_server_history.cluster}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{database_server_history.cluster}}</td>
                     {% endif %}
                     
              
@@ -222,17 +222,17 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{database_server_history.history_id}}</td>
-                    <td>{{database_server_history.history_date}}</td>
-                    <td>{{database_server_history.history_user}}</td>
-                    <td>{{database_server_history.history_change_reason}}</td>
-                    <td>{{database_server_history.get_history_type_display}}</td>
-                    <td>Valeur à la création : {{ database_server.name }}</td> 
+                    <td style="text-align:center">{{database_server_history.history_id}}</td>
+                    <td style="text-align:center">{{database_server_history.history_date}}</td>
+                    <td style="text-align:center">{{database_server_history.history_user}}</td>
+                    <td style="text-align:center">{{database_server_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{database_server_history.get_history_type_display}}</td>
+                    <td style="text-align:center">Valeur à la création : {{ database_server.name }}</td> 
   
-                    <td>Valeur à la création : {{database_server.ram}}</td>
-                    <td>Valeur à la création : {{database_server.rom}}</td>
-                    <td>Valeur à la création : {{database_server.server}}</td>
-                    <td>Valeur à la création : {{database_server.cluster}}</td>
+                    <td style="text-align:center">Valeur à la création : {{database_server.ram}}</td>
+                    <td style="text-align:center">Valeur à la création : {{database_server.rom}}</td>
+                    <td style="text-align:center">Valeur à la création : {{database_server.server}}</td>
+                    <td style="text-align:center">Valeur à la création : {{database_server.cluster}}</td>
                  
                    
                   </tr>
@@ -245,11 +245,11 @@
         </div>
       </div> 
 
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
+            <p class="card-description">
               Détails des composant de  : {{server.name}}
             </p>
             <div class="table-responsive">

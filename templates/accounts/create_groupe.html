@@ -8,7 +8,7 @@
       <div class="col-md-9 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Nouveau groupes</h4>
+            <h4 class="card-title">{% if form.initial %}Modifier{% else %}Ajouter{% endif %} un nouveau groupes</h4>
             <p class="card-description">
               Veuillez saisir les informations relatives au groupe
             </p>
@@ -27,7 +27,14 @@
                     {{ form.permissions}}
                 </div>
               </div>
-
+              {% if form.initial %}
+              <div class="form-group row">
+                <label for="exampleInputUsername2" class="col-sm-3 col-form-label">{{ form.historical_change_reason.label }}</label>
+                <div class="col-sm-9">
+                    {{ form.historical_change_reason }}
+                </div>
+              </div>
+              {% endif %}
               <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
               <button class="btn btn-light">Cancel</button>
             </form>

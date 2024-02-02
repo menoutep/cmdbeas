@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{module_applicatif.name}}</h4>
@@ -29,13 +29,13 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href= "{% url 'base:update-module_applicatif' module_applicatif.pk %}" > {{ module.name }} </a></td> 
-                    <td> {{ module.description }} </td>   
-                    <td> {{ module.application}} </td> 
-                    <td> {{ module.vendor}} </td>   
-                    <td> {{ partition.departement }} </td>                      
-                    <td>{{partition.updated}}</td>
-                    <td>{{partition.created}}</td>                
+                    <td style="text-align:center"><a href= "{% url 'base:update-module_applicatif' module_applicatif.pk %}" > {{ module_applicatif.name }} </a></td> 
+                    <td style="text-align:center"> {{ module_applicatif.description }} </td>   
+                    <td style="text-align:center"><a href= "{% url 'base:detail-application' module_applicatif.application.pk %}"> {{ module_applicatif.application}} </a> </td> 
+                    <td style="text-align:center"><a href= "{% url 'base:detail-vendor' module_applicatif.vendor.pk %}"> {{ module_applicatif.vendor}} </td>   
+                    <td style="text-align:center"> <a href= "{% url 'base:detail-departement' module_applicatif.departement.pk %}">{{ module_applicatif.departement }} </td>                      
+                    <td style="text-align:center">{{module_applicatif.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td style="text-align:center">{{module_applicatif.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   
                 </tbody>
@@ -44,49 +44,8 @@
           </div>
         </div>
       </div>
-      {%if modules %}
-      <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Détails des modules applicatif fournie par {{application.name}}</h4>
-            <p class="card-datacenter">
-                Voir les modules applicatifs relié au  {{application.name}}
-            </p>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Application</th>
-                    <th>Vendor</th>
-                    <th>Departement</th>
-                    <th>modifié le</th>
-                    <th>créer le</th>
-                       
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <tr>
-                    <td><a href= ""> {{ module_applicatif.name }} </a></td> 
-                    <td> {{ module_applicatif.description }} </td>   
-                    <td> {{ module_applicatif.application}} </td> 
-                    <td> {{ module_applicatif.vendor}} </td>   
-                    <td> {{ module_applicatif.departement }} </td>                      
-                    <td> {{module_applicatif.updated}} </td>
-                    <td> {{module_applicatif.created}} </td>                
-                  </tr>
-                  
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endif  %}
-      <div class="col-lg-12 grid-margin stretch-card">
+
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <div class="row">
@@ -110,15 +69,15 @@
                 <tbody>
                   {% for database in databases %}               
                         <tr>
-                          <td><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
-                          <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
-                            <td>
-                              {%for module in database.module_applicatifs.all%}
+                          <td style="text-align:center"><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
+                          <td style="text-align:center"><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
+                            <td style="text-align:center">
+                              {%for module in database.module_applicatifs.all.distinct%}
                                 {{module.name}},
                               {%endfor%}
                             </td>
-                          <td>{{database.updated}}</td>
-                          <td>{{database.created}}</td>                 
+                          <td style="text-align:center">{{database.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td style="text-align:center">{{database.created|date:"DATETIME_FORMAT"}}</td>                 
                         </tr>
                    
                   {% endfor %}
@@ -128,12 +87,12 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 grid-margin stretch-card">
+      <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le application : {{application.name}}
+              Historique des modifications portant sur le module_applicatif : {{module_applicatif.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -146,83 +105,65 @@
                     <th>action effectué</th>
                     <th>Nom</th>
                     <th>Description</th>
-                    <th>Replication</th>
-                    <th>Priorité d'exécution</th>
-                    <th>control name</th>
-                    <th>année de deployement</th>
-                    <th>type d'application</th>
-                    <th>Backup strategie</th>
+                    <th>Application</th>
+                    <th>Vendor</th>
+                    <th>Departement</th>
+           
                     
                     
                   </tr>
                 </thead>
                 <tbody>
-                  {% for application_history in application.history.all %}
-                  {% if application_history.get_history_type_display != "Created" %}
+                  {% for module_applicatif_history in module_applicatif.history.all.distinct %}
+                  {% if module_applicatif_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{application_history.history_id}}</td>
-                    <td>{{application_history.history_date}}</td>
-                    <td>{{application_history.history_user}}</td>
-                    <td>{{application_history.history_change_reason}}</td>
-                    <td>{{application_history.get_history_type_display}}</td>
-                    {% if application_history.prev_record.name != application_history.name %}
-                        <td>valeur après modification : {{application_history.name}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_id}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_date}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_user}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.get_history_type_display}}</td>
+                    {% if module_applicatif_history.prev_record.name != module_applicatif_history.name %}
+                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.name}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{application_history.name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.name}}</td>
                     {% endif %}
-                    {% if application_history.prev_record.description != application_history.description %}
-                        <td>valeur après modification : {{application_history.description}}</td>
+                    {% if module_applicatif_history.prev_record.description != module_applicatif_history.description %}
+                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.description}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{application_history.description}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.description}}</td>
                     {% endif %}
-                    {% if application_history.prev_record.replication != application_history.replication %}
-                        <td>valeur après modification : {{application_history.replication}}</td>
+                    {% if module_applicatif_history.prev_record.application != module_applicatif_history.application %}
+                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.application}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{application_history.replication}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.application}}</td>
                     {% endif %}
-                    {% if application_history.prev_record.priority != application_history.priority %}
-                        <td>valeur après modification : {{application_history.priority}}</td>
+                    {% if module_applicatif_history.prev_record.vendor != module_applicatif_history.vendor %}
+                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.vendor}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{application_history.priority}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.vendor}}</td>
                     {% endif %}
-                    {% if application_history.prev_record.control_name != application_history.control_name %}
-                        <td>valeur après modification : {{application_history.control_name}}</td>
+                    {% if module_applicatif_history.prev_record.departement != module_applicatif_history.departement %}
+                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.departement}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{application_history.control_name}}</td>
+                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.departement}}</td>
                     {% endif %}
-                    {% if application_history.prev_record.deployement_year != application_history.deployement_year %}
-                        <td>valeur après modification : {{application_history.deployement_year}}</td>
-                    {% else %}
-                    <td> valeur inchangé :  {{application_history.deployement_year}}</td>
-                    {% endif %}
-                    {% if application_history.prev_record.app_type != application_history.app_type %}
-                        <td>valeur après modification : {{application_history.app_type}}</td>
-                    {% else %}
-                    <td> valeur inchangé :  {{application_history.app_type}}</td>
-                    {% endif %}
-                    {% if application_history.prev_record.backup_strategie != application_history.backup_strategie %}
-                        <td>valeur après modification : {{application_history.backup_strategie}}</td>
-                    {% else %}
-                    <td> valeur inchangé :  {{application_history.backup_strategie}}</td>
-                    {% endif %}
+                    
+                 
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{application_history.history_id}}</td>
-                    <td>{{application_history.history_date}}</td>
-                    <td>{{application_history.history_user}}</td>
-                    <td>{{application_history.history_change_reason}}</td>
-                    <td>{{application_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{application_history.name}}</td>
-                    <td> valeur a la création :{{application.description}}</td>
-                    <td> valeur a la création :{{application.replication}}</td>
-                    <td> valeur a la création :{{application.priority}}</td>
-                    <td> valeur a la création :{{application.control_name}}</td>
-                    <td> valeur a la création :{{application.deployement_year}}</td>
-                    <td> valeur a la création :{{application.app_type}} </td>
-                    <td> valeur a la création :{{application.backup_strategie}}</td>
-
+                    <td style="text-align:center">{{module_applicatif_history.history_id}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_date}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_user}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.history_change_reason}}</td>
+                    <td style="text-align:center">{{module_applicatif_history.get_history_type_display}}</td>
+                    <td style="text-align:center"> valeur a la création : {{module_applicatif_history.name}}</td>
+                    <td style="text-align:center"> valeur a la création :{{module_applicatif.description}}</td>
+                    <td style="text-align:center"> valeur a la création :{{module_applicatif.application}}</td>
+                  
+                    <td style="text-align:center"> valeur a la création :{{module_applicatif.vendor}}</td>
+                    <td style="text-align:center"> valeur a la création :{{module_applicatif.departement}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -235,9 +176,9 @@
       <div class="col-lg-10 grid-margin stretch-card  mx-auto">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
-            <p class="card-datacenter">
-              Détails des composant de  : {{server.name}}
+            <h4 class="card-title">Structure arborescente de l'objet : {{module_applicatif.name}}</h4>
+            <p class="card-description">
+              Détails des composant de  : {{module_applicatif.name}}
             </p>
             <div class="table-responsive">
               <style>
