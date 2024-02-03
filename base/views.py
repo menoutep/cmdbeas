@@ -560,6 +560,27 @@ class NetworkInterfaceListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
     model = NetworkInterface
     template_name = 'network/network_interface_list.html'
     context_object_name = 'network_interfaces'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = NetworkInterface.objects.all()
+        if q :
+          queryset = NetworkInterface.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(ip_addresses__name__icontains=q) |          
+                            Q(ip_addresses__ipv4__icontains=q) |   
+                            Q(server__name__icontains=q) |  
+                            Q(server__databases_servers__name__icontains=q)|
+                            Q(server__databases_servers__databases__name__icontains=q)|
+                            Q(server__apps_servers__name__icontains=q)| 
+                            Q(server__apps_servers__module_applicatif__name__icontains=q)| 
+                            Q(server__apps_servers__module_applicatif__application__name__icontains=q))  
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'network_interfaces': queryset}
+        return render(request, self.template_name, context)
+
 
 class NetworkInterfaceDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_networkinterface"

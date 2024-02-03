@@ -1,7 +1,14 @@
 {% extends 'network/index.html' %}
 {% load static %}
 
-
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:network_interface-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
 {% block content %}
 <div class="content-wrapper">
     <div class="row">
