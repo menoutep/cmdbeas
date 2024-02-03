@@ -411,25 +411,23 @@
             </p>
             <div class="table-responsive">
               <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                  }
+            
                   .tree-line {
                     position: absolute;
-                    left: 20px; /* Ajustez selon vos besoins */
+                    left: 30px; /* Ajustez selon vos besoins */
                     top: 40px;
                     
                     width: 1px; /* Largeur de la ligne */
                     height: calc(100% - 40px); /* Hauteur de la ligne */
                     background-color:  #040404;
-                    ; /* Couleur de la ligne */
+                     /* Couleur de la ligne */
                 }
                   ul {
                       list-style-type: none;
-                      padding-left: 20px;
+                      padding-left: 20px; 
                       margin-left: 20px;
-                      margin-bottom: 5px;
-                      padding-bottom: 10px;
+                      margin-bottom: 3px;
+                      padding-bottom: 5px;
                   }
                   
                   li {
@@ -494,14 +492,14 @@
                           var h3 = document.createElement('h5');
                           span.textContent = key + ": ";
                           //span.style.color = levelTColors[level % levelTColors.length];
-                          span.style.fontSize = '10px'; 
+                          span.style.fontSize = '13px'; 
                           span.style.fontWeight = 'bold';
                           li.appendChild(span);
-              
-                          li.style.backgroundColor = levelColors[level % levelColors.length];
+                          span.style.borderRadius = '8px';
+                          //li.style.backgroundColor ='#9a94a7'
+                          //li.style.backgroundColor = levelColors[level % levelColors.length];
                           li.style.borderRadius = '8px'; 
-                          li.style.maginBottom = '5px';
-                          li.style.paddingBottom = '5px';
+
                           li.style.position = 'relative'; // Ajout de la position relative pour positionner la ligne verticale
               
                           if (typeof obj[key] === 'object' && obj[key] !== null) {
@@ -544,7 +542,7 @@
                               });
               
                               span.addEventListener('mouseenter', function() {
-                                  this.style.backgroundColor = 'lightgrey';
+                                  this.style.backgroundColor = '#f7df64';
                               });
               
                               span.addEventListener('mouseleave', function() {
