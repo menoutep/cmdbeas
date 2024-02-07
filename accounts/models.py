@@ -8,7 +8,7 @@ from django.utils import timezone
 class User(AbstractUser,GuardianUserMixin):
     contact = models.CharField(max_length=12)
     email = models.EmailField(unique=True, blank=True)
-    departement =  models.ForeignKey(Departement,on_delete=models.CASCADE,default=1)
+    departement =  models.ForeignKey(Departement,on_delete=models.CASCADE,default=1,related_name="users")
     last_password_change = models.DateField(null=True,blank=True)
     updated = models.DateTimeField(null=True,blank=True)
 

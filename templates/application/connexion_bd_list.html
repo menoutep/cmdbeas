@@ -38,13 +38,13 @@
                 <tbody>
                   {% for connexion_bd in connexion_bds %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-connexion_bd' connexion_bd.pk %}" > {{ connexion_bd}} </a></td> 
+                    <td><a href= "{% url 'base:detail-connexion_bd' connexion_bd.pk %}" > {{ connexion_bd}} </a></td> 
                       
-                    <td style="text-align:center"><a href= "{% url 'base:detail-database' connexion_bd.database.pk %}" > {{ connexion_bd.database}}</a> </td> 
-                    <td style="text-align:center"><a href= "{% url 'base:detail-module_applicatif' connexion_bd.module_applicatif.pk %}" > {{ connexion_bd.module_applicatif}}</a></td>   
+                    <td><a href= "{% url 'base:detail-database' connexion_bd.database.pk %}" > {{ connexion_bd.database}}</a> </td> 
+                    <td><a href= "{% url 'base:detail-module_applicatif' connexion_bd.module_applicatif.pk %}" > {{ connexion_bd.module_applicatif}}</a></td>   
                                        
-                    <td style="text-align:center">{{connexion_bd.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{connexion_bd.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td>{{connexion_bd.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{connexion_bd.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>

@@ -28,13 +28,13 @@
                 <tbody>
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-architecture_diagram' architecture_diagram.pk %}" > {{ architecture_diagram.name }} </a></td> 
-                            <td style="text-align:center">{{architecture_diagram.description}}</td>
+                            <td><a href="{% url 'base:update-architecture_diagram' architecture_diagram.pk %}" > {{ architecture_diagram.name }} </a></td> 
+                            <td>{{architecture_diagram.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-process' architecture_diagram.process.pk %}" >{{architecture_diagram.process}} </a></td>
-                            <td style="text-align:center">{{architecture_diagram.file}}</td>
-                            <td style="text-align:center">{{architecture_diagram.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{architecture_diagram.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-process' architecture_diagram.process.pk %}" >{{architecture_diagram.process}} </a></td>
+                            <td>{{architecture_diagram.file}}</td>
+                            <td>{{architecture_diagram.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{architecture_diagram.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                 </tbody>
@@ -87,45 +87,45 @@
                   {% for architecture_diagram_history in architecture_diagram.history.all.distinct %}
                   {% if architecture_diagram_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{architecture_diagram_history.history_id}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_date}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_user}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.get_history_type_display}}</td>
+                    <td>{{architecture_diagram_history.history_id}}</td>
+                    <td>{{architecture_diagram_history.history_date}}</td>
+                    <td>{{architecture_diagram_history.history_user}}</td>
+                    <td>{{architecture_diagram_history.history_change_reason}}</td>
+                    <td>{{architecture_diagram_history.get_history_type_display}}</td>
                     {% if architecture_diagram_history.prev_record.name != architecture_diagram_history.name %}
-                        <td style="text-align:center">valeur après modification : {{architecture_diagram_history.name}}</td>
+                        <td>valeur après modification : {{architecture_diagram_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{architecture_diagram_history.name}}</td>
+                    <td> valeur inchangé :  {{architecture_diagram_history.name}}</td>
                     {% endif %}
                     {% if architecture_diagram_history.prev_record.description != architecture_diagram_history.description %}
-                        <td style="text-align:center">valeur après modification : {{architecture_diagram_history.description}}</td>
+                        <td>valeur après modification : {{architecture_diagram_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{architecture_diagram_history.description}}</td>
+                    <td> valeur inchangé :  {{architecture_diagram_history.description}}</td>
                     {% endif %}
                     {% if architecture_diagram_history.prev_record.process != architecture_diagram_history.process %}
-                        <td style="text-align:center">valeur après modification : {{architecture_diagram_history.process}}</td>
+                        <td>valeur après modification : {{architecture_diagram_history.process}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{architecture_diagram_history.process}}</td>
+                    <td> valeur inchangé :  {{architecture_diagram_history.process}}</td>
                     {% endif %}
                     {% if architecture_diagram_history.prev_record.file != architecture_diagram_history.file %}
-                        <td style="text-align:center">valeur après modification : {{architecture_diagram_history.file}}</td>
+                        <td>valeur après modification : {{architecture_diagram_history.file}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{architecture_diagram_history.file}}</td>
+                    <td> valeur inchangé :  {{architecture_diagram_history.file}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{architecture_diagram_history.history_id}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_date}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_user}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{architecture_diagram_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{architecture_diagram_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{architecture_diagram.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{architecture_diagram.process}}</td>
-                    <td style="text-align:center"> valeur a la création :{{architecture_diagram.file}}</td>
+                    <td>{{architecture_diagram_history.history_id}}</td>
+                    <td>{{architecture_diagram_history.history_date}}</td>
+                    <td>{{architecture_diagram_history.history_user}}</td>
+                    <td>{{architecture_diagram_history.history_change_reason}}</td>
+                    <td>{{architecture_diagram_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{architecture_diagram_history.name}}</td>
+                    <td> valeur a la création :{{architecture_diagram.description}}</td>
+                    <td> valeur a la création :{{architecture_diagram.process}}</td>
+                    <td> valeur a la création :{{architecture_diagram.file}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

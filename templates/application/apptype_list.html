@@ -30,11 +30,11 @@
                   {% for apptype in apptypes %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-apptype' apptype.pk %}" >{{ apptype.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-apptype' apptype.pk %}" >{{ apptype.name }} </a></td> 
                             
-                            <td style="text-align:center">{{apptype.description}}</td>
-                            <td style="text-align:center">{{apptype.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{apptype.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{apptype.description}}</td>
+                            <td>{{apptype.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{apptype.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

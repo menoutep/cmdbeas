@@ -9,9 +9,9 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Plan de reprise technique</h4>
+            <h4 class="card-title"> Vos dictionnaires de données</h4>
             <p class="card-description">
-              Liste de tous les plans de reprise technique
+              Liste de tous les dictionnaires de données
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -27,15 +27,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for data_dictionnary in data_dictionnarys %}
+                  {% for data_dictionnary in data_dictionnaries %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-data_dictionnary' data_dictionnary.pk %}" > {{ data_dictionnary.name }} </a></td> 
-                            <td style="text-align:center">{{data_dictionnary.description}}</td>
+                            <td><a href="{% url 'base:update-data_dictionnary' data_dictionnary.pk %}" > {{ data_dictionnary.name }} </a></td> 
+                            <td>{{data_dictionnary.description}}</td>
 
-                            <td style="text-align:center">{{data_dictionnary.file}}</td>
-                            <td style="text-align:center">{{data_dictionnary.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{data_dictionnary.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{data_dictionnary.file}}</td>
+                            <td>{{data_dictionnary.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{data_dictionnary.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

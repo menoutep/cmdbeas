@@ -25,11 +25,11 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:update-departement' departement.pk %}" >{{ departement.name }} </a></td> 
-                    <td style="text-align:center">{{departement.description}}</td>
+                    <td><a href="{% url 'base:update-departement' departement.pk %}" >{{ departement.name }} </a></td> 
+                    <td>{{departement.description}}</td>
 
-                    <td style="text-align:center">{{departement.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{departement.created|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{departement.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{departement.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -65,32 +65,32 @@
                   {% for departement_history in departement.history.all.distinct %}
                   {% if departement_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{departement_history.history_id}}</td>
-                    <td style="text-align:center">{{departement_history.history_date}}</td>
-                    <td style="text-align:center">{{departement_history.history_user}}</td>
-                    <td style="text-align:center">{{departement_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{departement_history.get_history_type_display}}</td>
+                    <td>{{departement_history.history_id}}</td>
+                    <td>{{departement_history.history_date}}</td>
+                    <td>{{departement_history.history_user}}</td>
+                    <td>{{departement_history.history_change_reason}}</td>
+                    <td>{{departement_history.get_history_type_display}}</td>
                     {% if departement_history.prev_record.name != departement_history.name %}
-                        <td style="text-align:center">valeur après modification : {{departement_history.name}}</td>
+                        <td>valeur après modification : {{departement_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{departement_history.name}}</td>
+                    <td> valeur inchangé :  {{departement_history.name}}</td>
                     {% endif %}
                     {% if departement_history.prev_record.description != departement_history.description %}
-                        <td style="text-align:center">valeur après modification : {{departement_history.description}}</td>
+                        <td>valeur après modification : {{departement_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{departement_history.description}}</td>
+                    <td> valeur inchangé :  {{departement_history.description}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{departement_history.history_id}}</td>
-                    <td style="text-align:center">{{departement_history.history_date}}</td>
-                    <td style="text-align:center">{{departement_history.history_user}}</td>
-                    <td style="text-align:center">{{departement_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{departement_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{departement_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{departement_history.description}}</td>
+                    <td>{{departement_history.history_id}}</td>
+                    <td>{{departement_history.history_date}}</td>
+                    <td>{{departement_history.history_user}}</td>
+                    <td>{{departement_history.history_change_reason}}</td>
+                    <td>{{departement_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{departement_history.name}}</td>
+                    <td>valeur a la création: {{departement_history.description}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

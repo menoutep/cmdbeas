@@ -30,12 +30,12 @@
                   {% for sms_short_code in sms_short_codes %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-sms_short_code' sms_short_code.pk %}" > {{ sms_short_code.name }} </a></td> 
-                            <td style="text-align:center">{{sms_short_code.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-smpp_account' sms_short_code.smpp_account.pk %}" >{{sms_short_code.smpp_account}}</a></td>
-                            <td style="text-align:center">{{sms_short_code.code}}</td>
-                            <td style="text-align:center">{{sms_short_code.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{sms_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-sms_short_code' sms_short_code.pk %}" > {{ sms_short_code.name }} </a></td> 
+                            <td>{{sms_short_code.description}}</td>
+                            <td><a href="{% url 'base:detail-smpp_account' sms_short_code.smpp_account.pk %}" >{{sms_short_code.smpp_account}}</a></td>
+                            <td>{{sms_short_code.code}}</td>
+                            <td>{{sms_short_code.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{sms_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

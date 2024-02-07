@@ -28,15 +28,15 @@
                 <tbody>
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-url' url.pk %}" > {{ url.name }} </a></td> 
-                            <td style="text-align:center">{{url.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-url' url.url.pk %}" >{{url.url}}</a></td>
-                            <td style="text-align:center">{{url.code}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' url.url.module_applicatif.pk %}" >{{url.url.module_applicatif}}</a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-application' url.url.module_applicatif.application.pk %}" >{{url.url.module_applicatif.application}}</a></td>
+                            <td><a href="{% url 'base:detail-url' url.pk %}" > {{ url.name }} </a></td> 
+                            <td>{{url.description}}</td>
+                            <td><a href="{% url 'base:detail-url' url.url.pk %}" >{{url.url}}</a></td>
+                            <td>{{url.code}}</td>
+                            <td><a href="{% url 'base:detail-module_applicatif' url.url.module_applicatif.pk %}" >{{url.url.module_applicatif}}</a></td>
+                            <td><a href="{% url 'base:detail-application' url.url.module_applicatif.application.pk %}" >{{url.url.module_applicatif.application}}</a></td>
 
-                            <td style="text-align:center">{{url.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{url.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{url.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{url.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                 </tbody>
@@ -76,30 +76,30 @@
                   {% for url_history in url.history.all.distinct %}
                   {% if url_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{url_history.history_id}}</td>
-                    <td style="text-align:center">{{url_history.history_date}}</td>
-                    <td style="text-align:center">{{url_history.history_user}}</td>
-                    <td style="text-align:center">{{url_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{url_history.get_history_type_display}}</td>
+                    <td>{{url_history.history_id}}</td>
+                    <td>{{url_history.history_date}}</td>
+                    <td>{{url_history.history_user}}</td>
+                    <td>{{url_history.history_change_reason}}</td>
+                    <td>{{url_history.get_history_type_display}}</td>
                     {% if url_history.prev_record.name != url_history.name %}
-                        <td style="text-align:center">valeur après modification : {{url_history.name}}</td>
+                        <td>valeur après modification : {{url_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{url_history.name}}</td>
+                    <td> valeur inchangé :  {{url_history.name}}</td>
                     {% endif %}
                     {% if url_history.prev_record.description != url_history.description %}
-                        <td style="text-align:center">valeur après modification : {{url_history.description}}</td>
+                        <td>valeur après modification : {{url_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{url_history.description}}</td>
+                    <td> valeur inchangé :  {{url_history.description}}</td>
                     {% endif %}
                     {% if url_history.prev_record.url != url_history.url %}
-                    <td style="text-align:center">valeur après modification : {{url_history.url}}</td>
+                    <td>valeur après modification : {{url_history.url}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{url_history.url}}</td>
+                    <td> valeur inchangé :  {{url_history.url}}</td>
                     {% endif %}
                     {% if url_history.prev_record.code != url_history.code %}
-                    <td style="text-align:center">valeur après modification : {{url_history.code}}</td>
+                    <td>valeur après modification : {{url_history.code}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{url_history.code}}</td>
+                    <td> valeur inchangé :  {{url_history.code}}</td>
                     {% endif %}
                 
                     
@@ -107,15 +107,15 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{url_history.history_id}}</td>
-                    <td style="text-align:center">{{url_history.history_date}}</td>
-                    <td style="text-align:center">{{url_history.history_user}}</td>
-                    <td style="text-align:center">{{url_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{url_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{url_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création : {{url_history.description}}</td>
-                    <td style="text-align:center"> valeur a la création : {{url_history.url}}</td>
-                    <td style="text-align:center"> valeur a la création : {{url_history.code}}</td>                   
+                    <td>{{url_history.history_id}}</td>
+                    <td>{{url_history.history_date}}</td>
+                    <td>{{url_history.history_user}}</td>
+                    <td>{{url_history.history_change_reason}}</td>
+                    <td>{{url_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{url_history.name}}</td>
+                    <td> valeur a la création : {{url_history.description}}</td>
+                    <td> valeur a la création : {{url_history.url}}</td>
+                    <td> valeur a la création : {{url_history.code}}</td>                   
 
                   </tr>
                   {% endif %}

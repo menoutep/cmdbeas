@@ -30,13 +30,13 @@
                   {% for api_specification in api_specifications %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_specification' api_specification.pk %}" > {{ api_specification.name }} </a></td> 
-                            <td style="text-align:center">{{api_specification.description}}</td>
+                            <td><a href="{% url 'base:detail-api_specification' api_specification.pk %}" > {{ api_specification.name }} </a></td> 
+                            <td>{{api_specification.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-api' api_specification.api.pk %}" >{{api_specification.api}} </a></td>
-                            <td style="text-align:center">{{api_specification.file}}</td>
-                            <td style="text-align:center">{{api_specification.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{api_specification.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-api' api_specification.api.pk %}" >{{api_specification.api}} </a></td>
+                            <td>{{api_specification.file}}</td>
+                            <td>{{api_specification.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{api_specification.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

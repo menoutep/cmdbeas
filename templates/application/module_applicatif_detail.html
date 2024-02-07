@@ -29,13 +29,13 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:update-module_applicatif' module_applicatif.pk %}" > {{ module_applicatif.name }} </a></td> 
-                    <td style="text-align:center"> {{ module_applicatif.description }} </td>   
-                    <td style="text-align:center"><a href= "{% url 'base:detail-application' module_applicatif.application.pk %}"> {{ module_applicatif.application}} </a> </td> 
-                    <td style="text-align:center"><a href= "{% url 'base:detail-vendor' module_applicatif.vendor.pk %}"> {{ module_applicatif.vendor}} </td>   
-                    <td style="text-align:center"> <a href= "{% url 'base:detail-departement' module_applicatif.departement.pk %}">{{ module_applicatif.departement }} </td>                      
-                    <td style="text-align:center">{{module_applicatif.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{module_applicatif.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td><a href= "{% url 'base:update-module_applicatif' module_applicatif.pk %}" > {{ module_applicatif.name }} </a></td> 
+                    <td> {{ module_applicatif.description }} </td>   
+                    <td><a href= "{% url 'base:detail-application' module_applicatif.application.pk %}"> {{ module_applicatif.application}} </a> </td> 
+                    <td><a href= "{% url 'base:detail-vendor' module_applicatif.vendor.pk %}"> {{ module_applicatif.vendor}} </td>   
+                    <td> <a href= "{% url 'base:detail-departement' module_applicatif.departement.pk %}">{{ module_applicatif.departement }} </td>                      
+                    <td>{{module_applicatif.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{module_applicatif.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   
                 </tbody>
@@ -69,15 +69,15 @@
                 <tbody>
                   {% for database in databases %}               
                         <tr>
-                          <td style="text-align:center"><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
-                          <td style="text-align:center"><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
-                            <td style="text-align:center">
+                          <td><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
+                          <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
+                            <td>
                               {%for module in database.module_applicatifs.all.distinct%}
                                 {{module.name}},
                               {%endfor%}
                             </td>
-                          <td style="text-align:center">{{database.updated|date:"DATETIME_FORMAT"}}</td>
-                          <td style="text-align:center">{{database.created|date:"DATETIME_FORMAT"}}</td>                 
+                          <td>{{database.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td>{{database.created|date:"DATETIME_FORMAT"}}</td>                 
                         </tr>
                    
                   {% endfor %}
@@ -117,35 +117,35 @@
                   {% for module_applicatif_history in module_applicatif.history.all.distinct %}
                   {% if module_applicatif_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{module_applicatif_history.history_id}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_date}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_user}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.get_history_type_display}}</td>
+                    <td>{{module_applicatif_history.history_id}}</td>
+                    <td>{{module_applicatif_history.history_date}}</td>
+                    <td>{{module_applicatif_history.history_user}}</td>
+                    <td>{{module_applicatif_history.history_change_reason}}</td>
+                    <td>{{module_applicatif_history.get_history_type_display}}</td>
                     {% if module_applicatif_history.prev_record.name != module_applicatif_history.name %}
-                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.name}}</td>
+                        <td>valeur après modification : {{module_applicatif_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.name}}</td>
+                    <td> valeur inchangé :  {{module_applicatif_history.name}}</td>
                     {% endif %}
                     {% if module_applicatif_history.prev_record.description != module_applicatif_history.description %}
-                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.description}}</td>
+                        <td>valeur après modification : {{module_applicatif_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.description}}</td>
+                    <td> valeur inchangé :  {{module_applicatif_history.description}}</td>
                     {% endif %}
                     {% if module_applicatif_history.prev_record.application != module_applicatif_history.application %}
-                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.application}}</td>
+                        <td>valeur après modification : {{module_applicatif_history.application}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.application}}</td>
+                    <td> valeur inchangé :  {{module_applicatif_history.application}}</td>
                     {% endif %}
                     {% if module_applicatif_history.prev_record.vendor != module_applicatif_history.vendor %}
-                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.vendor}}</td>
+                        <td>valeur après modification : {{module_applicatif_history.vendor}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.vendor}}</td>
+                    <td> valeur inchangé :  {{module_applicatif_history.vendor}}</td>
                     {% endif %}
                     {% if module_applicatif_history.prev_record.departement != module_applicatif_history.departement %}
-                        <td style="text-align:center">valeur après modification : {{module_applicatif_history.departement}}</td>
+                        <td>valeur après modification : {{module_applicatif_history.departement}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{module_applicatif_history.departement}}</td>
+                    <td> valeur inchangé :  {{module_applicatif_history.departement}}</td>
                     {% endif %}
                     
                  
@@ -153,17 +153,17 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{module_applicatif_history.history_id}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_date}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_user}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{module_applicatif_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{module_applicatif_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{module_applicatif.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{module_applicatif.application}}</td>
+                    <td>{{module_applicatif_history.history_id}}</td>
+                    <td>{{module_applicatif_history.history_date}}</td>
+                    <td>{{module_applicatif_history.history_user}}</td>
+                    <td>{{module_applicatif_history.history_change_reason}}</td>
+                    <td>{{module_applicatif_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{module_applicatif_history.name}}</td>
+                    <td> valeur a la création :{{module_applicatif.description}}</td>
+                    <td> valeur a la création :{{module_applicatif.application}}</td>
                   
-                    <td style="text-align:center"> valeur a la création :{{module_applicatif.vendor}}</td>
-                    <td style="text-align:center"> valeur a la création :{{module_applicatif.departement}}</td>
+                    <td> valeur a la création :{{module_applicatif.vendor}}</td>
+                    <td> valeur a la création :{{module_applicatif.departement}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

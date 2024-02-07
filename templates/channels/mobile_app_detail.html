@@ -27,10 +27,10 @@
                   
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:update-mobile_app' mobile_app.pk %}" > {{ mobile_app.name }} </a></td> 
-                            <td style="text-align:center">{{mobile_app.description}}</td>
-                            <td style="text-align:center">{{mobile_app.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{mobile_app.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:update-mobile_app' mobile_app.pk %}" > {{ mobile_app.name }} </a></td> 
+                            <td>{{mobile_app.description}}</td>
+                            <td>{{mobile_app.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{mobile_app.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                  
@@ -65,12 +65,12 @@
                   {% for connexion_app in mobile_app.connexions_apps %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:update-mobile_app' mobile_app.pk %}" > {{ mobile_app.name }} </a></td> 
-                            <td style="text-align:center">{{connexion_app}}</td>
+                            <td><a href="{% url 'base:update-mobile_app' mobile_app.pk %}" > {{ mobile_app.name }} </a></td> 
+                            <td>{{connexion_app}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-url' connexion_app.url.pk %}" >{{connexion_app.url}} </a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' connexion_app.url.module_applicatif.pk %}" >{{connexion_app.url.module_applicatif}} </a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-application' connexion_app.url.module_applicatif.application.pk %}" >{{connexion_app.url.module_applicatif.application}} </a></td>
+                            <td><a href="{% url 'base:detail-url' connexion_app.url.pk %}" >{{connexion_app.url}} </a></td>
+                            <td><a href="{% url 'base:detail-module_applicatif' connexion_app.url.module_applicatif.pk %}" >{{connexion_app.url.module_applicatif}} </a></td>
+                            <td><a href="{% url 'base:detail-application' connexion_app.url.module_applicatif.application.pk %}" >{{connexion_app.url.module_applicatif.application}} </a></td>
                                        
                         </tr>
                    
@@ -110,20 +110,20 @@
                   {% for mobile_app_history in mobile_app.history.all.distinct %}
                   {% if mobile_app_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{mobile_app_history.history_id}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_date}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_user}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{mobile_app_history.get_history_type_display}}</td>
+                    <td>{{mobile_app_history.history_id}}</td>
+                    <td>{{mobile_app_history.history_date}}</td>
+                    <td>{{mobile_app_history.history_user}}</td>
+                    <td>{{mobile_app_history.history_change_reason}}</td>
+                    <td>{{mobile_app_history.get_history_type_display}}</td>
                     {% if mobile_app_history.prev_record.name != mobile_app_history.name %}
-                        <td style="text-align:center">valeur après modification : {{mobile_app_history.name}}</td>
+                        <td>valeur après modification : {{mobile_app_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{mobile_app_history.name}}</td>
+                    <td> valeur inchangé :  {{mobile_app_history.name}}</td>
                     {% endif %}
                     {% if mobile_app_history.prev_record.description != mobile_app_history.description %}
-                        <td style="text-align:center">valeur après modification : {{mobile_app_history.description}}</td>
+                        <td>valeur après modification : {{mobile_app_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{mobile_app_history.description}}</td>
+                    <td> valeur inchangé :  {{mobile_app_history.description}}</td>
                     {% endif %}
                 
                     
@@ -131,13 +131,13 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{mobile_app_history.history_id}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_date}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_user}}</td>
-                    <td style="text-align:center">{{mobile_app_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{mobile_app_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{mobile_app_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{mobile_app.description}}</td>
+                    <td>{{mobile_app_history.history_id}}</td>
+                    <td>{{mobile_app_history.history_date}}</td>
+                    <td>{{mobile_app_history.history_user}}</td>
+                    <td>{{mobile_app_history.history_change_reason}}</td>
+                    <td>{{mobile_app_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{mobile_app_history.name}}</td>
+                    <td> valeur a la création :{{mobile_app.description}}</td>
                  
                     
 

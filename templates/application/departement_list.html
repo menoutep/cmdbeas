@@ -28,11 +28,11 @@
                   {% for departement in departements %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-departement' departement.pk %}" >{{ departement.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-departement' departement.pk %}" >{{ departement.name }} </a></td> 
                             
-                            <td style="text-align:center">{{departement.description}}</td>
-                            <td style="text-align:center">{{departement.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{departement.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{departement.description}}</td>
+                            <td>{{departement.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{departement.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

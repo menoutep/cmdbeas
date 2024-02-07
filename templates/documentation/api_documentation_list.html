@@ -29,14 +29,14 @@
                 <tbody>
                   {% for api_documentation in api_documentations %}
                   
-                        <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_documentation' api_documentation.pk %}" > {{ api_documentation.name }} </a></td> 
-                            <td style="text-align:center">{{api_documentation.description}}</td>
+                        <tr >
+                            <td><a href="{% url 'base:detail-api_documentation' api_documentation.pk %}" > {{ api_documentation.name }} </a></td> 
+                            <td>{{api_documentation.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_specification' api_documentation.api_specification.pk %}" >{{api_documentation.api_specification}} </a></td>
-                            <td style="text-align:center">{{api_documentation.file}}</td>
-                            <td style="text-align:center">{{api_documentation.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{api_documentation.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-api_specification' api_documentation.api_specification.pk %}" >{{api_documentation.api_specification}} </a></td>
+                            <td>{{api_documentation.file}}</td>
+                            <td>{{api_documentation.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{api_documentation.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

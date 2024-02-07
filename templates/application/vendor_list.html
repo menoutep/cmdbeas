@@ -34,10 +34,10 @@
                 <tbody>
                   {% for vendor in vendors %}
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-vendor' vendor.pk %}" >{{ vendor.name }} </a></td>   
-                            <td style="text-align:center">{{vendor.description}}</td>
-                            <td style="text-align:center">{{vendor.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{vendor.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-vendor' vendor.pk %}" >{{ vendor.name }} </a></td>   
+                            <td>{{vendor.description}}</td>
+                            <td>{{vendor.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{vendor.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

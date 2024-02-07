@@ -29,12 +29,12 @@
                   {% for sub_process in sub_processes %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-sub_process' sub_process.pk %}" >{{ sub_process.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-process' sub_process.process.pk %}" >{{sub_process.process.name}}</a></td>
+                            <td><a href="{% url 'base:detail-sub_process' sub_process.pk %}" >{{ sub_process.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-process' sub_process.process.pk %}" >{{sub_process.process.name}}</a></td>
 
-                            <td style="text-align:center">{{sub_process.description}}</td>
-                            <td style="text-align:center">{{sub_process.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{sub_process.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{sub_process.description}}</td>
+                            <td>{{sub_process.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{sub_process.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

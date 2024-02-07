@@ -29,13 +29,13 @@
                   {% for domain_name in domain_names %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-domain_name' domain_name.pk %}" >{{ domain_name.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-domain_name' domain_name.pk %}" >{{ domain_name.name }} </a></td> 
                             
-                            <td style="text-align:center">{{domain_name.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-ip_address' domain_name.ip_address.pk %}" >{{domain_name.ip_address.ipv4}}</a></td>
+                            <td>{{domain_name.description}}</td>
+                            <td><a href="{% url 'base:detail-ip_address' domain_name.ip_address.pk %}" >{{domain_name.ip_address.ipv4}}</a></td>
                             
-                            <td style="text-align:center">{{domain_name.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{domain_name.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{domain_name.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{domain_name.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

@@ -55,8 +55,7 @@ def get_client_ip(request):
 
 logger = logging.getLogger(__name__)
 
-@login_required
-@user_passes_test(is_superuser)
+
 def send_password_email(email,password):
     # Créez le contenu de l'e-mail
     user_ = User.objects.get(email=email)
@@ -72,8 +71,8 @@ def send_password_email(email,password):
     send_mail(subject, message, from_email, recipient_list)
 
 
-@login_required
-@user_passes_test(is_superuser)
+
+
 def generate_random_password(taille):
     # Définissez les caractères possibles pour chaque catégorie
     taille_= int(taille)
@@ -512,16 +511,14 @@ class UserListView(LoginRequiredMixin,SuperuserRequiredMixin,View):
                             Q(last_name__icontains=q) |
                             Q(username__icontains=q) |  
                             Q(email__icontains=q) |   
-                            Q(departement__icontains=q) |         
+                            Q(departement__name__icontains=q) |         
                             Q(groups__name__icontains=q)|
                             Q(user_permissions__name__icontains=q)|
-                            Q(user_permissions__codename__icontains=q))  
+                            Q(user_permissions__codename__icontains=q)).distinct()  
         # Passer le queryset trié au template
         print(queryset)
         groups =  Group.objects.all()
-        context = {'users': queryset,
-                   'groups':groups
-                   }
+        context = {'users': queryset}
         return render(request, self.template_name, context)
 
 class UserDetailView(LoginRequiredMixin,SuperuserRequiredMixin,DetailView):

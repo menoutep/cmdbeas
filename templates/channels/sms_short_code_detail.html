@@ -30,15 +30,15 @@
                 <tbody>
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-sms_short_code' sms_short_code.pk %}" > {{ sms_short_code.name }} </a></td> 
-                            <td style="text-align:center">{{sms_short_code.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-smpp_account' sms_short_code.smpp_account.pk %}" >{{sms_short_code.smpp_account}}</a></td>
-                            <td style="text-align:center">{{sms_short_code.code}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' sms_short_code.smpp_account.module_applicatif.pk %}" >{{sms_short_code.smpp_account.module_applicatif}}</a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-application' sms_short_code.smpp_account.module_applicatif.application.pk %}" >{{sms_short_code.smpp_account.module_applicatif.application}}</a></td>
+                            <td><a href="{% url 'base:detail-sms_short_code' sms_short_code.pk %}" > {{ sms_short_code.name }} </a></td> 
+                            <td>{{sms_short_code.description}}</td>
+                            <td><a href="{% url 'base:detail-smpp_account' sms_short_code.smpp_account.pk %}" >{{sms_short_code.smpp_account}}</a></td>
+                            <td>{{sms_short_code.code}}</td>
+                            <td><a href="{% url 'base:detail-module_applicatif' sms_short_code.smpp_account.module_applicatif.pk %}" >{{sms_short_code.smpp_account.module_applicatif}}</a></td>
+                            <td><a href="{% url 'base:detail-application' sms_short_code.smpp_account.module_applicatif.application.pk %}" >{{sms_short_code.smpp_account.module_applicatif.application}}</a></td>
 
-                            <td style="text-align:center">{{sms_short_code.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{sms_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{sms_short_code.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{sms_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                 </tbody>
@@ -78,30 +78,30 @@
                   {% for sms_short_code_history in sms_short_code.history.all.distinct %}
                   {% if sms_short_code_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{sms_short_code_history.history_id}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_date}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_user}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.get_history_type_display}}</td>
+                    <td>{{sms_short_code_history.history_id}}</td>
+                    <td>{{sms_short_code_history.history_date}}</td>
+                    <td>{{sms_short_code_history.history_user}}</td>
+                    <td>{{sms_short_code_history.history_change_reason}}</td>
+                    <td>{{sms_short_code_history.get_history_type_display}}</td>
                     {% if sms_short_code_history.prev_record.name != sms_short_code_history.name %}
-                        <td style="text-align:center">valeur après modification : {{sms_short_code_history.name}}</td>
+                        <td>valeur après modification : {{sms_short_code_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sms_short_code_history.name}}</td>
+                    <td> valeur inchangé :  {{sms_short_code_history.name}}</td>
                     {% endif %}
                     {% if sms_short_code_history.prev_record.description != sms_short_code_history.description %}
-                        <td style="text-align:center">valeur après modification : {{sms_short_code_history.description}}</td>
+                        <td>valeur après modification : {{sms_short_code_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sms_short_code_history.description}}</td>
+                    <td> valeur inchangé :  {{sms_short_code_history.description}}</td>
                     {% endif %}
                     {% if sms_short_code_history.prev_record.smpp_account != sms_short_code_history.smpp_account %}
-                    <td style="text-align:center">valeur après modification : {{sms_short_code_history.smpp_account}}</td>
+                    <td>valeur après modification : {{sms_short_code_history.smpp_account}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sms_short_code_history.smpp_account}}</td>
+                    <td> valeur inchangé :  {{sms_short_code_history.smpp_account}}</td>
                     {% endif %}
                     {% if sms_short_code_history.prev_record.code != sms_short_code_history.code %}
-                    <td style="text-align:center">valeur après modification : {{sms_short_code_history.code}}</td>
+                    <td>valeur après modification : {{sms_short_code_history.code}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sms_short_code_history.code}}</td>
+                    <td> valeur inchangé :  {{sms_short_code_history.code}}</td>
                     {% endif %}
                 
                     
@@ -109,15 +109,15 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{sms_short_code_history.history_id}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_date}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_user}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{sms_short_code_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{sms_short_code_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création : {{sms_short_code_history.description}}</td>
-                    <td style="text-align:center"> valeur a la création : {{sms_short_code_history.smpp_account}}</td>
-                    <td style="text-align:center"> valeur a la création : {{sms_short_code_history.code}}</td>                   
+                    <td>{{sms_short_code_history.history_id}}</td>
+                    <td>{{sms_short_code_history.history_date}}</td>
+                    <td>{{sms_short_code_history.history_user}}</td>
+                    <td>{{sms_short_code_history.history_change_reason}}</td>
+                    <td>{{sms_short_code_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{sms_short_code_history.name}}</td>
+                    <td> valeur a la création : {{sms_short_code_history.description}}</td>
+                    <td> valeur a la création : {{sms_short_code_history.smpp_account}}</td>
+                    <td> valeur a la création : {{sms_short_code_history.code}}</td>                   
 
                   </tr>
                   {% endif %}

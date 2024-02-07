@@ -28,12 +28,12 @@
                   
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:update-sub_process' sub_process.pk %}" >{{ sub_process.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-process' sub_process.process.pk %}" >{{sub_process.process.name}}</a></td>
+                            <td><a href="{% url 'base:update-sub_process' sub_process.pk %}" >{{ sub_process.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-process' sub_process.process.pk %}" >{{sub_process.process.name}}</a></td>
 
-                            <td style="text-align:center">{{sub_process.description}}</td>
-                            <td style="text-align:center">{{sub_process.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{sub_process.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{sub_process.description}}</td>
+                            <td>{{sub_process.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{sub_process.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                
@@ -71,39 +71,39 @@
                   {% for sub_process_history in sub_process.history.all.distinct %}
                   {% if sub_process_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{sub_process_history.history_id}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_date}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_user}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{sub_process_history.get_history_type_display}}</td>
+                    <td>{{sub_process_history.history_id}}</td>
+                    <td>{{sub_process_history.history_date}}</td>
+                    <td>{{sub_process_history.history_user}}</td>
+                    <td>{{sub_process_history.history_change_reason}}</td>
+                    <td>{{sub_process_history.get_history_type_display}}</td>
                     {% if sub_process_history.prev_record.name != sub_process_history.name %}
-                        <td style="text-align:center">valeur après modification : {{sub_process_history.name}}</td>
+                        <td>valeur après modification : {{sub_process_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sub_process_history.name}}</td>
+                    <td> valeur inchangé :  {{sub_process_history.name}}</td>
                     {% endif %}
                     {% if sub_process_history.prev_record.description != sub_process_history.description %}
-                        <td style="text-align:center">valeur après modification : {{sub_process_history.description}}</td>
+                        <td>valeur après modification : {{sub_process_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sub_process_history.description}}</td>
+                    <td> valeur inchangé :  {{sub_process_history.description}}</td>
                     {% endif %}
                     {% if sub_process_history.prev_record.process != sub_process_history.process %}
-                    <td style="text-align:center">valeur après modification : {{sub_process_history.process}}</td>
+                    <td>valeur après modification : {{sub_process_history.process}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{sub_process_history.process}}</td>
+                    <td> valeur inchangé :  {{sub_process_history.process}}</td>
                     {% endif %}
 
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{sub_process_history.history_id}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_date}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_user}}</td>
-                    <td style="text-align:center">{{sub_process_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{sub_process_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{sub_process_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{sub_process_history.description}}</td>
-                    <td style="text-align:center">valeur a la création: {{sub_process_history.process}}</td>
+                    <td>{{sub_process_history.history_id}}</td>
+                    <td>{{sub_process_history.history_date}}</td>
+                    <td>{{sub_process_history.history_user}}</td>
+                    <td>{{sub_process_history.history_change_reason}}</td>
+                    <td>{{sub_process_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{sub_process_history.name}}</td>
+                    <td>valeur a la création: {{sub_process_history.description}}</td>
+                    <td>valeur a la création: {{sub_process_history.process}}</td>
 
                   </tr>
                   {% endif %}

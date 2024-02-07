@@ -25,10 +25,10 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ group.name }} </a></td> 
-                    <td style="text-align:center">{{group.user_set.count}}</td>
-                    <td style="text-align:center">{{group.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{group.created|date:"DATETIME_FORMAT"}}</td>
+                    <td><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ group.name }} </a></td> 
+                    <td>{{group.user_set.count}}</td>
+                    <td>{{group.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{group.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -62,11 +62,11 @@
                   {% for permission in permissions %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="" >{{ permission.name }} </a></td>
-                            <td style="text-align:center">{{permission.codename}}</td>
-                            <td style="text-align:center">{{permission.content_type.model}}</td>
-                            <td style="text-align:center">{{permission.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="" >{{ permission.name }} </a></td>
+                            <td>{{permission.codename}}</td>
+                            <td>{{permission.content_type.model}}</td>
+                            <td>{{permission.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -103,14 +103,14 @@
                   {% for user in group.user_set.all.distinct %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ user.first_name }} </a></td>
-                            <td style="text-align:center">{{ user.last_name }}</td>
-                            <td style="text-align:center">{{ user.email }}</td>
-                            <td style="text-align:center">{{ user.username }}</td>
-                            <td style="text-align:center">{{ user.contact }}</td>
-                            <td style="text-align:center">{{ user.departement }}</td>
-                            <td style="text-align:center">{{ user.last_password_change }}</td>
-                            <td style="text-align:center">{{ user.date_joined }}</td>                    
+                            <td><a href="{% url 'accounts:edit-groups' group.pk %}" >{{ user.first_name }} </a></td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.contact }}</td>
+                            <td>{{ user.departement }}</td>
+                            <td>{{ user.last_password_change }}</td>
+                            <td>{{ user.date_joined }}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -146,27 +146,27 @@
                   {% for group_history in group.history.all.distinct %}
                   {% if group_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{group_history.history_id}}</td>
-                    <td style="text-align:center">{{group_history.history_date}}</td>
-                    <td style="text-align:center">{{group_history.history_user}}</td>
-                    <td style="text-align:center">{{group_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{group_history.get_history_type_display}}</td>
+                    <td>{{group_history.history_id}}</td>
+                    <td>{{group_history.history_date}}</td>
+                    <td>{{group_history.history_user}}</td>
+                    <td>{{group_history.history_change_reason}}</td>
+                    <td>{{group_history.get_history_type_display}}</td>
                     {% if group_history.prev_record.name != group_history.name %}
-                        <td style="text-align:center">valeur après modification : {{group_history.name}}</td>
+                        <td>valeur après modification : {{group_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{group_history.name}}</td>
+                    <td> valeur inchangé :  {{group_history.name}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{group_history.history_id}}</td>
-                    <td style="text-align:center">{{group_history.history_date}}</td>
-                    <td style="text-align:center">{{group_history.history_user}}</td>
-                    <td style="text-align:center">{{group_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{group_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{group_history.name}}</td>
+                    <td>{{group_history.history_id}}</td>
+                    <td>{{group_history.history_date}}</td>
+                    <td>{{group_history.history_user}}</td>
+                    <td>{{group_history.history_change_reason}}</td>
+                    <td>{{group_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{group_history.name}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

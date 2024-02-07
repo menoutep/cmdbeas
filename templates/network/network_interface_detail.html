@@ -26,12 +26,12 @@
                 <tbody>
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-network_interface' network_interface.pk %}" >{{ network_interface.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-network_interface' network_interface.pk %}" >{{ network_interface.name }} </a></td> 
                             
-                            <td style="text-align:center">{{network_interface.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-server' network_interface.server.pk %}" >{{network_interface.server}}</a></td>
-                            <td style="text-align:center">{{network_interface.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{network_interface.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{network_interface.description}}</td>
+                            <td><a href="{% url 'base:detail-server' network_interface.server.pk %}" >{{network_interface.server}}</a></td>
+                            <td>{{network_interface.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{network_interface.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                 </tbody>
@@ -67,38 +67,38 @@
                   {% for network_interface_history in network_interface.history.all.distinct %}
                   {% if network_interface_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{network_interface_history.history_id}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_date}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_user}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{network_interface_history.get_history_type_display}}</td>
+                    <td>{{network_interface_history.history_id}}</td>
+                    <td>{{network_interface_history.history_date}}</td>
+                    <td>{{network_interface_history.history_user}}</td>
+                    <td>{{network_interface_history.history_change_reason}}</td>
+                    <td>{{network_interface_history.get_history_type_display}}</td>
                     {% if network_interface_history.prev_record.name != network_interface_history.name %}
-                        <td style="text-align:center">valeur après modification : {{network_interface_history.name}}</td>
+                        <td>valeur après modification : {{network_interface_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{network_interface_history.name}}</td>
+                    <td> valeur inchangé :  {{network_interface_history.name}}</td>
                     {% endif %}
                     {% if network_interface_history.prev_record.description != network_interface_history.description %}
-                        <td style="text-align:center">valeur après modification : {{network_interface_history.description}}</td>
+                        <td>valeur après modification : {{network_interface_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{network_interface_history.description}}</td>
+                    <td> valeur inchangé :  {{network_interface_history.description}}</td>
                     {% endif %}
                     {% if network_interface_history.prev_record.server != network_interface_history.server %}
-                    <td style="text-align:center">valeur après modification : {{network_interface_history.server}}</td>
+                    <td>valeur après modification : {{network_interface_history.server}}</td>
                   {% else %}
-                  <td style="text-align:center"> valeur inchangé :  {{network_interface_history.server}}</td>
+                  <td> valeur inchangé :  {{network_interface_history.server}}</td>
                   {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{network_interface_history.history_id}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_date}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_user}}</td>
-                    <td style="text-align:center">{{network_interface_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{network_interface_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{network_interface_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{network_interface_history.description}}</td>
-                    <td style="text-align:center">valeur a la création: {{network_interface_history.server}}</td>
+                    <td>{{network_interface_history.history_id}}</td>
+                    <td>{{network_interface_history.history_date}}</td>
+                    <td>{{network_interface_history.history_user}}</td>
+                    <td>{{network_interface_history.history_change_reason}}</td>
+                    <td>{{network_interface_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{network_interface_history.name}}</td>
+                    <td>valeur a la création: {{network_interface_history.description}}</td>
+                    <td>valeur a la création: {{network_interface_history.server}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

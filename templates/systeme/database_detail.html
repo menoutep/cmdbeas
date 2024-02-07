@@ -49,10 +49,10 @@
                 </thead>
                 <tbody> 
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:update-database' database.pk %}" >{{ database.name }} </a></td> 
-                    <td style="text-align:center"><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{ database.db_server}}</a></td>                    
-                    <td style="text-align:center">{{database.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{database.created|date:"DATETIME_FORMAT"}}</td>                 
+                    <td><a href="{% url 'base:update-database' database.pk %}" >{{ database.name }} </a></td> 
+                    <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{ database.db_server}}</a></td>                    
+                    <td>{{database.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{database.created|date:"DATETIME_FORMAT"}}</td>                 
                   </tr>
                 </tbody>
               </table>
@@ -86,13 +86,13 @@
                 <tbody>
                   {% for module in database.module_applicatifs.all.distinct %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:update-module_applicatif' module.pk %}"> {{ module.name }} </a></td> 
-                    <td style="text-align:center"> {{ module.description }} </td>   
-                    <td style="text-align:center"><a href= "{% url 'base:detail-application' module.application.pk %}"> {{ module.application}} </a></td> 
-                    <td style="text-align:center"><a href= "{% url 'base:detail-vendor' module.vendor.pk %}">{{ module.vendor}} </a></td>   
-                    <td style="text-align:center"><a href= "{% url 'base:detail-departement' module.departement.pk %}">{{ module.departement }} </a></td>                      
-                    <td style="text-align:center">{{module.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{module.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td><a href= "{% url 'base:update-module_applicatif' module.pk %}"> {{ module.name }} </a></td> 
+                    <td> {{ module.description }} </td>   
+                    <td><a href= "{% url 'base:detail-application' module.application.pk %}"> {{ module.application}} </a></td> 
+                    <td><a href= "{% url 'base:detail-vendor' module.vendor.pk %}">{{ module.vendor}} </a></td>   
+                    <td><a href= "{% url 'base:detail-departement' module.departement.pk %}">{{ module.departement }} </a></td>                      
+                    <td>{{module.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{module.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -130,16 +130,16 @@
                 <tbody>
                   {% for application in applications %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-application' application.pk %}" > {{ application.name }} </a></td> 
-                    <td style="text-align:center">{{application.description}}</td>
-                    <td style="text-align:center">{{application.replication}}</td>
-                    <td style="text-align:center">{{application.priority}}</td>
-                    <td style="text-align:center">{{application.control_name}}</td>
-                    <td style="text-align:center">{{application.deployement_year}}</td>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}}</td>
-                    <td style="text-align:center"><a href= "{% url 'base:backupstrategie-detail' application.backup_strategie.pk %}">{{application.backup_strategie}}</td>
-                    <td style="text-align:center">{{application.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{application.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td><a href= "{% url 'base:detail-application' application.pk %}" > {{ application.name }} </a></td> 
+                    <td>{{application.description}}</td>
+                    <td>{{application.replication}}</td>
+                    <td>{{application.priority}}</td>
+                    <td>{{application.control_name}}</td>
+                    <td>{{application.deployement_year}}</td>
+                    <td><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}}</td>
+                    <td><a href= "{% url 'base:backupstrategie-detail' application.backup_strategie.pk %}">{{application.backup_strategie}}</td>
+                    <td>{{application.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{application.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -181,65 +181,65 @@
                   {% for database_history in database.history.all.distinct %}
                   {% if database_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{database_history.history_id}}</td>
-                    <td style="text-align:center">{{database_history.history_date}}</td>
-                    <td style="text-align:center">{{database_history.history_user}}</td>
-                    <td style="text-align:center">{{database_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{database_history.get_history_type_display}}</td>
+                    <td>{{database_history.history_id}}</td>
+                    <td>{{database_history.history_date}}</td>
+                    <td>{{database_history.history_user}}</td>
+                    <td>{{database_history.history_change_reason}}</td>
+                    <td>{{database_history.get_history_type_display}}</td>
                     {% if database_history.prev_record.name != database_history.name %}
-                        <td style="text-align:center">valeur après modification : {{database_history.name}}</td>
+                        <td>valeur après modification : {{database_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.name}}</td>
+                    <td> valeur inchangé :  {{database_history.name}}</td>
                     {% endif %}
                     {% if database_history.prev_record.type_database != database_history.type_database %}
-                    <td style="text-align:center">valeur après modification : {{database_history.type_database}}</td>
+                    <td>valeur après modification : {{database_history.type_database}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.type_database}}</td>
+                    <td> valeur inchangé :  {{database_history.type_database}}</td>
                     {% endif %}
                     {% if database_history.prev_record.ram != database_history.ram %}
-                        <td style="text-align:center">valeur après modification : {{database_history.ram}}</td>
+                        <td>valeur après modification : {{database_history.ram}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.ram}}</td>
+                    <td> valeur inchangé :  {{database_history.ram}}</td>
                     {% endif %}
                     {% if database_history.prev_record.rom != database_history.rom %}
-                        <td style="text-align:center">valeur après modification : {{database_history.rom}}</td>
+                        <td>valeur après modification : {{database_history.rom}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.rom}}</td>
+                    <td> valeur inchangé :  {{database_history.rom}}</td>
                     {% endif %}
                     {% if database_history.prev_record.nb_processor != database_history.nb_processor %}
-                    <td style="text-align:center">valeur après modification : {{database_history.nb_processor}}</td>
+                    <td>valeur après modification : {{database_history.nb_processor}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.nb_processor}}</td>
+                    <td> valeur inchangé :  {{database_history.nb_processor}}</td>
                     {% endif %}
                     {% if database_history.prev_record.v_processor != database_history.v_processor %}
-                    <td style="text-align:center">valeur après modification : {{database_history.v_processor}}</td>
+                    <td>valeur après modification : {{database_history.v_processor}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.v_processor}}</td>
+                    <td> valeur inchangé :  {{database_history.v_processor}}</td>
                     {% endif %}
                     
                    
                     {% if database_history.prev_record.rack != database_history.rack %}
-                    <td style="text-align:center">valeur après modification : {{database_history.rack}}</td>
+                    <td>valeur après modification : {{database_history.rack}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{database_history.rack}}</td>
+                    <td> valeur inchangé :  {{database_history.rack}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{database_history.history_id}}</td>
-                    <td style="text-align:center">{{database_history.history_date}}</td>
-                    <td style="text-align:center">{{database_history.history_user}}</td>
-                    <td style="text-align:center">{{database_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{database_history.get_history_type_display}}</td>
-                    <td style="text-align:center">Valeur à la création : {{ database.name }}</td> 
-                    <td style="text-align:center">Valeur à la création : {{database.type_database}}</td>
-                    <td style="text-align:center">Valeur à la création : {{database.ram}}</td>
-                    <td style="text-align:center">Valeur à la création : {{database.rom}}</td>
-                    <td style="text-align:center">Valeur à la création : {{database.nb_processor}}</td>
-                    <td style="text-align:center">Valeur à la création : {{database.v_processor}}</td>
+                    <td>{{database_history.history_id}}</td>
+                    <td>{{database_history.history_date}}</td>
+                    <td>{{database_history.history_user}}</td>
+                    <td>{{database_history.history_change_reason}}</td>
+                    <td>{{database_history.get_history_type_display}}</td>
+                    <td>Valeur à la création : {{ database.name }}</td> 
+                    <td>Valeur à la création : {{database.type_database}}</td>
+                    <td>Valeur à la création : {{database.ram}}</td>
+                    <td>Valeur à la création : {{database.rom}}</td>
+                    <td>Valeur à la création : {{database.nb_processor}}</td>
+                    <td>Valeur à la création : {{database.v_processor}}</td>
                  
-                    <td style="text-align:center">Valeur à la création : {{database.rack}}</td>
+                    <td>Valeur à la création : {{database.rack}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -414,11 +414,11 @@
             
                   .tree-line {
                     position: absolute;
-                    left: 30px; /* Ajustez selon vos besoins */
-                    top: 40px;
+                    left: 50px; /* Ajustez selon vos besoins */
+                    top: 42px;
                     
                     width: 1px; /* Largeur de la ligne */
-                    height: calc(100% - 40px); /* Hauteur de la ligne */
+                    height: calc(100% - 49px); /* Hauteur de la ligne */
                     background-color:  #040404;
                      /* Couleur de la ligne */
                 }

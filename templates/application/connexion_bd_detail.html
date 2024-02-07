@@ -29,13 +29,13 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:update-connexion_bd' connexion_bd.pk %}" > {{ connexion_bd.name }} </a></td> 
+                    <td><a href= "{% url 'base:update-connexion_bd' connexion_bd.pk %}" > {{ connexion_bd.name }} </a></td> 
                       
-                    <td style="text-align:center"><a href= "{% url 'base:detail-database' connexion_bd.database.pk %}" > {{ connexion_bd.database}}</a> </td> 
-                    <td style="text-align:center"><a href= "{% url 'base:detail-module_applicatif' connexion_bd.module_applicatif.pk %}" > {{ connexion_bd.module_applicatif}}</a></td>   
+                    <td><a href= "{% url 'base:detail-database' connexion_bd.database.pk %}" > {{ connexion_bd.database}}</a> </td> 
+                    <td><a href= "{% url 'base:detail-module_applicatif' connexion_bd.module_applicatif.pk %}" > {{ connexion_bd.module_applicatif}}</a></td>   
                                        
-                    <td style="text-align:center">{{connexion_bd.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{connexion_bd.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td>{{connexion_bd.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{connexion_bd.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   
                 </tbody>
@@ -74,45 +74,45 @@
                   {% for connexion_bd_history in connexion_bd.history.all.distinct %}
                   {% if connexion_bd_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{connexion_bd_history.history_id}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_date}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_user}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.get_history_type_display}}</td>
+                    <td>{{connexion_bd_history.history_id}}</td>
+                    <td>{{connexion_bd_history.history_date}}</td>
+                    <td>{{connexion_bd_history.history_user}}</td>
+                    <td>{{connexion_bd_history.history_change_reason}}</td>
+                    <td>{{connexion_bd_history.get_history_type_display}}</td>
                     {% if connexion_bd_history.prev_record.name != connexion_bd_history.name %}
-                        <td style="text-align:center">valeur après modification : {{connexion_bd_history.name}}</td>
+                        <td>valeur après modification : {{connexion_bd_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{connexion_bd_history.name}}</td>
+                    <td> valeur inchangé :  {{connexion_bd_history.name}}</td>
                     {% endif %}
                     {% if connexion_bd_history.prev_record.description != connexion_bd_history.description %}
-                        <td style="text-align:center">valeur après modification : {{connexion_bd_history.description}}</td>
+                        <td>valeur après modification : {{connexion_bd_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{connexion_bd_history.description}}</td>
+                    <td> valeur inchangé :  {{connexion_bd_history.description}}</td>
                     {% endif %}
                     {% if connexion_bd_history.prev_record.database != connexion_bd_history.database %}
-                        <td style="text-align:center">valeur après modification : {{connexion_bd_history.database}}</td>
+                        <td>valeur après modification : {{connexion_bd_history.database}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{connexion_bd_history.database}}</td>
+                    <td> valeur inchangé :  {{connexion_bd_history.database}}</td>
                     {% endif %}
                     {% if connexion_bd_history.prev_record.module_applicatif != connexion_bd_history.module_applicatif %}
-                        <td style="text-align:center">valeur après modification : {{connexion_bd_history.module_applicatif}}</td>
+                        <td>valeur après modification : {{connexion_bd_history.module_applicatif}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{connexion_bd_history.module_applicatif}}</td>
+                    <td> valeur inchangé :  {{connexion_bd_history.module_applicatif}}</td>
                     {% endif %}
 
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{connexion_bd_history.history_id}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_date}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_user}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{connexion_bd_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{connexion_bd_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{connexion_bd.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{connexion_bd.database}}</td>
-                    <td style="text-align:center"> valeur a la création :{{connexion_bd.module_applicatif}}</td>
+                    <td>{{connexion_bd_history.history_id}}</td>
+                    <td>{{connexion_bd_history.history_date}}</td>
+                    <td>{{connexion_bd_history.history_user}}</td>
+                    <td>{{connexion_bd_history.history_change_reason}}</td>
+                    <td>{{connexion_bd_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{connexion_bd_history.name}}</td>
+                    <td> valeur a la création :{{connexion_bd.description}}</td>
+                    <td> valeur a la création :{{connexion_bd.database}}</td>
+                    <td> valeur a la création :{{connexion_bd.module_applicatif}}</td>
                     
                   </tr>
                   {% endif %}

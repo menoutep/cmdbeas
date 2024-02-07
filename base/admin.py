@@ -1,23 +1,41 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from .models import AppType, BackupStrategie, Application,SystemeStockage, Vendor, ModuleApplicatif,Server,Departement,Rack,ServerRoom,Datacenter,Partition,DeploiementCluster,Database,DatabaseServer
 from simple_history.admin import SimpleHistoryAdmin
-
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from accounts.forms import CustomUserUpdateForm
+from base.forms import BackupStrategieUpdateForm
 from accounts.models import User
 # Register your models here.
 #@admin.register(BackupStrategie)
+
+
+
+class UserAdmin(BaseUserAdmin):
+    list_display = ('username', 'email', 'contact', 'departement', 'last_password_change', 'updated', 'reset_by_admin')
+    list_filter = ('departement', 'reset_by_admin', 'last_password_change', 'updated')
+    search_fields = ('username', 'email', 'contact','departement')
+
+    form = CustomUserUpdateForm
+admin.site.register(User, UserAdmin)
+
+
 class BackupStrategieAdmin(SimpleHistoryAdmin):
-    #list_display = ('name', 'file', 'updated', 'created', 'history_change_reason')
+    list_filter = ('name', 'file', 'updated')
     history_list_display = ["file"]
-    search_fields = ['name', 'file']
-    #history_list_display = ('history_change_reason')
+    search_fields = ['name', 'file','applications__name']
+    empty_value_display = "unknown"
+    form = BackupStrategieUpdateForm
 admin.site.register(BackupStrategie, BackupStrategieAdmin)
 class DepartementAdmin(SimpleHistoryAdmin):
-    #list_display = ('name', 'file', 'updated', 'created', 'history_change_reason')
-    history_list_display = ["name","description"]
-    search_fields = ['name']
-    #history_list_display = ('history_change_reason')
+    list_filter = ('name','updated','created')
+    history_list_display = ["name","description","users_name"]
+    search_fields = ["name","description","users_name"]
 admin.site.register(Departement, DepartementAdmin)
-admin.site.register(User)
+
+#####Application start######################
+
+#####Application end#############################
 admin.site.register(AppType)
 #admin.site.register(BackupStrategie)
 admin.site.register(Application)

@@ -29,12 +29,12 @@
                
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-call_flow' call_flow.pk %}" > {{ call_flow.name }} </a></td> 
-                            <td style="text-align:center">{{call_flow.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-use_case' call_flow.use_case.pk %}" >{{call_flow.use_case}} </a></td>
-                            <td style="text-align:center">{{call_flow.file}}</td>
-                            <td style="text-align:center">{{call_flow.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{call_flow.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:update-call_flow' call_flow.pk %}" > {{ call_flow.name }} </a></td> 
+                            <td>{{call_flow.description}}</td>
+                            <td><a href="{% url 'base:detail-use_case' call_flow.use_case.pk %}" >{{call_flow.use_case}} </a></td>
+                            <td>{{call_flow.file}}</td>
+                            <td>{{call_flow.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{call_flow.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                  
@@ -88,45 +88,45 @@
                   {% for call_flow_history in call_flow.history.all.distinct %}
                   {% if call_flow_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{call_flow_history.history_id}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_date}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_user}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{call_flow_history.get_history_type_display}}</td>
+                    <td>{{call_flow_history.history_id}}</td>
+                    <td>{{call_flow_history.history_date}}</td>
+                    <td>{{call_flow_history.history_user}}</td>
+                    <td>{{call_flow_history.history_change_reason}}</td>
+                    <td>{{call_flow_history.get_history_type_display}}</td>
                     {% if call_flow_history.prev_record.name != call_flow_history.name %}
-                        <td style="text-align:center">valeur après modification : {{call_flow_history.name}}</td>
+                        <td>valeur après modification : {{call_flow_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{call_flow_history.name}}</td>
+                    <td> valeur inchangé :  {{call_flow_history.name}}</td>
                     {% endif %}
                     {% if call_flow_history.prev_record.description != call_flow_history.description %}
-                        <td style="text-align:center">valeur après modification : {{call_flow_history.description}}</td>
+                        <td>valeur après modification : {{call_flow_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{call_flow_history.description}}</td>
+                    <td> valeur inchangé :  {{call_flow_history.description}}</td>
                     {% endif %}
                     {% if call_flow_history.prev_record.use_case != call_flow_history.use_case %}
-                        <td style="text-align:center">valeur après modification : {{call_flow_history.use_case}}</td>
+                        <td>valeur après modification : {{call_flow_history.use_case}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{call_flow_history.use_case}}</td>
+                    <td> valeur inchangé :  {{call_flow_history.use_case}}</td>
                     {% endif %}
                     {% if call_flow_history.prev_record.file != call_flow_history.file %}
-                        <td style="text-align:center">valeur après modification : {{call_flow_history.file}}</td>
+                        <td>valeur après modification : {{call_flow_history.file}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{call_flow_history.file}}</td>
+                    <td> valeur inchangé :  {{call_flow_history.file}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{call_flow_history.history_id}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_date}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_user}}</td>
-                    <td style="text-align:center">{{call_flow_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{call_flow_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{call_flow_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{call_flow.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{call_flow.use_case}}</td>
-                    <td style="text-align:center"> valeur a la création :{{call_flow.file}}</td>
+                    <td>{{call_flow_history.history_id}}</td>
+                    <td>{{call_flow_history.history_date}}</td>
+                    <td>{{call_flow_history.history_user}}</td>
+                    <td>{{call_flow_history.history_change_reason}}</td>
+                    <td>{{call_flow_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{call_flow_history.name}}</td>
+                    <td> valeur a la création :{{call_flow.description}}</td>
+                    <td> valeur a la création :{{call_flow.use_case}}</td>
+                    <td> valeur a la création :{{call_flow.file}}</td>
                     
 
                   </tr>

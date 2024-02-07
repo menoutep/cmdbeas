@@ -32,12 +32,159 @@
 
 <body class="with-welcome-text">
   <div class="container-scroller">
-<style>
-    a{
-        text-decoration: none;
-        color : #000000;
+  <style>
+      a{
+          text-decoration: none;
+          color : #000000;
+  
+      }
+      .navbar {
+        font-weight: 400;
+        transition: background 0.25s ease;
+        -webkit-transition: background 0.25s ease;
+        -moz-transition: background 0.25s ease;
+        -ms-transition: background 0.25s ease;
+        box-shadow: none;
+        background: #F4F5F7;
+        height: 67px;
+      }
+
+      .navbar .navbar-brand-wrapper {
+        background: #F4F5F7;
+        transition: width 0.25s ease, background 0.25s ease;
+        -webkit-transition: width 0.25s ease, background 0.25s ease;
+        -moz-transition: width 0.25s ease, background 0.25s ease;
+        -ms-transition: width 0.25s ease, background 0.25s ease;
+        width: 220px;
+        height: 67px;
+        padding: 20px 35px;
+        }
+
+
+    .page-body-wrapper {
+        min-height: calc(100vh - 67px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 67px;
     }
-</style>
+      .navbar .navbar-menu-wrapper {
+        background: #F4F5F7;
+        transition: width 0.25s ease;
+        -webkit-transition: width 0.25s ease;
+        -moz-transition: width 0.25s ease;
+        -ms-transition: width 0.25s ease;
+        color: #6C7383;
+        padding-left: 3.5rem;
+        padding-right: 2.187rem;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        width: calc(100% - 220px);
+        height: 67px;
+    }
+    .card .card-title {
+        color: #010101;
+        margin-bottom: 0.5rem;
+        text-transform: capitalize;
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+      .card .card-description {
+        margin-bottom: 0.475rem;
+        font-weight: 400;
+        color: #76838f;
+    }
+      .table th, .table td {
+        vertical-align: middle;
+        line-height: 1;
+        white-space: nowrap;
+        padding: 0.25rem 1.375rem;
+    }
+    .sidebar .nav {
+      overflow: hidden;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      margin-bottom: 60px;
+      padding-top : 1rem;
+    }
+    .sidebar .nav.sub-menu {
+        margin-bottom: 0;
+        margin-top: 0;
+        list-style: none;
+        padding: 0.0005rem 0 0 2.25rem;
+        padding-bottom: 0;
+        background: #fff;
+        padding-bottom: 12px;
+    }
+    .sidebar .nav:not(.sub-menu) > .nav-item {
+      /* margin-top: 0.2rem; */
+    }
+    .navbar .navbar-menu-wrapper .navbar-nav .nav-item .welcome-text{
+      font-family: "Manrope", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 28px;
+      line-height: 38px;
+      color: #8D8D8D;
+      margin-bottom: 4px;
+    }
+    .sidebar .nav .nav-item.nav-category {
+      color: #404040;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+      margin: 0 25px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 10px 0px 0px 0px;
+      text-transform: uppercase;
+    }
+    .sidebar .nav .nav-item .nav-link {
+      
+      display: flex;
+      -webkit-align-items: center;
+      align-items: center;
+      white-space: nowrap;
+      padding: 3px 5px 3px 25px;
+      color: #484848;
+      border-radius: 0px 20px 20px 0px;
+      -webkit-transition-duration: 0.45s;
+      -moz-transition-duration: 0.45s;
+      -o-transition-duration: 0.45s;
+      transition-duration: 0.45s;
+      transition-property: color;
+      -webkit-transition-property: color;
+      font-weight: 400;
+    }
+
+    .sidebar .nav.sub-menu .nav-item .nav-link {
+      color: #484848;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      position: relative;
+      font-size: 12px;
+      line-height: 1;
+      height: auto;
+      border-top: 0;
+    }
+    .content-wrapper {
+      background: #F4F5F7;
+      padding: 1.5rem 2.187rem 1.5rem;
+      width: 100%;
+      -webkit-flex-grow: 1;
+      flex-grow: 1;
+    }
+    .sidebar .nav:not(.sub-menu) > .nav-item {
+      /* margin-top: 0.2rem; */
+    }
+    ul li, ol li, dl li {
+      line-height: 1;
+    }
+  
+  </style>
     <!-- partial:partials/_navbar.html -->
     
     {% load static %}
@@ -66,113 +213,24 @@
           </ul>
           <ul class="navbar-nav ms-auto" style="background-color:#f7df64">
             {%block categories%}{%endblock%}
-            <li class="nav-item d-none d-lg-block">
-              <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-                <span class="input-group-addon input-group-prepend border-right">
-                  <span class="icon-calendar input-group-text calendar-icon"></span>
-                </span>
-                <input type="text" class="form-control">
-              </div>
-            </li>
+         
             {% block form-search %}{% endblock %}
-            <li class="nav-item dropdown">
-              <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                <i class="icon-bell"></i>
-                <span class="count"></span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
-                aria-labelledby="notificationDropdown">
-                <a class="dropdown-item py-3 border-bottom">
-                  <p class="mb-0 font-weight-medium float-left">You have 4 new notifications </p>
-                  <span class="badge badge-pill badge-primary float-right">View all</span>
-                </a>
-                <a class="dropdown-item preview-item py-3">
-                  <div class="preview-thumbnail">
-                    <i class="mdi mdi-alert m-auto text-primary"></i>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject fw-normal text-dark mb-1">Application Error</h6>
-                    <p class="fw-light small-text mb-0"> Just now </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item py-3">
-                  <div class="preview-thumbnail">
-                    <i class="mdi mdi-settings m-auto text-primary"></i>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject fw-normal text-dark mb-1">Settings</h6>
-                    <p class="fw-light small-text mb-0"> Private message </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item py-3">
-                  <div class="preview-thumbnail">
-                    <i class="mdi mdi-airballoon m-auto text-primary"></i>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject fw-normal text-dark mb-1">New user registration</h6>
-                    <p class="fw-light small-text mb-0"> 2 days ago </p>
-                  </div>
-                </a>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="icon-mail icon-lg"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
-                aria-labelledby="countDropdown">
-                <a class="dropdown-item py-3">
-                  <p class="mb-0 font-weight-medium float-left">You have 7 unread mails </p>
-                  <span class="badge badge-pill badge-primary float-right">View all</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <img src="../assets/images/faces/face10.jpg" alt="image" class="img-sm profile-pic">
-                  </div>
-                  <div class="preview-item-content flex-grow py-2">
-                    <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
-                    <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <img src="../assets/images/faces/face12.jpg" alt="image" class="img-sm profile-pic">
-                  </div>
-                  <div class="preview-item-content flex-grow py-2">
-                    <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
-                    <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <img src="../assets/images/faces/face1.jpg" alt="image" class="img-sm profile-pic">
-                  </div>
-                  <div class="preview-item-content flex-grow py-2">
-                    <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
-                    <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
-                  </div>
-                </a>
-              </div>
-            </li>
+       
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-              <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image"> </a>
+              <a class="nav-link" id="UserDropdown" href="{% url 'accounts:detail-user' request.user.pk %}" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="menu-icon mdi mdi-account-circle-outline"></i></a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
-                  <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
+                  
+                  <p class="mb-1 mt-3 font-weight-semibold">{{request.user.username}}</p>
+                  <p class="fw-light text-muted mb-0">{{request.user.email}}</p>
                 </div>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My
+                <a class="dropdown-item" href="{% url 'accounts:detail-user' request.user.pk %}"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My
                   Profile <span class="badge badge-pill badge-danger">1</span></a>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i>
-                  Messages</a>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-calendar-check-outline text-primary me-2"></i>
-                  Activity</a>
+      
                 <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-help-circle-outline text-primary me-2"></i>
                   FAQ</a>
-                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Se deconnecter</a>
               </div>
             </li>
           </ul>
@@ -387,8 +445,8 @@
           </a>
           <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{% url 'base:server-list' %}">Voir les serveurs </a></li>
-              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-server' %}">creer un serveur</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:app_server-list' %}">Voir les serveurs </a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-app_server' %}">creer un serveur</a></li>
     
             </ul>
           </div>

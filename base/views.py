@@ -499,7 +499,7 @@ class DomainNameListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_domainname"
     model = DomainName
     template_name = 'documentation/domain_name_list.html'
-    context_object_name = 'data_dictionnaries'
+    context_object_name = 'domain_names'
     def get(self, request, *args, **kwargs):
         # Récupérer le paramètre de la requête GET
         q = self.request.GET.get('q', '')
@@ -617,7 +617,24 @@ class IpAdressListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = IpAdress
     template_name = 'network/ip_adress_list.html'
     context_object_name = 'ip_adresses'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = IpAdress.objects.all()
+        if q :
+          queryset = IpAdress.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(ipv4__icontains=q) |          
+                            Q(clusters__name__icontains=q) |   
+                            Q(domains_names__name__icontains=q) |  
+                            Q(interface__name__icontains=q))  
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'ip_adresses': queryset}
+        return render(request, self.template_name, context)
 
+ 
 
 class IpAdressDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_ipadress"
@@ -658,6 +675,25 @@ class DepartementListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Departement
     template_name = 'application/departement_list.html'
     context_object_name = 'departements'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Departement.objects.all()
+        if q :
+          queryset = Departement.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(users__email__icontains=q) |        
+                            Q(users__first_name__icontains=q) |   
+                            Q(users__last_name__icontains=q) | 
+                            Q(users__username__icontains=q)  
+                           )  
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'departements': queryset}
+        return render(request, self.template_name, context)
+
+ 
 
 class DepartementDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_departement"
@@ -694,6 +730,8 @@ class AppTypeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = AppType
     template_name = 'application/apptype_list.html'
     context_object_name = 'apptypes'
+   
+  
 
 class AppTypeDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_apptype"
@@ -798,6 +836,31 @@ class ModuleApplicatifListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
     model = ModuleApplicatif
     template_name = 'application/module_applicatif_list.html'
     context_object_name = 'module_applicatifs'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = ModuleApplicatif.objects.all()
+        if q :
+          queryset = ModuleApplicatif.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(application__name__icontains=q) |        
+                            Q(departement__name__icontains=q) |   
+                            Q(databases__name__icontains=q) |
+                            Q(notifications__name__icontains=q) |
+                            Q(notifications__notifications__icontains=q) |
+                            Q(apis__name__icontains=q) |
+                            Q(appels_apis__name__icontains=q) |
+                            Q(apps_servers__name__icontains=q) |
+                            Q(urls__name__icontains=q) | 
+                            Q(smpps_accounts__name__icontains=q) | 
+                            Q(vendor__name__icontains=q) | 
+                            Q(description__icontains=q)  
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'module_applicatifs': queryset}
+        return render(request, self.template_name, context)
 
 class ModuleApplicatifDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_moduleapplicatif"
@@ -845,7 +908,7 @@ class ApplicationListView(LoginRequiredMixin,PermissionRequiredMixin,View):
             if parametre == 'in_house':
             # Afficher les applications liées à un objet Cluster
                 queryset = queryset.filter(app_type__name=parametre)
-            elif parametre == 'Vendor':
+            elif parametre == 'vendor':
             # Afficher les applications liées à un objet Server
                 queryset = queryset.filter(app_type__name=parametre)
     
@@ -1041,6 +1104,27 @@ class ProcessListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Process
     template_name = 'integration/process_list.html'
     context_object_name = 'processes'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        parametre = request.GET.get('parametre')
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Process.objects.all()
+
+        # Vérifier le type du paramètre et trier en conséquence
+        
+        if q : 
+          queryset = Process.objects.filter(
+                              Q(name__icontains=q) |
+                              Q(sub_processes__name__icontains=q) |          
+                              Q(description__name__icontains=q)
+                                ).distinct()  # Ajout pour filtrer par nom de système de stockage
+                                
+        # Passer le queryset trié au template
+        context = {'processes': queryset}
+        return render(request, 'integration/process_list.html', context)
+    
+
 class ProcessDetailView(DetailView):
     permission_required = "base.view_process"
     model = Process
@@ -1074,6 +1158,29 @@ class SubProcessListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = SubProcess
     template_name = 'integration/sub_process_list.html'
     context_object_name = 'sub_processes'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        parametre = request.GET.get('parametre')
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = SubProcess.objects.all()
+
+        # Vérifier le type du paramètre et trier en conséquence
+        
+        if q : 
+          queryset = SubProcess.objects.filter(
+                              Q(name__icontains=q) |
+                              Q(process__name__icontains=q) | 
+                              Q(process__description__icontains=q) | 
+                              Q(description__icontains=q) |   
+                              Q(uses_cases__description__icontains=q) |        
+                              Q(uses_cases__name__icontains=q)
+                                ).distinct()  # Ajout pour filtrer par nom de système de stockage
+                                
+        # Passer le queryset trié au template
+        context = {'sub_processes': queryset}
+        return render(request, self.template_name, context)
+    
 class SubProcessDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_subprocess"
     model = SubProcess
@@ -1107,6 +1214,28 @@ class UseCaseListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = UseCase
     template_name = 'integration/use_case_list.html'
     context_object_name = 'use_cases'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = UseCase.objects.all()
+        if q :
+          queryset = UseCase.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(sub_process__name__icontains=q) |        
+                            Q(sub_process__process__name__icontains=q) |   
+                            Q(description__icontains=q) |
+                            Q(sub_process__description__icontains=q) |  
+                            Q(appels_apis__name__icontains=q) |
+                            Q(apis__name__icontains=q) |
+                            Q(appels_apis__name__icontains=q) |
+                            Q(calls_flows__name__icontains=q) 
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'use_cases': queryset}
+        return render(request, self.template_name, context)
+
 class UseCaseDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_usecase"
     model = UseCase
@@ -1140,6 +1269,25 @@ class ApiListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Api
     template_name = 'integration/api_list.html'
     context_object_name = 'apis'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Api.objects.all()
+        if q :
+          queryset = Api.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(module_applicatif__name__icontains=q) |        
+                            Q(appels_apis__name__icontains=q) |   
+                            Q(apis_specifications__name__icontains=q) |
+                            Q(apis_documentations__name__icontains=q)  
+                        
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'apis': queryset}
+        return render(request, self.template_name, context)
+
 class ApiDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_api"
     model = Api
@@ -1173,6 +1321,24 @@ class AppelApiListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = AppelApi
     template_name = 'integration/appel_api_list.html'
     context_object_name = 'appel_apis'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Api.objects.all()
+        if q :
+          queryset = Api.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(module_applicatif__name__icontains=q) |        
+                            Q(api__name__icontains=q) |   
+                            Q(use_case__name__icontains=q) |
+                            Q(description__icontains=q)  
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'appels_apis': queryset}
+        return render(request, self.template_name, context)
+
 class AppelApiDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_appelapi"
     model = AppelApi
@@ -1426,6 +1592,23 @@ class SystemeStockageListView(LoginRequiredMixin,PermissionRequiredMixin,ListVie
     model = SystemeStockage
     template_name = 'systeme/systeme_stockage_list.html'
     context_object_name = 'systeme_stockages'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = Api.objects.all()
+        if q :
+          queryset = Api.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(servers__name__icontains=q) |        
+                            Q(servers__description__icontains=q) |   
+                            Q(description__icontains=q)  
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'systeme_stockages': queryset}
+        return render(request, self.template_name, context)
+
 
 class SystemeStockageDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_systemestockage"
@@ -1551,6 +1734,25 @@ class DeploiementClusterListView(LoginRequiredMixin,PermissionRequiredMixin,List
     model = DeploiementCluster
     template_name = 'systeme/deploiement_cluster_list.html'
     context_object_name = 'deploiement_clusters'
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = DeploiementCluster.objects.all()
+        if q :
+          queryset = DeploiementCluster.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(server__name__icontains=q) |        
+                            Q(cluster__name__icontains=q) |  
+                            Q(cluster__description__icontains=q) | 
+                            Q(server__description__icontains=q)  
+                           ).distinct() 
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'deploiement_clusters': queryset}
+        return render(request, self.template_name, context)
+
+
 class DeploiementClusterDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_deploiementcluster"
     model = DeploiementCluster
@@ -1632,6 +1834,7 @@ class PartitionCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView)
     form_class = PartitionForm
     template_name = 'systeme/partition_form.html'
     success_url = reverse_lazy('base:partition-list')
+
 class PartitionUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = "base.change_partition"
     model = Partition
@@ -1867,8 +2070,7 @@ class BackupStrategieCreateView(LoginRequiredMixin,PermissionRequiredMixin,Creat
     template_name = 'documentation/backupstrategie_form.html'
     form_class = BackupStrategieCreateForm
     success_url = reverse_lazy('base:backupstrategie-list')
-    def form_valid(self, form):
-        return super().form_valid(form)
+
 
 class BackupStrategieUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = "base.change_backupstrategie"
@@ -2248,7 +2450,7 @@ class DataDictionnaryModelListView(LoginRequiredMixin,PermissionRequiredMixin,Li
         queryset = DataDictionnaryModel.objects.all()
         if q :
           queryset = DataDictionnaryModel.objects.filter(
-                            Q(name__icontains=q) |
+                            
                             Q(data_model__name__icontains=q) |   
                             Q(data_dictionnary__name__icontains=q)       
                             )  

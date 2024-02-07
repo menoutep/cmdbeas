@@ -29,12 +29,12 @@
                   {% for backup_strategie in backup_strategies %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:backupstrategie-detail' backup_strategie.pk %}" > {{ backup_strategie.name }} </a></td> 
-                            <td style="text-align:center">{{backup_strategie.description}}</td>
+                            <td><a href="{% url 'base:backupstrategie-detail' backup_strategie.pk %}" > {{ backup_strategie.name }} </a></td> 
+                            <td>{{backup_strategie.description}}</td>
                             
-                            <td style="text-align:center">{{backup_strategie.file}}</td>
-                            <td style="text-align:center">{{backup_strategie.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{backup_strategie.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{backup_strategie.file}}</td>
+                            <td>{{backup_strategie.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{backup_strategie.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

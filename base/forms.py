@@ -1649,14 +1649,15 @@ class BackupStrategieUpdateForm(BackupStrategieCreateForm):
     )
     class Meta:
         model = BackupStrategie
-        fields = ['name', 'file','historical_change_reason']
+        fields = ['name', 'file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
+            instance._change_reason = historical_change_reason
+            
             
         if commit:
             instance.save()
@@ -1951,15 +1952,14 @@ class ApiDocumentationUpdateForm(ApiDocumentationCreateForm):
     )
     class Meta:
         model = ApiDocumentation
-        fields = ['name','description','api_specification' ,'file','historical_change_reason']
+        fields = ['name','description','api_specification' ,'file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
@@ -2046,18 +2046,17 @@ class DataDictionnaryModelUpdateForm(DataDictionnaryModelCreateForm):
     )
     class Meta:
         model = DataDictionnaryModel
-        fields = ['data_model','data_dictionnary','historical_change_reason']
+        fields = ['data_model','data_dictionnary']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
-
 class DomainNameCreateForm(forms.ModelForm):
     name = forms.CharField(
         max_length=150,

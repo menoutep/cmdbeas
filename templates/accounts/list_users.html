@@ -24,7 +24,7 @@
 {%endblock%}
 {%block form-search%}
 <li class="nav-item">
-  <form method="GET" class="search-form" action="{% url 'accounts:list-permissions' %}">
+  <form method="GET" class="search-form" action="{% url 'accounts:user-list' %}">
     <i class="icon-search"></i>
     <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
   </form>
@@ -65,15 +65,15 @@
                   {% for user in users %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'accounts:detail-user' user.pk %}" >{{ user.first_name }} </a></td>
-                            <td style="text-align:center">{{ user.last_name }}</td>
-                            <td style="text-align:center">{{ user.email }}</td>
-                            <td style="text-align:center">{{ user.username }}</td>
-                            <td style="text-align:center">{{ user.contact }}</td>
-                            <td style="text-align:center">{{ user.departement }}</td>
-                            <td style="text-align:center">{{ user.is_active }}</td>
-                            <td style="text-align:center">{{ user.updated|date:"DATETIME_FORMAT" }}</td>
-                            <td style="text-align:center">{{ user.date_joined }}</td>                    
+                            <td><a href="{% url 'accounts:detail-user' user.pk %}" >{{ user.first_name }} </a></td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.contact }}</td>
+                            <td>{{ user.departement }}</td>
+                            <td>{{ user.is_active }}</td>
+                            <td>{{ user.updated|date:"DATETIME_FORMAT" }}</td>
+                            <td>{{ user.date_joined }}</td>                    
                         </tr>
                     
                   {% endfor %}

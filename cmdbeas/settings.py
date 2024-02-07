@@ -125,9 +125,10 @@ AUTHENTICATION_BACKENDS = (
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
+LOGIN_REDIRECT_URL='base:index'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
-]
+] 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT=BASE_DIR/'media'

@@ -37,13 +37,13 @@
                   {% for cluster in clusters %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
                             
-                            <td style="text-align:center"><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
-                            <td style="text-align:center">{{cluster.servers.all.distinct.count}}</td>
+                            <td><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
+                            <td>{{cluster.servers.all.distinct.count}}</td>
                             
-                            <td style="text-align:center">{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{cluster.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{cluster.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

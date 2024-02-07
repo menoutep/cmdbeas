@@ -26,11 +26,11 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:update-rack' rack.pk %}" >{{ rack.name }} </a></td> 
-                    <td style="text-align:center"><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
-                    <td style="text-align:center"> {{rack.servers.all.distinct.count}} </td>
-                    <td style="text-align:center">{{rack.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{rack.created|date:"DATETIME_FORMAT"}}</td>
+                    <td><a href="{% url 'base:update-rack' rack.pk %}" >{{ rack.name }} </a></td> 
+                    <td><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
+                    <td> {{rack.servers.all.distinct.count}} </td>
+                    <td>{{rack.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{rack.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -70,16 +70,16 @@
                 <tbody>
                   {%for server in rack.servers.all.distinct%}
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:detail-server' server.pk %}" >{{ server }} </a></td> 
-                    <td style="text-align:center">{{server.type_server}}</td>
-                    <td style="text-align:center">{{server.ram}}</td>
-                    <td style="text-align:center">{{server.rom}}</td>
-                    <td style="text-align:center">{{server.nb_processor}}</td>
-                    <td style="text-align:center">{{server.v_processor}}</td>
+                    <td><a href="{% url 'base:detail-server' server.pk %}" >{{ server }} </a></td> 
+                    <td>{{server.type_server}}</td>
+                    <td>{{server.ram}}</td>
+                    <td>{{server.rom}}</td>
+                    <td>{{server.nb_processor}}</td>
+                    <td>{{server.v_processor}}</td>
  
-                    <td style="text-align:center"><a href="{% url 'base:update-rack' server.rack.pk %}" >{{server.rack}}</td>
-                    <td style="text-align:center">{{server.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{server.created|date:"DATETIME_FORMAT"}}</td>
+                    <td><a href="{% url 'base:update-rack' server.rack.pk %}" >{{server.rack}}</td>
+                    <td>{{server.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{server.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                   {%endfor%}
@@ -118,32 +118,32 @@
                   {% for rack_history in rack.history.all.distinct %}
                   {% if rack_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{rack_history.history_id}}</td>
-                    <td style="text-align:center">{{rack_history.history_date}}</td>
-                    <td style="text-align:center">{{rack_history.history_user}}</td>
-                    <td style="text-align:center">{{rack_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{rack_history.get_history_type_display}}</td>
+                    <td>{{rack_history.history_id}}</td>
+                    <td>{{rack_history.history_date}}</td>
+                    <td>{{rack_history.history_user}}</td>
+                    <td>{{rack_history.history_change_reason}}</td>
+                    <td>{{rack_history.get_history_type_display}}</td>
                     {% if rack_history.prev_record.name != rack_history.name %}
-                        <td style="text-align:center">valeur après modification : {{rack_history.name}}</td>
+                        <td>valeur après modification : {{rack_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{rack_history.name}}</td>
+                    <td> valeur inchangé :  {{rack_history.name}}</td>
                     {% endif %}
                     {% if rack_history.prev_record.server_room != rack_history.server_room %}
-                        <td style="text-align:center">valeur après modification : {{rack_history.server_room}}</td>
+                        <td>valeur après modification : {{rack_history.server_room}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{rack_history.server_room}}</td>
+                    <td> valeur inchangé :  {{rack_history.server_room}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{rack_history.history_id}}</td>
-                    <td style="text-align:center">{{rack_history.history_date}}</td>
-                    <td style="text-align:center">{{rack_history.history_user}}</td>
-                    <td style="text-align:center">{{rack_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{rack_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{rack_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{rack_history.server_room}}</td>
+                    <td>{{rack_history.history_id}}</td>
+                    <td>{{rack_history.history_date}}</td>
+                    <td>{{rack_history.history_user}}</td>
+                    <td>{{rack_history.history_change_reason}}</td>
+                    <td>{{rack_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{rack_history.name}}</td>
+                    <td>valeur a la création: {{rack_history.server_room}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

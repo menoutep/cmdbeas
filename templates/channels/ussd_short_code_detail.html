@@ -30,15 +30,15 @@
                 <tbody>
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-ussd_short_code' ussd_short_code.pk %}" > {{ ussd_short_code.name }} </a></td> 
-                            <td style="text-align:center">{{ussd_short_code.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-url' ussd_short_code.url.pk %}" >{{ussd_short_code.url}}</a></td>
-                            <td style="text-align:center">{{ussd_short_code.code}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' ussd_short_code.url.module_applicatif.pk %}" >{{ussd_short_code.url.module_applicatif}}</a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-application' ussd_short_code.url.module_applicatif.application.pk %}" >{{ussd_short_code.url.module_applicatif.application}}</a></td>
+                            <td><a href="{% url 'base:detail-ussd_short_code' ussd_short_code.pk %}" > {{ ussd_short_code.name }} </a></td> 
+                            <td>{{ussd_short_code.description}}</td>
+                            <td><a href="{% url 'base:detail-url' ussd_short_code.url.pk %}" >{{ussd_short_code.url}}</a></td>
+                            <td>{{ussd_short_code.code}}</td>
+                            <td><a href="{% url 'base:detail-module_applicatif' ussd_short_code.url.module_applicatif.pk %}" >{{ussd_short_code.url.module_applicatif}}</a></td>
+                            <td><a href="{% url 'base:detail-application' ussd_short_code.url.module_applicatif.application.pk %}" >{{ussd_short_code.url.module_applicatif.application}}</a></td>
 
-                            <td style="text-align:center">{{ussd_short_code.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{ussd_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{ussd_short_code.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{ussd_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                 </tbody>
@@ -78,30 +78,30 @@
                   {% for ussd_short_code_history in ussd_short_code.history.all.distinct %}
                   {% if ussd_short_code_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{ussd_short_code_history.history_id}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_date}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_user}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.get_history_type_display}}</td>
+                    <td>{{ussd_short_code_history.history_id}}</td>
+                    <td>{{ussd_short_code_history.history_date}}</td>
+                    <td>{{ussd_short_code_history.history_user}}</td>
+                    <td>{{ussd_short_code_history.history_change_reason}}</td>
+                    <td>{{ussd_short_code_history.get_history_type_display}}</td>
                     {% if ussd_short_code_history.prev_record.name != ussd_short_code_history.name %}
-                        <td style="text-align:center">valeur après modification : {{ussd_short_code_history.name}}</td>
+                        <td>valeur après modification : {{ussd_short_code_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{ussd_short_code_history.name}}</td>
+                    <td> valeur inchangé :  {{ussd_short_code_history.name}}</td>
                     {% endif %}
                     {% if ussd_short_code_history.prev_record.description != ussd_short_code_history.description %}
-                        <td style="text-align:center">valeur après modification : {{ussd_short_code_history.description}}</td>
+                        <td>valeur après modification : {{ussd_short_code_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{ussd_short_code_history.description}}</td>
+                    <td> valeur inchangé :  {{ussd_short_code_history.description}}</td>
                     {% endif %}
                     {% if ussd_short_code_history.prev_record.url != ussd_short_code_history.url %}
-                    <td style="text-align:center">valeur après modification : {{ussd_short_code_history.url}}</td>
+                    <td>valeur après modification : {{ussd_short_code_history.url}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{ussd_short_code_history.url}}</td>
+                    <td> valeur inchangé :  {{ussd_short_code_history.url}}</td>
                     {% endif %}
                     {% if ussd_short_code_history.prev_record.code != ussd_short_code_history.code %}
-                    <td style="text-align:center">valeur après modification : {{ussd_short_code_history.code}}</td>
+                    <td>valeur après modification : {{ussd_short_code_history.code}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{ussd_short_code_history.code}}</td>
+                    <td> valeur inchangé :  {{ussd_short_code_history.code}}</td>
                     {% endif %}
                 
                     
@@ -109,15 +109,15 @@
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{ussd_short_code_history.history_id}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_date}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_user}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{ussd_short_code_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{ussd_short_code_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création : {{ussd_short_code_history.description}}</td>
-                    <td style="text-align:center"> valeur a la création : {{ussd_short_code_history.url}}</td>
-                    <td style="text-align:center"> valeur a la création : {{ussd_short_code_history.code}}</td>                   
+                    <td>{{ussd_short_code_history.history_id}}</td>
+                    <td>{{ussd_short_code_history.history_date}}</td>
+                    <td>{{ussd_short_code_history.history_user}}</td>
+                    <td>{{ussd_short_code_history.history_change_reason}}</td>
+                    <td>{{ussd_short_code_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{ussd_short_code_history.name}}</td>
+                    <td> valeur a la création : {{ussd_short_code_history.description}}</td>
+                    <td> valeur a la création : {{ussd_short_code_history.url}}</td>
+                    <td> valeur a la création : {{ussd_short_code_history.code}}</td>                   
 
                   </tr>
                   {% endif %}

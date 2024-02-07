@@ -65,16 +65,16 @@
                 <tbody>
                   {% for application in applications %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-application' application.pk %}"> {{ application.name }} </a></td> 
-                    <td style="text-align:center">{{application.description}}</td>
-                    <td style="text-align:center">{{application.replication}}</td>
-                    <td style="text-align:center">{{application.priority}}</td>
-                    <td style="text-align:center">{{application.control_name}}</td>
-                    <td style="text-align:center">{{application.deployement_year}}</td>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}} </a></td>
-                    <td style="text-align:center"><a href= "">{{application.backup_strategie}}</a></td>
-                    <td style="text-align:center">{{application.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{application.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td><a href= "{% url 'base:detail-application' application.pk %}"> {{ application.name }} </a></td> 
+                    <td>{{application.description}}</td>
+                    <td>{{application.replication}}</td>
+                    <td>{{application.priority}}</td>
+                    <td>{{application.control_name}}</td>
+                    <td>{{application.deployement_year}}</td>
+                    <td><a href= "{% url 'base:detail-apptype' application.app_type.pk %}">{{application.app_type}} </a></td>
+                    <td><a href= "">{{application.backup_strategie}}</a></td>
+                    <td>{{application.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{application.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>

@@ -1,0 +1,52 @@
+{% extends 'documentation/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos correspondances model de donées et dictionnaire de données</h4>
+            <p class="card-description">
+              Liste de toute les correspondances entre le modèle de donnée et le dictionnaire de données
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Mappage</th>
+                    <th>Models de données</th>
+                    <th>Dictionnaire de données</th>
+                   
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for data_dictionnary_model in data_dictionnary_models %}
+                  
+                        <tr>
+                          <td><a href="{% url 'base:detail-data_dictionnary_model' data_dictionnary_model.pk %}" > {{ data_dictionnary_model}} </a></td> 
+
+                            <td><a href="{% url 'base:detail-data_model' data_dictionnary_model.data_model.pk %}" > {{ data_dictionnary_model.data_model.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-data_dictionnary' data_dictionnary_model.data_dictionnary.pk %}" > {{ data_dictionnary_model.data_dictionnary.name }} </a></td> 
+                            <td>{{data_dictionnary_model.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{data_dictionnary_model.created|date:"DATETIME_FORMAT"}}</td>                    
+                        </tr>
+                   
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

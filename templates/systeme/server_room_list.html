@@ -36,11 +36,11 @@
                   {% for server_room in server_rooms %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-server_room' server_room.pk %}">{{ server_room.name }} </a></td> 
-                            <td style="text-align:center">{{server_room.racks.all.distinct.count}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-datacenter' server_room.datacenter.pk %}">{{server_room.datacenter}}</a></td>
-                            <td style="text-align:center">{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{server_room.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-server_room' server_room.pk %}">{{ server_room.name }} </a></td> 
+                            <td>{{server_room.racks.all.distinct.count}}</td>
+                            <td><a href="{% url 'base:detail-datacenter' server_room.datacenter.pk %}">{{server_room.datacenter}}</a></td>
+                            <td>{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{server_room.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

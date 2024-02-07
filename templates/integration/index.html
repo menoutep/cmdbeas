@@ -28,12 +28,159 @@
 
 <body class="with-welcome-text">
   <div class="container-scroller">
-<style>
-    a{
-        text-decoration: none;
-        color : #000000;
+    <style>
+      a{
+          text-decoration: none;
+          color : #000000;
+  
+      }
+      .navbar {
+        font-weight: 400;
+        transition: background 0.25s ease;
+        -webkit-transition: background 0.25s ease;
+        -moz-transition: background 0.25s ease;
+        -ms-transition: background 0.25s ease;
+        box-shadow: none;
+        background: #F4F5F7;
+        height: 67px;
+      }
+
+      .navbar .navbar-brand-wrapper {
+        background: #F4F5F7;
+        transition: width 0.25s ease, background 0.25s ease;
+        -webkit-transition: width 0.25s ease, background 0.25s ease;
+        -moz-transition: width 0.25s ease, background 0.25s ease;
+        -ms-transition: width 0.25s ease, background 0.25s ease;
+        width: 220px;
+        height: 67px;
+        padding: 20px 35px;
+        }
+
+
+    .page-body-wrapper {
+        min-height: calc(100vh - 67px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 67px;
     }
-</style>
+      .navbar .navbar-menu-wrapper {
+        background: #F4F5F7;
+        transition: width 0.25s ease;
+        -webkit-transition: width 0.25s ease;
+        -moz-transition: width 0.25s ease;
+        -ms-transition: width 0.25s ease;
+        color: #6C7383;
+        padding-left: 3.5rem;
+        padding-right: 2.187rem;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        width: calc(100% - 220px);
+        height: 67px;
+    }
+    .card .card-title {
+        color: #010101;
+        margin-bottom: 0.5rem;
+        text-transform: capitalize;
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+      .card .card-description {
+        margin-bottom: 0.475rem;
+        font-weight: 400;
+        color: #76838f;
+    }
+      .table th, .table td {
+        vertical-align: middle;
+        line-height: 1;
+        white-space: nowrap;
+        padding: 0.25rem 1.375rem;
+    }
+    .sidebar .nav {
+      overflow: hidden;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      margin-bottom: 60px;
+      padding-top : 1rem;
+    }
+    .sidebar .nav.sub-menu {
+        margin-bottom: 0;
+        margin-top: 0;
+        list-style: none;
+        padding: 0.0005rem 0 0 2.25rem;
+        padding-bottom: 0;
+        background: #fff;
+        padding-bottom: 12px;
+    }
+    .sidebar .nav:not(.sub-menu) > .nav-item {
+      /* margin-top: 0.2rem; */
+    }
+    .navbar .navbar-menu-wrapper .navbar-nav .nav-item .welcome-text{
+      font-family: "Manrope", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 28px;
+      line-height: 38px;
+      color: #8D8D8D;
+      margin-bottom: 4px;
+    }
+    .sidebar .nav .nav-item.nav-category {
+      color: #404040;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+      margin: 0 25px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 10px 0px 0px 0px;
+      text-transform: uppercase;
+    }
+    .sidebar .nav .nav-item .nav-link {
+      
+      display: flex;
+      -webkit-align-items: center;
+      align-items: center;
+      white-space: nowrap;
+      padding: 3px 5px 3px 25px;
+      color: #484848;
+      border-radius: 0px 20px 20px 0px;
+      -webkit-transition-duration: 0.45s;
+      -moz-transition-duration: 0.45s;
+      -o-transition-duration: 0.45s;
+      transition-duration: 0.45s;
+      transition-property: color;
+      -webkit-transition-property: color;
+      font-weight: 400;
+    }
+
+    .sidebar .nav.sub-menu .nav-item .nav-link {
+      color: #484848;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      position: relative;
+      font-size: 12px;
+      line-height: 1;
+      height: auto;
+      border-top: 0;
+    }
+    .content-wrapper {
+      background: #F4F5F7;
+      padding: 1.5rem 2.187rem 1.5rem;
+      width: 100%;
+      -webkit-flex-grow: 1;
+      flex-grow: 1;
+    }
+    .sidebar .nav:not(.sub-menu) > .nav-item {
+      /* margin-top: 0.2rem; */
+    }
+    ul li, ol li, dl li {
+      line-height: 1;
+    }
+  
+  </style>
     <!-- partial:partials/_navbar.html -->
     
     {% load static %}

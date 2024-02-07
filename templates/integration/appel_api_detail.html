@@ -30,14 +30,14 @@
                   
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:update-appel_api' appel_api.pk %}" >{{ appel_api.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-module_applicatif' appel_api.module_applicatif.pk %}" >{{appel_api.module_applicatif.name}}</a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-api' appel_api.api.pk %}" >{{appel_api.api.name}}</a></td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-use_case' appel_api.use_case.pk %}" >{{appel_api.use_case.name}}</a></td>
+                            <td><a href="{% url 'base:update-appel_api' appel_api.pk %}" >{{ appel_api.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-module_applicatif' appel_api.module_applicatif.pk %}" >{{appel_api.module_applicatif.name}}</a></td>
+                            <td><a href="{% url 'base:detail-api' appel_api.api.pk %}" >{{appel_api.api.name}}</a></td>
+                            <td><a href="{% url 'base:detail-use_case' appel_api.use_case.pk %}" >{{appel_api.use_case.name}}</a></td>
 
-                            <td style="text-align:center">{{appel_api.description}}</td>
-                            <td style="text-align:center">{{appel_api.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{appel_api.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{appel_api.description}}</td>
+                            <td>{{appel_api.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{appel_api.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   
@@ -79,49 +79,49 @@
                   {% for appel_api_history in appel_api.history.all.distinct %}
                   {% if appel_api_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{appel_api_history.history_id}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_date}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_user}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{appel_api_history.get_history_type_display}}</td>
+                    <td>{{appel_api_history.history_id}}</td>
+                    <td>{{appel_api_history.history_date}}</td>
+                    <td>{{appel_api_history.history_user}}</td>
+                    <td>{{appel_api_history.history_change_reason}}</td>
+                    <td>{{appel_api_history.get_history_type_display}}</td>
                     {% if appel_api_history.prev_record.name != appel_api_history.name %}
-                        <td style="text-align:center">valeur après modification : {{appel_api_history.name}}</td>
+                        <td>valeur après modification : {{appel_api_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{appel_api_history.name}}</td>
+                    <td> valeur inchangé :  {{appel_api_history.name}}</td>
                     {% endif %}
                     {% if appel_api_history.prev_record.description != appel_api_history.description %}
-                        <td style="text-align:center">valeur après modification : {{appel_api_history.description}}</td>
+                        <td>valeur après modification : {{appel_api_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{appel_api_history.description}}</td>
+                    <td> valeur inchangé :  {{appel_api_history.description}}</td>
                     {% endif %}
                     {% if appel_api_history.prev_record.module_applicatif != appel_api_history.module_applicatif %}
-                    <td style="text-align:center">valeur après modification : {{appel_api_history.module_applicatif}}</td>
+                    <td>valeur après modification : {{appel_api_history.module_applicatif}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{appel_api_history.module_applicatif}}</td>
+                    <td> valeur inchangé :  {{appel_api_history.module_applicatif}}</td>
                     {% endif %}
                     {% if appel_api_history.prev_record.api != appel_api_history.api %}
-                    <td style="text-align:center">valeur après modification : {{appel_api_history.api}}</td>
+                    <td>valeur après modification : {{appel_api_history.api}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{appel_api_history.api}}</td>
+                    <td> valeur inchangé :  {{appel_api_history.api}}</td>
                     {% endif %}
                 
                     {% if appel_api_history.prev_record.use_case != appel_api_history.use_case %}
-                    <td style="text-align:center">valeur après modification : {{appel_api_history.use_case}}</td>
+                    <td>valeur après modification : {{appel_api_history.use_case}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{appel_api_history.use_case}}</td>
+                    <td> valeur inchangé :  {{appel_api_history.use_case}}</td>
                     {% endif %}
                     
                   <tr>
-                    <td style="text-align:center">{{appel_api_history.history_id}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_date}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_user}}</td>
-                    <td style="text-align:center">{{appel_api_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{appel_api_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{appel_api_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{appel_api_history.description}}</td>
-                    <td style="text-align:center">valeur a la création: {{appel_api_history.module_applicatif}}</td>
-                    <td style="text-align:center">valeur a la création: {{appel_api_history.api}}</td>
-                    <td style="text-align:center">valeur a la création: {{appel_api_history.use_case}}</td>
+                    <td>{{appel_api_history.history_id}}</td>
+                    <td>{{appel_api_history.history_date}}</td>
+                    <td>{{appel_api_history.history_user}}</td>
+                    <td>{{appel_api_history.history_change_reason}}</td>
+                    <td>{{appel_api_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{appel_api_history.name}}</td>
+                    <td>valeur a la création: {{appel_api_history.description}}</td>
+                    <td>valeur a la création: {{appel_api_history.module_applicatif}}</td>
+                    <td>valeur a la création: {{appel_api_history.api}}</td>
+                    <td>valeur a la création: {{appel_api_history.use_case}}</td>
 
                   </tr>
                   {% endif %}

@@ -26,13 +26,13 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:update-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
-                    <td style="text-align:center">{{datacenter.servers_rooms.all.distinct.count}}</td>
+                    <td><a href="{% url 'base:update-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
+                    <td>{{datacenter.servers_rooms.all.distinct.count}}</td>
 
-                    <td style="text-align:center">{{datacenter.localisation}}</td>
+                    <td>{{datacenter.localisation}}</td>
 
-                    <td style="text-align:center">{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{datacenter.created|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{datacenter.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -64,11 +64,11 @@
                 <tbody>
                   {%for server_room in datacenter.servers_rooms.all.distinct %}
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:detail-server_room' server_room.pk %}" >{{server_room.name}}</td> 
-                    <td style="text-align:center">{{server_room.racks.all.distinct.count}}</td>
+                    <td><a href="{% url 'base:detail-server_room' server_room.pk %}" >{{server_room.name}}</td> 
+                    <td>{{server_room.racks.all.distinct.count}}</td>
 
-                    <td style="text-align:center">{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{server_room.created|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{server_room.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  {%endfor%}
@@ -103,14 +103,14 @@
                   {%for server_room in datacenter.servers_rooms.all.distinct%}
                     {%for rack in server_room.racks.all.distinct %}
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
-                    <td style="text-align:center"><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
-                    <td style="text-align:center">
+                    <td><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
+                    <td><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
+                    <td>
 
                         {{rack.servers.all.distinct.count}}
                     </td>
-                    <td style="text-align:center">{{rack.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{rack.created|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{rack.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{rack.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                   {%endfor%}
@@ -148,32 +148,32 @@
                   {% for datacenter_history in datacenter.history.all.distinct %}
                   {% if datacenter_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{datacenter_history.history_id}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_date}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_user}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{datacenter_history.get_history_type_display}}</td>
+                    <td>{{datacenter_history.history_id}}</td>
+                    <td>{{datacenter_history.history_date}}</td>
+                    <td>{{datacenter_history.history_user}}</td>
+                    <td>{{datacenter_history.history_change_reason}}</td>
+                    <td>{{datacenter_history.get_history_type_display}}</td>
                     {% if datacenter_history.prev_record.name != datacenter_history.name %}
-                        <td style="text-align:center">valeur après modification : {{datacenter_history.name}}</td>
+                        <td>valeur après modification : {{datacenter_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{datacenter_history.name}}</td>
+                    <td> valeur inchangé :  {{datacenter_history.name}}</td>
                     {% endif %}
                     {% if datacenter_history.prev_record.localisation != datacenter_history.localisation %}
-                        <td style="text-align:center">valeur après modification : {{datacenter_history.localisation}}</td>
+                        <td>valeur après modification : {{datacenter_history.localisation}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{datacenter_history.localisation}}</td>
+                    <td> valeur inchangé :  {{datacenter_history.localisation}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{datacenter_history.history_id}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_date}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_user}}</td>
-                    <td style="text-align:center">{{datacenter_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{datacenter_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{datacenter_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{datacenter_history.localisation}}</td>
+                    <td>{{datacenter_history.history_id}}</td>
+                    <td>{{datacenter_history.history_date}}</td>
+                    <td>{{datacenter_history.history_user}}</td>
+                    <td>{{datacenter_history.history_change_reason}}</td>
+                    <td>{{datacenter_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{datacenter_history.name}}</td>
+                    <td>valeur a la création: {{datacenter_history.localisation}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

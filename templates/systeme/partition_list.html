@@ -74,14 +74,14 @@
                   {% for partition in partitions %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-partition' partition.pk %}" >{{ partition}} </a></td> 
+                            <td><a href="{% url 'base:detail-partition' partition.pk %}" >{{ partition}} </a></td> 
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-server' partition.serveur.pk %}" >{{ partition.serveur }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-systeme_stockage' partition.stockage.pk %}" >{{ partition.stockage }} </a></td> 
+                            <td><a href="{% url 'base:detail-server' partition.serveur.pk %}" >{{ partition.serveur }} </a></td> 
+                            <td><a href="{% url 'base:detail-systeme_stockage' partition.stockage.pk %}" >{{ partition.stockage }} </a></td> 
 
                             
-                            <td style="text-align:center">{{partition.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{partition.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{partition.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{partition.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

@@ -63,13 +63,13 @@
                 <tbody>
                   {% for module in module_applicatifs %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:update-module_applicatif' module.pk %}" > {{ module.name }} </a></td> 
-                    <td style="text-align:center"> {{ module.description }} </td>   
-                    <td style="text-align:center"> {{ module.application}} </td> 
-                    <td style="text-align:center"> {{ module.vendor}} </td>   
-                    <td style="text-align:center"> {{ module.departement }} </td>                      
-                    <td style="text-align:center">{{module.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{module.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td><a href= "{% url 'base:update-module_applicatif' module.pk %}" > {{ module.name }} </a></td> 
+                    <td> {{ module.description }} </td>   
+                    <td> {{ module.application}} </td> 
+                    <td> {{ module.vendor}} </td>   
+                    <td> {{ module.departement }} </td>                      
+                    <td>{{module.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{module.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>

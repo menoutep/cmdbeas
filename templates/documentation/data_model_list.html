@@ -31,19 +31,19 @@
                   {% for data_model in data_models %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-data_model' data_model.pk %}" > {{ data_model.name }} </a></td> 
-                            <td style="text-align:center">{{data_model.description}}</td>
+                            <td><a href="{% url 'base:detail-data_model' data_model.pk %}" > {{ data_model.name }} </a></td> 
+                            <td>{{data_model.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-database' data_model.database.pk %}" >{{data_model.database}} </a></td>
-                            <td style="text-align:center">
+                            <td><a href="{% url 'base:detail-database' data_model.database.pk %}" >{{data_model.database}} </a></td>
+                            <td>
                               {%for data_dictionnary in data_model.data_dictionnary.all.distinct %}
                               <a href="{% url 'base:detail-data_dictionnary' data_dictionnary.pk %}" >{{data_dictionnary}}</a>
                               {% if not forloop.last %},{% endif %}
                               {% endfor%}
                             </td>
-                            <td style="text-align:center">{{data_model.file}}</td>
-                            <td style="text-align:center">{{data_model.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{data_model.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{data_model.file}}</td>
+                            <td>{{data_model.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{data_model.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

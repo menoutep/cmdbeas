@@ -30,11 +30,11 @@
                   {% for technical_recovery_plan in technical_recovery_plans %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-technical_recovery_plan' technical_recovery_plan.pk %}" > {{ technical_recovery_plan.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-application' technical_recovery_plan.application.pk %}" >{{technical_recovery_plan.application}} </a></td>
-                            <td style="text-align:center">{{technical_recovery_plan.file}}</td>
-                            <td style="text-align:center">{{technical_recovery_plan.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{technical_recovery_plan.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-technical_recovery_plan' technical_recovery_plan.pk %}" > {{ technical_recovery_plan.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-application' technical_recovery_plan.application.pk %}" >{{technical_recovery_plan.application}} </a></td>
+                            <td>{{technical_recovery_plan.file}}</td>
+                            <td>{{technical_recovery_plan.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{technical_recovery_plan.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

@@ -36,12 +36,12 @@
                   {% for network_interface in network_interfaces %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-network_interface' network_interface.pk %}" >{{ network_interface.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-network_interface' network_interface.pk %}" >{{ network_interface.name }} </a></td> 
                             
-                            <td style="text-align:center">{{network_interface.description}}</td>
-                            <td style="text-align:center"><a href="{% url 'base:detail-server' network_interface.server.pk %}" >{{network_interface.server}}</a></td>
-                            <td style="text-align:center">{{network_interface.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{network_interface.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{network_interface.description}}</td>
+                            <td><a href="{% url 'base:detail-server' network_interface.server.pk %}" >{{network_interface.server}}</a></td>
+                            <td>{{network_interface.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{network_interface.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

@@ -38,18 +38,18 @@
                 <tbody>
                   {% for app_server in app_servers %}
                   <tr>
-                    <td style="text-align:center"><a href= "{% url 'base:detail-app_server' app_server.pk %}"> {{ app_server.name }} </a></td> 
-                    <td style="text-align:center"> {{ app_server.description }} </td>   
-                    <td style="text-align:center"> {{ app_server.server}} </td> 
-                    <td style="text-align:center">   
+                    <td><a href= "{% url 'base:detail-app_server' app_server.pk %}"> {{ app_server.name }} </a></td> 
+                    <td> {{ app_server.description }} </td>   
+                    <td> {{ app_server.server}} </td> 
+                    <td>   
                       {% for element in app_server.module_applicatif.all.distinct %}
                         <a href= "{% url 'base:detail-module_applicatif' element.pk %}">{{ element }}</a>
                         {% if not forloop.last %},{% endif %}
                       {% endfor %} 
                    </td>   
                                        
-                    <td style="text-align:center">{{app_server.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{app_server.created|date:"DATETIME_FORMAT"}}</td>                
+                    <td>{{app_server.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{app_server.created|date:"DATETIME_FORMAT"}}</td>                
                   </tr>
                   {% endfor %}
                 </tbody>

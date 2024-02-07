@@ -30,13 +30,13 @@
                   {% for architecture_diagram in architecture_diagrams %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-architecture_diagram' architecture_diagram.pk %}" > {{ architecture_diagram.name }} </a></td> 
-                            <td style="text-align:center">{{architecture_diagram.description}}</td>
+                            <td><a href="{% url 'base:detail-architecture_diagram' architecture_diagram.pk %}" > {{ architecture_diagram.name }} </a></td> 
+                            <td>{{architecture_diagram.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-process' architecture_diagram.process.pk %}" >{{architecture_diagram.process}} </a></td>
-                            <td style="text-align:center">{{architecture_diagram.file}}</td>
-                            <td style="text-align:center">{{architecture_diagram.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{architecture_diagram.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-process' architecture_diagram.process.pk %}" >{{architecture_diagram.process}} </a></td>
+                            <td>{{architecture_diagram.file}}</td>
+                            <td>{{architecture_diagram.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{architecture_diagram.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

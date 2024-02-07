@@ -26,11 +26,11 @@
                   
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:update-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
+                            <td><a href="{% url 'base:update-cluster' cluster.pk %}" >{{ cluster.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-ip_adress' cluster.ip_address.pk %}" >{{ cluster.ip_address.ipv4}} </a></td> 
 
-                            <td style="text-align:center">{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{cluster.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{cluster.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{cluster.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   
@@ -70,16 +70,16 @@
                   {% for server in cluster.servers.all.distinct %}
                   
                         <tr>
-                          <td style="text-align:center"><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
-                          <td style="text-align:center">{{server.type_server}}</td>
-                          <td style="text-align:center">{{server.ram}}</td>
-                          <td style="text-align:center">{{server.rom}}</td>
-                          <td style="text-align:center">{{server.nb_processor}}</td>
-                          <td style="text-align:center">{{server.v_processor}}</td>
+                          <td><a href="{% url 'base:detail-server' server.pk %}" >{{ server.name }} </a></td> 
+                          <td>{{server.type_server}}</td>
+                          <td>{{server.ram}}</td>
+                          <td>{{server.rom}}</td>
+                          <td>{{server.nb_processor}}</td>
+                          <td>{{server.v_processor}}</td>
        
-                          <td style="text-align:center"><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
-                          <td style="text-align:center">{{server.updated|date:"DATETIME_FORMAT"}}</td>
-                          <td style="text-align:center">{{server.created|date:"DATETIME_FORMAT"}}</td>                 
+                          <td><a href="{% url 'base:detail-rack' server.rack.pk %}" >{{server.rack}}</td>
+                          <td>{{server.updated|date:"DATETIME_FORMAT"}}</td>
+                          <td>{{server.created|date:"DATETIME_FORMAT"}}</td>                 
                         </tr>
                    
                   {% endfor %}
@@ -116,27 +116,27 @@
                   {% for cluster_history in cluster.history.all.distinct %}
                   {% if cluster_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{cluster_history.history_id}}</td>
-                    <td style="text-align:center">{{cluster_history.history_date}}</td>
-                    <td style="text-align:center">{{cluster_history.history_user}}</td>
-                    <td style="text-align:center">{{cluster_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{cluster_history.get_history_type_display}}</td>
+                    <td>{{cluster_history.history_id}}</td>
+                    <td>{{cluster_history.history_date}}</td>
+                    <td>{{cluster_history.history_user}}</td>
+                    <td>{{cluster_history.history_change_reason}}</td>
+                    <td>{{cluster_history.get_history_type_display}}</td>
                     {% if cluster_history.prev_record.name != cluster_history.name %}
-                        <td style="text-align:center">valeur après modification : {{cluster_history.name}}</td>
+                        <td>valeur après modification : {{cluster_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{cluster_history.name}}</td>
+                    <td> valeur inchangé :  {{cluster_history.name}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{cluster_history.history_id}}</td>
-                    <td style="text-align:center">{{cluster_history.history_date}}</td>
-                    <td style="text-align:center">{{cluster_history.history_user}}</td>
-                    <td style="text-align:center">{{cluster_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{cluster_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{cluster_history.name}}</td>
+                    <td>{{cluster_history.history_id}}</td>
+                    <td>{{cluster_history.history_date}}</td>
+                    <td>{{cluster_history.history_user}}</td>
+                    <td>{{cluster_history.history_change_reason}}</td>
+                    <td>{{cluster_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{cluster_history.name}}</td>
                   
                   </tr>
                   {% endif %}

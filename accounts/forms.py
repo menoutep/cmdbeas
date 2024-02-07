@@ -81,13 +81,6 @@ class CustomUserCreationForm(UserCreationForm):
         label='Département',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Entrez votre departement'}),
     )
-    user_permissions = forms.ModelMultipleChoiceField(
-        queryset=Permission.objects.all(), 
-        widget=PermissionWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les permissions'}), 
-        label='Permissions',
-        required=False
-        
-        )
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(), 
         widget=GroupWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les groupes'}), 
@@ -100,7 +93,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = UserCreationForm.Meta.fields + ('first_name','last_name','contact','departement','email','user_permissions','is_staff','groups') 
+        fields = UserCreationForm.Meta.fields + ('first_name','last_name','contact','departement','email','is_staff','groups') 
         
     
     def __init__(self, *args, **kwargs):
@@ -163,13 +156,7 @@ class CustomUserUpdateForm(forms.ModelForm):
         label='Département',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Entrez votre departement'}),
     )
-    user_permissions = forms.ModelMultipleChoiceField(
-        queryset=Permission.objects.all(), 
-        widget=PermissionWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les permissions'}), 
-        label='Permissions',
-        required=False
-        
-        )
+
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(), 
         widget=GroupWidget(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'Selectionnez les groupes'}), 
@@ -193,7 +180,7 @@ class CustomUserUpdateForm(forms.ModelForm):
     )
     class Meta:
         model = User
-        fields = ('first_name','last_name','username','contact','departement','email','user_permissions','is_staff','groups','is_active') 
+        fields = ('first_name','last_name','username','contact','departement','email','is_staff','groups','is_active') 
         
 
     def clean_email(self):
@@ -205,18 +192,18 @@ class CustomUserUpdateForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
-        selected_permissions = self.cleaned_data.get('permissions', None)
+        #selected_permissions = self.cleaned_data.get('permissions', None)
         selected_groups = self.cleaned_data.get('groups', None)
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
             instance._change_reason = historical_change_reason
-            if selected_permissions:
-                for permission in selected_permissions:
-                    permission_ = Permission.objects.get(id=permission)
-                    assign_perm(permission_, instance)
-                    instance.save()
-            else :
-                instance.user_permissions.clear()
+            #if selected_permissions:
+                #for permission in selected_permissions:
+                    #permission_ = Permission.objects.get(id=permission)
+                    #assign_perm(permission_, instance)
+                    #instance.save()
+            #else :
+                #instance.user_permissions.clear()
             if selected_groups:
                 for group in selected_groups:
                     

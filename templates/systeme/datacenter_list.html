@@ -37,13 +37,13 @@
                   {% for datacenter in datacenters %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-datacenter' datacenter.pk %}" >{{ datacenter.name }} </a></td> 
                             
-                            <td style="text-align:center">{{datacenter.servers_rooms.all.distinct.count}}</td>
+                            <td>{{datacenter.servers_rooms.all.distinct.count}}</td>
 
-                            <td style="text-align:center">{{datacenter.localisation}}</td>
-                            <td style="text-align:center">{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{datacenter.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{datacenter.localisation}}</td>
+                            <td>{{datacenter.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{datacenter.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}

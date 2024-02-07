@@ -68,21 +68,21 @@
                     {% for database_server in database_servers %}
                     
                           <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
-                            <td style="text-align:center">{{database_server.ram}}</td>
-                            <td style="text-align:center">{{database_server.rom}}</td> 
+                            <td><a href="{% url 'base:detail-database_server' database_server.pk %}" >{{ database_server.name }} </a></td>              
+                            <td>{{database_server.ram}}</td>
+                            <td>{{database_server.rom}}</td> 
                             {%if database_server.server%}
-                            <td style="text-align:center"><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
+                            <td><a href="{% url 'base:detail-server' database_server.server.pk %}" >{{database_server.server}}</td> 
                             {%else%} 
-                            <td style="text-align:center">pas hebergé sur serveur</td> 
+                            <td>pas hebergé sur serveur</td> 
                             {%endif%}
                             {%if database_server.cluster%}
-                            <td style="text-align:center"><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
+                            <td><a href="{% url 'base:detail-cluster' database_server.cluster.pk %}" >{{database_server.cluster}}</td>
                               {%else%} 
-                            <td style="text-align:center">pas hebergé sur cluster</td> 
+                            <td>pas hebergé sur cluster</td> 
                             {%endif%}
-                            <td style="text-align:center">{{database_server.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{database_server.created|date:"DATETIME_FORMAT"}}</td>                 
+                            <td>{{database_server.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{database_server.created|date:"DATETIME_FORMAT"}}</td>                 
                           </tr>
                      
                     {% endfor %}

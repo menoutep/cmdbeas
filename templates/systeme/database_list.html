@@ -68,11 +68,11 @@
                   <tbody>
                     {% for database in databases %}               
                           <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
-                            <td style="text-align:center"><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
+                            <td><a href="{% url 'base:detail-database' database.pk %}" >{{ database.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-database_server' database.db_server.pk %}" >{{database.db_server}}</td>
                             
-                            <td style="text-align:center">{{database.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{database.created|date:"DATETIME_FORMAT"}}</td>                 
+                            <td>{{database.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{database.created|date:"DATETIME_FORMAT"}}</td>                 
                           </tr>
                      
                     {% endfor %}

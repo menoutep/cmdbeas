@@ -273,7 +273,7 @@ class DataDictionnaryModelSerializer(serializers.ModelSerializer):
     data_model = DataModelSerializer(read_only=True)
     class Meta:
         model = DataDictionnaryModel
-        fields = ['name','description','data_model','data_dictionnary','file']
+        fields = ['data_model','data_dictionnary']
         depth = 9
 
 class DomainNameSerializer(serializers.ModelSerializer):

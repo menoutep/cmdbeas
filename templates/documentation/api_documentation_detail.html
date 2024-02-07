@@ -8,9 +8,9 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Specifications Api</h4>
+            <h4 class="card-title"> Vos documentations Api</h4>
             <p class="card-description">
-              Liste de toutes les specifications api_specification
+              Liste de toutes les documentations Api
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -27,13 +27,13 @@
                 </thead>
                 <tbody>
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_documentation' api_documentation.pk %}" > {{ api_documentation.name }} </a></td> 
-                            <td style="text-align:center">{{api_documentation.description}}</td>
+                            <td><a href="{% url 'base:update-api_documentation' api_documentation.pk %}" > {{ api_documentation.name }} </a></td> 
+                            <td>{{api_documentation.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_specification' api_documentation.api_specification.pk %}" >{{api_documentation.api_specification}} </a></td>
-                            <td style="text-align:center">{{api_documentation.file}}</td>
-                            <td style="text-align:center">{{api_documentation.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{api_documentation.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-api_specification' api_documentation.api_specification.pk %}" >{{api_documentation.api_specification}} </a></td>
+                            <td>{{api_documentation.file}}</td>
+                            <td>{{api_documentation.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{api_documentation.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                 </tbody>
               </table>
@@ -80,13 +80,13 @@
                   {% for api_specification in api_documentation.apis_specifications.all.distinct %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-api_specification' api_specification.pk %}" > {{ api_specification.name }} </a></td> 
-                            <td style="text-align:center">{{api_specification.description}}</td>
+                            <td><a href="{% url 'base:detail-api_specification' api_specification.pk %}" > {{ api_specification.name }} </a></td> 
+                            <td>{{api_specification.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-api' api_specification.api.pk %}" >{{api_specification.api}} </a></td>
-                            <td style="text-align:center">{{api_specification.file}}</td>
-                            <td style="text-align:center">{{api_specification.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{api_specification.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-api' api_specification.api.pk %}" >{{api_specification.api}} </a></td>
+                            <td>{{api_specification.file}}</td>
+                            <td>{{api_specification.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{api_specification.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -127,45 +127,45 @@
                   {% for api_documentation_history in api_documentation.history.all.distinct %}
                   {% if api_documentation_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{api_documentation_history.history_id}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_date}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_user}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{api_documentation_history.get_history_type_display}}</td>
+                    <td>{{api_documentation_history.history_id}}</td>
+                    <td>{{api_documentation_history.history_date}}</td>
+                    <td>{{api_documentation_history.history_user}}</td>
+                    <td>{{api_documentation_history.history_change_reason}}</td>
+                    <td>{{api_documentation_history.get_history_type_display}}</td>
                     {% if api_documentation_history.prev_record.name != api_documentation_history.name %}
-                        <td style="text-align:center">valeur après modification : {{api_documentation_history.name}}</td>
+                        <td>valeur après modification : {{api_documentation_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{api_documentation_history.name}}</td>
+                    <td> valeur inchangé :  {{api_documentation_history.name}}</td>
                     {% endif %}
                     {% if api_documentation_history.prev_record.description != api_documentation_history.description %}
-                        <td style="text-align:center">valeur après modification : {{api_documentation_history.description}}</td>
+                        <td>valeur après modification : {{api_documentation_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{api_documentation_history.description}}</td>
+                    <td> valeur inchangé :  {{api_documentation_history.description}}</td>
                     {% endif %}
                     {% if api_documentation_history.prev_record.api_specification != api_documentation_history.api_specification %}
-                        <td style="text-align:center">valeur après modification : {{api_documentation_history.api_specification}}</td>
+                        <td>valeur après modification : {{api_documentation_history.api_specification}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{api_documentation_history.api_specification}}</td>
+                    <td> valeur inchangé :  {{api_documentation_history.api_specification}}</td>
                     {% endif %}
                     {% if api_documentation_history.prev_record.file != api_documentation_history.file %}
-                        <td style="text-align:center">valeur après modification : {{api_documentation_history.file}}</td>
+                        <td>valeur après modification : {{api_documentation_history.file}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{api_documentation_history.file}}</td>
+                    <td> valeur inchangé :  {{api_documentation_history.file}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{api_documentation_history.history_id}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_date}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_user}}</td>
-                    <td style="text-align:center">{{api_documentation_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{api_documentation_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{api_documentation_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{api_documentation.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{api_documentation.api_specification}}</td>
-                    <td style="text-align:center"> valeur a la création :{{api_documentation.file}}</td>
+                    <td>{{api_documentation_history.history_id}}</td>
+                    <td>{{api_documentation_history.history_date}}</td>
+                    <td>{{api_documentation_history.history_user}}</td>
+                    <td>{{api_documentation_history.history_change_reason}}</td>
+                    <td>{{api_documentation_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{api_documentation_history.name}}</td>
+                    <td> valeur a la création :{{api_documentation.description}}</td>
+                    <td> valeur a la création :{{api_documentation.api_specification}}</td>
+                    <td> valeur a la création :{{api_documentation.file}}</td>
                     
 
                   </tr>

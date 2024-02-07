@@ -26,12 +26,12 @@
                 <tbody>
                   
                   <tr>
-                    <td style="text-align:center"><a href="{% url 'base:update-server_room' server_room.pk %}">{{ server_room.name }} </a></td> 
-                    <td style="text-align:center">{{server_room.racks.all.distinct.count}}</td>
-                    <td style="text-align:center"><a href="{% url 'base:detail-datacenter' server_room.datacenter.pk %}">{{server_room.datacenter}}</td>
+                    <td><a href="{% url 'base:update-server_room' server_room.pk %}">{{ server_room.name }} </a></td> 
+                    <td>{{server_room.racks.all.distinct.count}}</td>
+                    <td><a href="{% url 'base:detail-datacenter' server_room.datacenter.pk %}">{{server_room.datacenter}}</td>
 
-                    <td style="text-align:center">{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td style="text-align:center">{{server_room.created|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{server_room.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{server_room.created|date:"DATETIME_FORMAT"}}</td>
                     
                   </tr>
                  
@@ -65,11 +65,11 @@
                   {% for rack in server_room.racks.all.distinct %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
+                            <td><a href="{% url 'base:detail-rack' rack.pk %}" >{{ rack.name }} </a></td> 
                             
-                            <td style="text-align:center"><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
-                            <td style="text-align:center">{{rack.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{rack.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td><a href="{% url 'base:detail-server_room' rack.server_room.pk %}" >{{rack.server_room}}</a></td>
+                            <td>{{rack.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{rack.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -107,32 +107,32 @@
                   {% for server_room_history in server_room.history.all.distinct %}
                   {% if server_room_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{server_room_history.history_id}}</td>
-                    <td style="text-align:center">{{server_room_history.history_date}}</td>
-                    <td style="text-align:center">{{server_room_history.history_user}}</td>
-                    <td style="text-align:center">{{server_room_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{server_room_history.get_history_type_display}}</td>
+                    <td>{{server_room_history.history_id}}</td>
+                    <td>{{server_room_history.history_date}}</td>
+                    <td>{{server_room_history.history_user}}</td>
+                    <td>{{server_room_history.history_change_reason}}</td>
+                    <td>{{server_room_history.get_history_type_display}}</td>
                     {% if server_room_history.prev_record.name != server_room_history.name %}
-                        <td style="text-align:center">valeur après modification : {{server_room_history.name}}</td>
+                        <td>valeur après modification : {{server_room_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{server_room_history.name}}</td>
+                    <td> valeur inchangé :  {{server_room_history.name}}</td>
                     {% endif %}
                     {% if server_room_history.prev_record.datacenter != server_room_history.datacenter %}
-                        <td style="text-align:center">valeur après modification : {{server_room_history.datacenter}}</td>
+                        <td>valeur après modification : {{server_room_history.datacenter}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{server_room_history.datacenter}}</td>
+                    <td> valeur inchangé :  {{server_room_history.datacenter}}</td>
                     {% endif %}
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{server_room_history.history_id}}</td>
-                    <td style="text-align:center">{{server_room_history.history_date}}</td>
-                    <td style="text-align:center">{{server_room_history.history_user}}</td>
-                    <td style="text-align:center">{{server_room_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{server_room_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{server_room_history.name}}</td>
-                    <td style="text-align:center">valeur a la création: {{server_room_history.datacenter}}</td>
+                    <td>{{server_room_history.history_id}}</td>
+                    <td>{{server_room_history.history_date}}</td>
+                    <td>{{server_room_history.history_user}}</td>
+                    <td>{{server_room_history.history_change_reason}}</td>
+                    <td>{{server_room_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{server_room_history.name}}</td>
+                    <td>valeur a la création: {{server_room_history.datacenter}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}

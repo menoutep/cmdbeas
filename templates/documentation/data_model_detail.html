@@ -30,19 +30,19 @@
                  
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-data_model' data_model.pk %}" > {{ data_model.name }} </a></td> 
-                            <td style="text-align:center">{{data_model.description}}</td>
+                            <td><a href="{% url 'base:update-data_model' data_model.pk %}" > {{ data_model.name }} </a></td> 
+                            <td>{{data_model.description}}</td>
 
-                            <td style="text-align:center"><a href="{% url 'base:detail-database' data_model.database.pk %}" >{{data_model.database}} </a></td>
-                            <td style="text-align:center">
+                            <td><a href="{% url 'base:detail-database' data_model.database.pk %}" >{{data_model.database}} </a></td>
+                            <td>
                               {%for data_dictionnary in data_model.data_dictionnary.all.distinct %}
                               <a href="{% url 'base:detail-data_dictionnary' data_dictionnary.pk %}" >{{data_dictionnary}}</a>
                               {% if not forloop.last %},{% endif %}
                               {% endfor%}
                             </td>
-                            <td style="text-align:center">{{data_model.file}}</td>
-                            <td style="text-align:center">{{data_model.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{data_model.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{data_model.file}}</td>
+                            <td>{{data_model.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{data_model.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                 
                 </tbody>
@@ -91,12 +91,12 @@
                   {% for data_dictionnary in data_model.data_dictionnary.all.distinct %}
                   
                         <tr>
-                            <td style="text-align:center"><a href="{% url 'base:detail-data_dictionnary' data_dictionnary.pk %}" > {{ data_dictionnary.name }} </a></td> 
-                            <td style="text-align:center">{{data_dictionnary.description}}</td>
+                            <td><a href="{% url 'base:detail-data_dictionnary' data_dictionnary.pk %}" > {{ data_dictionnary.name }} </a></td> 
+                            <td>{{data_dictionnary.description}}</td>
 
-                            <td style="text-align:center">{{data_dictionnary.file}}</td>
-                            <td style="text-align:center">{{data_dictionnary.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td style="text-align:center">{{data_dictionnary.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{data_dictionnary.file}}</td>
+                            <td>{{data_dictionnary.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{data_dictionnary.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
                    
                   {% endfor %}
@@ -138,60 +138,60 @@
                   {% for data_model_history in data_model.history.all.distinct %}
                   {% if data_model_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td style="text-align:center">{{data_model_history.history_id}}</td>
-                    <td style="text-align:center">{{data_model_history.history_date}}</td>
-                    <td style="text-align:center">{{data_model_history.history_user}}</td>
-                    <td style="text-align:center">{{data_model_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{data_model_history.get_history_type_display}}</td>
+                    <td>{{data_model_history.history_id}}</td>
+                    <td>{{data_model_history.history_date}}</td>
+                    <td>{{data_model_history.history_user}}</td>
+                    <td>{{data_model_history.history_change_reason}}</td>
+                    <td>{{data_model_history.get_history_type_display}}</td>
                     {% if data_model_history.prev_record.name != data_model_history.name %}
-                        <td style="text-align:center">valeur après modification : {{data_model_history.name}}</td>
+                        <td>valeur après modification : {{data_model_history.name}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.name}}</td>
+                    <td> valeur inchangé :  {{data_model_history.name}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.description != data_model_history.description %}
-                        <td style="text-align:center">valeur après modification : {{data_model_history.description}}</td>
+                        <td>valeur après modification : {{data_model_history.description}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.description}}</td>
+                    <td> valeur inchangé :  {{data_model_history.description}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.database != data_model_history.database %}
-                        <td style="text-align:center">valeur après modification : {{data_model_history.database}}</td>
+                        <td>valeur après modification : {{data_model_history.database}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.database}}</td>
+                    <td> valeur inchangé :  {{data_model_history.database}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.database != data_model_history.database %}
-                    <td style="text-align:center">valeur après modification : {{data_model_history.database}}</td>
+                    <td>valeur après modification : {{data_model_history.database}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.database}}</td>
+                    <td> valeur inchangé :  {{data_model_history.database}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.database != data_model_history.database %}
-                    <td style="text-align:center">valeur après modification : {{data_model_history.database}}</td>
+                    <td>valeur après modification : {{data_model_history.database}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.database}}</td>
+                    <td> valeur inchangé :  {{data_model_history.database}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.data_dictionnary != data_model_history.data_dictionnary %}
-                    <td style="text-align:center">valeur après modification : {{data_model_history.data_dictionnary}}</td>
+                    <td>valeur après modification : {{data_model_history.data_dictionnary}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.data_dictionnary}}</td>
+                    <td> valeur inchangé :  {{data_model_history.data_dictionnary}}</td>
                     {% endif %}
                     {% if data_model_history.prev_record.file != data_model_history.file %}
-                        <td style="text-align:center">valeur après modification : {{data_model_history.file}}</td>
+                        <td>valeur après modification : {{data_model_history.file}}</td>
                     {% else %}
-                    <td style="text-align:center"> valeur inchangé :  {{data_model_history.file}}</td>
+                    <td> valeur inchangé :  {{data_model_history.file}}</td>
                     {% endif %}
                     
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td style="text-align:center">{{data_model_history.history_id}}</td>
-                    <td style="text-align:center">{{data_model_history.history_date}}</td>
-                    <td style="text-align:center">{{data_model_history.history_user}}</td>
-                    <td style="text-align:center">{{data_model_history.history_change_reason}}</td>
-                    <td style="text-align:center">{{data_model_history.get_history_type_display}}</td>
-                    <td style="text-align:center"> valeur a la création : {{data_model_history.name}}</td>
-                    <td style="text-align:center"> valeur a la création :{{data_model.description}}</td>
-                    <td style="text-align:center"> valeur a la création :{{data_model.api}}</td>
-                    <td style="text-align:center"> valeur a la création :{{data_model.file}}</td>
+                    <td>{{data_model_history.history_id}}</td>
+                    <td>{{data_model_history.history_date}}</td>
+                    <td>{{data_model_history.history_user}}</td>
+                    <td>{{data_model_history.history_change_reason}}</td>
+                    <td>{{data_model_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{data_model_history.name}}</td>
+                    <td> valeur a la création :{{data_model.description}}</td>
+                    <td> valeur a la création :{{data_model.api}}</td>
+                    <td> valeur a la création :{{data_model.file}}</td>
                     
 
                   </tr>
