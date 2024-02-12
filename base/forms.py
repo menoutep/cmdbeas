@@ -722,20 +722,16 @@ class AppelApiUpdateForm(forms.ModelForm):
     )
     api = forms.ModelChoiceField(
         queryset=Api.objects.all(),
-        label='Module applicatif',
+        label='api',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un process'}),
     )
     use_case = forms.ModelChoiceField(
         queryset=UseCase.objects.all(),
-        label='Module applicatif',
+        label='use case',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un process'}),
     )
 
-    module_applicatif = forms.ModelChoiceField(
-        queryset=ModuleApplicatif.objects.all(),
-        label='Module applicatif',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un process'}),
-    )
+
     historical_change_reason = forms.CharField(
         label="Raison du changement historique",
         widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
@@ -1059,9 +1055,14 @@ class AppServerUpdateForm(forms.ModelForm):
         widget=forms.SelectMultiple(attrs={'class':'form-control','style': 'height: 100px;','placeholder':'ajoutez un ou plusieurs module applicatifs'}), 
         label='module applicatif',
     )
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
     class Meta:
         model = AppServer
         fields = ['name','description','server','module_applicatif']
+
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -1097,7 +1098,10 @@ class NetworkInterfaceUpdateForm(forms.ModelForm):
         label='Server',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un server'}),
     )
-
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
     class Meta:
         model = NetworkInterface
         fields = fields = ['name', 'description','server']
@@ -1171,7 +1175,10 @@ class IpAdressUpdateForm(forms.ModelForm):
         widget = forms.TextInput(attrs={'class': 'form-control','type': 'tel', 'pattern': '^(\d{1,3}\.){3}\d{1,3}$'}),
             
         )
-
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
     class Meta:
         model = IpAdress
         fields = fields = ['name', 'description','interface','ipv4']
@@ -1353,7 +1360,7 @@ class ClusterUpdateForm(forms.ModelForm):
     )
     class Meta:
         model = Cluster
-        fields = ['name','ip_address','servers','historical_change_reason']
+        fields = ['name','ip_address','servers']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -1402,7 +1409,7 @@ class DeploiementClusterUpdateForm(forms.ModelForm):
     )
     class Meta:
         model = DeploiementCluster
-        fields = ['cluster', 'server','historical_change_reason']
+        fields = ['cluster', 'server']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -1657,13 +1664,9 @@ class BackupStrategieUpdateForm(BackupStrategieCreateForm):
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
             instance._change_reason = historical_change_reason
-            
-            
         if commit:
             instance.save()
         return instance
-
-
 class TechnicalRecoveryPlanCreateForm(forms.ModelForm):
     name = forms.CharField(
     max_length=150,
@@ -1700,19 +1703,17 @@ class TechnicalRecoveryPlanUpdateForm(TechnicalRecoveryPlanCreateForm):
     )
     class Meta:
         model = TechnicalRecoveryPlan
-        fields = ['name','description','application','file','historical_change_reason']
+        fields = ['name','description','application','file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
-
 
 
 class DataDictionnaryCreateForm(forms.ModelForm):
@@ -1748,19 +1749,17 @@ class DataDictionnaryUpdateForm(DataDictionnaryCreateForm):
     )
     class Meta:
         model = DataDictionnary
-        fields = ['name','description','file','historical_change_reason']
+        fields = ['name','description','file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
-
 
 
 class ArchitectureDiagramCreateForm(forms.ModelForm):
@@ -1799,15 +1798,14 @@ class ArchitectureDiagramUpdateForm(ArchitectureDiagramCreateForm):
     )
     class Meta:
         model = ArchitectureDiagram
-        fields = ['name','description','process','file','historical_change_reason']
+        fields = ['name','description','process','file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
@@ -1850,15 +1848,14 @@ class CallFlowUpdateForm(CallFlowCreateForm):
     )
     class Meta:
         model = CallFlow
-        fields = ['name','description','use_case','file','historical_change_reason']
+        fields = ['name','description','use_case','file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
@@ -1902,18 +1899,19 @@ class ApiSpecificationUpdateForm(ApiSpecificationCreateForm):
     )
     class Meta:
         model = ApiSpecification
-        fields = ['name','description','api','file','historical_change_reason']
+        fields = ['name','description','api','file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
-            
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
+  
+
 
 
 class ApiDocumentationCreateForm(forms.ModelForm):
@@ -2008,14 +2006,14 @@ class DataModelUpdateForm(DataModelCreateForm):
     )
     class Meta:
         model = DataModel
-        fields = ['name','description','database','data_dictionnary' ,'file','historical_change_reason']
+        fields = ['name','description','database','data_dictionnary' ,'file']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
+            instance._change_reason = historical_change_reason
             instance.data_dictionnary.set(self.cleaned_data['data_dictionnary'])
         if commit:
             instance.save()
@@ -2070,7 +2068,7 @@ class DomainNameCreateForm(forms.ModelForm):
         help_text="Minimum 4 caractères, maximum 150.",      
         widget=forms.Textarea(attrs={'class':'form-control','placeholder': 'description du  nom de domaine', 'style': 'height: 100px;'})
         )
-    ip_address = forms.ModelChoiceField(
+    ip_adress = forms.ModelChoiceField(
         queryset=IpAdress.objects.all(),
         label='adresse ip',
         widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une adresse ip'}),
@@ -2086,14 +2084,14 @@ class DomainNameUpdateForm(DomainNameCreateForm):
     )
     class Meta:
         model = DomainName
-        fields = ['name','description','ip_adress','historical_change_reason']
+        fields = ['name','description','ip_adress']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
 
         if historical_change_reason:
             # Ajoutez une explication à la sauvegarde historique
-            instance.historical_change_reason = historical_change_reason
+            instance._change_reason = historical_change_reason
         if commit:
             instance.save()
         return instance
@@ -2133,7 +2131,7 @@ class UrlUpdateForm(UrlCreateForm):
     )
     class Meta:
         model = Url
-        fields = ['name','description','module_applicatif','domain_name','historical_change_reason']
+        fields = ['name','description','module_applicatif','domain_name']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
@@ -2176,7 +2174,7 @@ class SmppAccountUpdateForm(SmppAccountCreateForm):
     )
     class Meta:
         model = SmppAccount
-        fields = ['name','description','module_applicatif','historical_change_reason']
+        fields = ['name','description','module_applicatif']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
@@ -2226,7 +2224,7 @@ class SmsShortCodeUpdateForm(SmsShortCodeCreateForm):
     )
     class Meta:
         model = SmsShortCode
-        fields = ['name','description','smpp_account','code','historical_change_reason']
+        fields = ['name','description','smpp_account','code']
     def save(self, commit=True):
         instance = super().save(commit=False)
         historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
@@ -2316,7 +2314,7 @@ class MobileAppUpdateForm(MobileAppCreateForm):
     )
     class Meta:
         model = MobileApp
-        fields = ['name', 'description','historical_change_reason']
+        fields = ['name', 'description']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -2356,7 +2354,7 @@ class DesktopAppUpdateForm(DesktopAppCreateForm):
     )
     class Meta:
         model = DesktopApp
-        fields = ['name', 'description','historical_change_reason']
+        fields = ['name', 'description']
 
     def save(self, commit=True):
         instance = super().save(commit=False)

@@ -62,14 +62,14 @@ class SubProcessSerializer(serializers.ModelSerializer):
     uses_cases = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = SubProcess
-        fields = ['name','description','processes','uses_cases']
+        fields = ['name','description','process','uses_cases']
      
 class UseCaseSerializer(serializers.ModelSerializer):
     sub_process = SubProcessSerializer(read_only=True)
     appels_apis = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = UseCase
-        fields = ['name','description','sub_process','appels_api']
+        fields = ['name','description','sub_process','appels_apis']
      
 
 class BackupStrategieSerializer(serializers.ModelSerializer):
@@ -122,7 +122,7 @@ class AppelApiSerializer(serializers.ModelSerializer):
     use_case = UseCaseSerializer(read_only=True)
     class Meta:
         model = AppelApi
-        fields = ['name','description','module_applicatif','api','use_case','appels_apis']
+        fields = ['name','description','module_applicatif','api','use_case']
     
 class SystemeStockageSerializer(serializers.ModelSerializer):
     servers = serializers.StringRelatedField(many=True, read_only=True)
@@ -289,7 +289,7 @@ class UrlSerializer(serializers.ModelSerializer):
     connexions_apps = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = Url
-        fields = ['name','description','ip_adress','module_applicatif','connexions_apps']
+        fields = ['name','description','domain_name','module_applicatif','connexions_apps']
      
 class SmppAccountSerializer(serializers.ModelSerializer):
     sms_short_codes = serializers.StringRelatedField(many=True, read_only=True)

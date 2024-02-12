@@ -1,0 +1,68 @@
+{% extends 'channels/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Détail de l' url {{url}}</h4>
+            <p class="card-description">
+              Voir tout les details port sur l'url {{url}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Module applicatif</th>
+                    <th>Nom de domaine</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for url in page_obj%}
+                  <tr>
+                    <td><a href="{% url 'base:detail-url' url.pk %}" > {{ url.name }} </a></td> 
+                    <td>{{url.description}}</td>
+                    <td><a href="{% url 'base:detail-domain_name' url.domain_name.pk %}" >{{url.domain_name}}</a></td>
+                    
+                    <td><a href="{% url 'base:detail-module_applicatif' url.module_applicatif.pk %}" >{{url.module_applicatif}}</a></td>
+
+                    <td>{{url.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{url.created|date:"DATETIME_FORMAT"}}</td>                    
+                </tr>
+                    {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

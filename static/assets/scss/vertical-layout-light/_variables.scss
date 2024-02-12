@@ -7,15 +7,15 @@ $sidebar-light-bg: #f4f7f7;
 $sidebar-light-menu-color: #434a54;
 $sidebar-light-submenu-color: $sidebar-light-menu-color;
 $sidebar-light-menu-active-bg: #434a54;
-$sidebar-light-menu-active-color: #f7df64;
+$sidebar-light-menu-active-color: #434a54;
 $sidebar-light-menu-hover-bg: #434a54;
-$sidebar-light-menu-hover-color: #f7df64;
-$sidebar-light-submenu-hover-color: #f7cd64;
-$sidebar-light-submenu-active-color: #f7cd64;
+$sidebar-light-menu-hover-color: #ffcb05;
+$sidebar-light-submenu-hover-color: #434a54;
+$sidebar-light-submenu-active-color: #434a54;
 $sidebar-light-menu-icon-color: #434a54;
-$sidebar-light-menu-arrow-color: #f7df64;
-$sidebar-light-profile-name-color: #f7df64;
-$sidebar-light-profile-title-color: #f7df64;
+$sidebar-light-menu-arrow-color: #ffcb05;
+$sidebar-light-profile-name-color: #ffcb05;
+$sidebar-light-profile-title-color: #ffcb05;
 
 $sidebar-dark-bg: #232227; 
 $sidebar-dark-menu-color: #FFFFFF;
@@ -31,8 +31,8 @@ $sidebar-dark-profile-name-color: #ffffff;
 $sidebar-dark-profile-title-color: #8d9498; 
 
 
-$sidebar-light-category-color: #f7df64;
-$sidebar-nav-category-border-color:#f7df64;
+$sidebar-light-category-color: #ffcb05;
+$sidebar-nav-category-border-color:#ffcb05;
 
 $sidebar-dark-category-color: #fff;
 
@@ -58,14 +58,14 @@ $sidebar-icon-only-bg :#fff;
 $sidebar-icon-only-menu-padding: .5rem 1.625rem .5rem 1.188rem;
 $sidebar-icon-only-submenu-padding: 0 0 0 1.5rem;
 
-$sidebar-icon-only-light-color :#f7df64;
+$sidebar-icon-only-light-color :#ffcb05;
 
 $sidebar-box-shadow: 6px 16px 31px -18px #b7bcd1;
 
 $rtl-sidebar-submenu-padding: 0 4.5rem 0 0;
 
 $icon-only-collapse-width: 190px;
-$icon-only-menu-bg-light: #f7df64;
+$icon-only-menu-bg-light: #ffcb05;
 $icon-only-menu-bg-dark: $sidebar-dark-bg;
 
 ///////// SIDEBAR ////////
@@ -80,12 +80,12 @@ $boxed-layout-bg: #c6c8ca;
 $settings-panel-width: 300px;
 
 ///////// NAVBAR ////////
-$navbar-default-bg: #f7df64;
+$navbar-default-bg: #ffcb05;
 $navbar-height: 67px;
-$navbar-menu-color: #f7df64;
+$navbar-menu-color: #ffcb05;
 $navbar-font-size: $sidebar-menu-font-size;
 $navbar-icon-font-size: 1.625rem;
-$navbar-link-color: #f7df64;
-$navbar-menu-icon-color:#f7df64;
+$navbar-link-color: #ffcb05;
+$navbar-menu-icon-color:#ffcb05;
 ///////// NAVBAR ////////
 $gray:             #434a54;

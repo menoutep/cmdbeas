@@ -1,0 +1,31 @@
+{% extends 'systeme/index.html' %}
+
+{% block content %}
+
+<div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Suppression de {{ architecture_diagram.name }}</h4>
+        <form class="form-sample" method="post">
+          <p class="card-description">
+            Est-vous sur de vouloir supprimer {{ architecture_diagram.name }}?
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                {% csrf_token %}
+                <div class="col-md-3"><button type="submit" class="btn btn-danger">supprimer</button></div>
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3"><button type="submit" class="btn btn-secondary"><a href="{% url 'base:architecture_diagram-list' %}">Annuler</a></button></div>
+              </div>
+            </div>
+          
+          </div>
+  
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

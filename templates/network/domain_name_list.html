@@ -26,13 +26,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for domain_name in domain_names %}
+                  {% for domain_name in page_obj %}
                   
                         <tr>
                             <td><a href="{% url 'base:detail-domain_name' domain_name.pk %}" >{{ domain_name.name }} </a></td> 
                             
                             <td>{{domain_name.description}}</td>
-                            <td><a href="{% url 'base:detail-ip_address' domain_name.ip_address.pk %}" >{{domain_name.ip_address.ipv4}}</a></td>
+                            <td><a href="{% url 'base:detail-ip_adress' domain_name.ip_adress.pk %}" >{{domain_name.ip_adress.ipv4}}</a></td>
                             
                             <td>{{domain_name.updated|date:"DATETIME_FORMAT"}}</td>
                             <td>{{domain_name.created|date:"DATETIME_FORMAT"}}</td>                    
@@ -43,6 +43,25 @@
               </table>
             </div>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
         </div>
       </div>
 

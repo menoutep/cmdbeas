@@ -1,4 +1,4 @@
-{% extends 'documentation/index.html' %}
+{% extends 'channels/index.html' %}
 {% load static %}
 
 
@@ -28,20 +28,39 @@
                 </thead>
                 <tbody>
                
-                  
+                  {%for smpp_account in page_obj%}
                         <tr>
-                            <td><a href="{% url 'base:detail-sms_short_code' sms_short_code.pk %}" > {{ sms_short_code.name }} </a></td> 
-                            <td>{{sms_short_code.description}}</td>
-                            <td><a href="{% url 'base:detail-smpp_account' sms_short_code.smpp_account.pk %}" >{{sms_short_code.smpp_account}}</a></td>
+                            <td><a href="{% url 'base:detail-smpp_account' smpp_account.pk %}" > {{ smpp_account.name }} </a></td> 
+                            <td>{{smpp_account.description}}</td>
+                            <td><a href="{% url 'base:detail-module_applicatif' smpp_account.module_applicatif.pk %}" >{{smpp_account.module_applicatif}}</a></td>
 
-                            <td>{{sms_short_code.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td>{{sms_short_code.created|date:"DATETIME_FORMAT"}}</td>                    
+                            <td>{{smpp_account.updated|date:"DATETIME_FORMAT"}}</td>
+                            <td>{{smpp_account.created|date:"DATETIME_FORMAT"}}</td>                    
                         </tr>
-                
+                  {%endfor%}
                 </tbody>
               </table>
             </div>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
         </div>
       </div>
 

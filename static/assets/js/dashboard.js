@@ -21,14 +21,14 @@
             data: [50, 110, 60, 290, 200, 115, 130, 170, 90, 210, 240, 280, 200],
             backgroundColor: saleGradientBg,
             borderColor: [
-                '#fbff14',
+                '#FFCB05',
             ],
             borderWidth: 1.5,
             fill: true, // 3: no fill
             pointBorderWidth: 1,
             pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
             pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
-            pointBackgroundColor: ['#fbff14)', '#fbff14', '#fbff14', '#fbff14','#fbff14)', '#fbff14', '#fbff14', '#fbff14','#fbff14)', '#fbff14', '#fbff14', '#fbff14','#fbff14)'],
+            pointBackgroundColor: ['#FFCB05)', '#FFCB05', '#FFCB05', '#FFCB05','#FFCB05)', '#FFCB05', '#FFCB05', '#FFCB05','#FFCB05)', '#FFCB05', '#FFCB05', '#FFCB05','#FFCB05)'],
             pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
         },{
           label: 'Last week',
@@ -186,9 +186,9 @@
           },{
             label: 'This week',
             data: [215, 290, 210, 250, 290, 230, 290, 210, 280, 220, 190, 300],
-            backgroundColor: "#fbff14",
+            backgroundColor: "#FFCB05",
             borderColor: [
-                '#fbff14',
+                '#FFCB05',
             ],
             borderWidth: 0,
               barPercentage: 0.35,
@@ -352,13 +352,13 @@
           datasets: [{
             data: [40, 20, 30, 10],
             backgroundColor: [
-              "#fbff14",
+              "#FFCB05",
               "#FDD0C7",
               "#52CDFF",
               "#81DADA"
             ],
             borderColor: [
-              "#fbff14",
+              "#FFCB05",
               "#FDD0C7",
               "#52CDFF",
               "#81DADA"

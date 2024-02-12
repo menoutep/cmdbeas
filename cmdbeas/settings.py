@@ -53,7 +53,6 @@ INSTALLED_APPS = [
 
 # Tell select2 which cache configuration to use:
 
-
 AXES_FAILURE_LIMIT = 10
 AXES_LOCK_OUT_AT_FAILURE = True
 AXES_COOLOFF_TIME = timedelta(minutes=30) 

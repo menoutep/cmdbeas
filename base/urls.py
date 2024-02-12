@@ -1,5 +1,9 @@
 from django.urls import path
 from base import views
+# urls.py
+
+
+
 app_name='base'
 
 urlpatterns = [
@@ -9,6 +13,7 @@ path('departement', views.DepartementListView.as_view(), name='departement-list'
 path('departement/<int:pk>/', views.DepartementDetailView.as_view(), name='detail-departement'),
 path('departement/<int:pk>/update/', views.DepartementUpdateView.as_view(), name='update-departement'),
 path('departement/create', views.DepartementCreateView.as_view(), name='create-departement'),
+path('departement/<int:pk>/delete', views.DepartementDeleteView.as_view(), name='delete-departement'),
 
 path('apptype', views.AppTypeListView.as_view(), name='apptype-list'),
 path('apptype/<int:pk>/', views.AppTypeDetailView.as_view(), name='detail-apptype'),
@@ -19,18 +24,22 @@ path('datacenter', views.DatacenterListView.as_view(), name='datacenter-list'),
 path('datacenter/<int:pk>/', views.DatacenterDetailView.as_view(), name='detail-datacenter'),
 path('datacenter/<int:pk>/update/', views.DatacenterUpdateView.as_view(), name='update-datacenter'),
 path('datacenter/create', views.DatacenterCreateView.as_view(), name='create-datacenter'),
+path('datacenter/<int:pk>/delete', views.DatacenterDeleteView.as_view(), name='delete-datacenter'),
 
 path('server_room', views.ServerRoomListView.as_view(), name='server_room-list'),
 path('server_room/<int:pk>/', views.ServerRoomDetailView.as_view(), name='detail-server_room'),
 path('server_room/<int:pk>/update/', views.ServerRoomUpdateView.as_view(), name='update-server_room'),
 path('server_room/create', views.ServerRoomCreateView.as_view(), name='create-server_room'),
+path('server_room/<int:pk>/delete', views.ServerRoomDeleteView.as_view(), name='delete-server_room'),
 
 path('rack', views.RackListView.as_view(), name='rack-list'),
 path('rack/<int:pk>/', views.RackDetailView.as_view(), name='detail-rack'),
 path('rack/<int:pk>/update/', views.RackUpdateView.as_view(), name='update-rack'),
 path('rack/create', views.RackCreateView.as_view(), name='create-rack'),
+path('rack/<int:pk>/delete', views.RackDeleteView.as_view(), name='delete-rack'),
 
 path('cluster', views.ClusterListView.as_view(), name='cluster-list'),
+path('cluster/<int:pk>/delete', views.ClusterDeleteView.as_view(), name='delete-cluster'),
 path('cluster/<int:pk>/', views.ClusterDetailView.as_view(), name='detail-cluster'),
 path('cluster/<int:pk>/update/', views.ClusterUpdateView.as_view(), name='update-cluster'),
 path('cluster/create', views.ClusterCreateView.as_view(), name='create-cluster'),
@@ -38,6 +47,7 @@ path('systeme_stockage', views.SystemeStockageListView.as_view(), name='systeme_
 path('systeme_stockage/<int:pk>/', views.SystemeStockageDetailView.as_view(), name='detail-systeme_stockage'),
 path('systeme_stockage/<int:pk>/update/', views.SystemeStockageUpdateView.as_view(), name='update-systeme_stockage'),
 path('systeme_stockage/create', views.SystemeStockageCreateView.as_view(), name='create-systeme_stockage'),
+path('systeme_stockage/<int:pk>/delete', views.SystemeStockageDeleteView.as_view(), name='delete-systeme_stockage'),
 
 path('server', views.ServerListView.as_view(), name='server-list'),
 path('server/<int:pk>/', views.ServerDetailView.as_view(), name='detail-server'),
@@ -197,6 +207,60 @@ path('data_dictionnary_model/<int:pk>/', views.DataDictionnaryModelDetailView.as
 path('data_dictionnary_model/<int:pk>/update/', views.DataDictionnaryModelUpdateView.as_view(), name='update-data_dictionnary_model'),
 path('data_dictionnary_model/create', views.DataDictionnaryModelCreateView.as_view(), name='create-data_dictionnary_model'),
 path('data_dictionnary_model/<int:pk>/delete/', views.DataDictionnaryModelDeleteView.as_view(), name='delete-data_dictionnary_model'),
+
+path('mobile_app', views.MobileAppListView.as_view(), name='mobile_app-list'),
+path('mobile_app/<int:pk>/', views.MobileAppDetailView.as_view(), name='detail-mobile_app'),
+path('mobile_app/<int:pk>/update/', views.MobileAppUpdateView.as_view(), name='update-mobile_app'),
+path('mobile_app/create', views.MobileAppCreateView.as_view(), name='create-mobile_app'),
+path('mobile_app/<int:pk>/delete/', views.MobileAppDeleteView.as_view(), name='delete-mobile_app'),
+
+path('connexion_app', views.ConnexionAppListView.as_view(), name='connexion_app-list'),
+path('connexion_app/<int:pk>/', views.ConnexionAppDetailView.as_view(), name='detail-connexion_app'),
+path('connexion_app/<int:pk>/update/', views.ConnexionAppUpdateView.as_view(), name='update-connexion_app'),
+path('connexion_app/create', views.ConnexionAppCreateView.as_view(), name='create-connexion_app'),
+path('connexion_app/<int:pk>/delete/', views.ConnexionAppDeleteView.as_view(), name='delete-connexion_app'),
+
+path('domain_name', views.DomainNameListView.as_view(), name='domain_name-list'),
+path('domain_name/<int:pk>/', views.DomainNameDetailView.as_view(), name='detail-domain_name'),
+path('domain_name/<int:pk>/update/', views.DomainNameUpdateView.as_view(), name='update-domain_name'),
+path('domain_name/create', views.DomainNameCreateView.as_view(), name='create-domain_name'),
+path('domain_name/<int:pk>/delete/', views.DomainNameDeleteView.as_view(), name='delete-domain_name'),
+
+
+path('desktop_app', views.DesktopAppListView.as_view(), name='desktop_app-list'),
+path('desktop_app/<int:pk>/', views.DesktopAppDetailView.as_view(), name='detail-desktop_app'),
+path('desktop_app/<int:pk>/update/', views.DesktopAppUpdateView.as_view(), name='update-desktop_app'),
+path('desktop_app/create', views.DesktopAppCreateView.as_view(), name='create-desktop_app'),
+path('desktop_app/<int:pk>/delete/', views.DesktopAppDeleteView.as_view(), name='delete-desktop_app'),
+
+path('url', views.UrlListView.as_view(), name='url-list'),
+path('url/<int:pk>/', views.UrlDetailView.as_view(), name='detail-url'),
+path('url/<int:pk>/update/', views.UrlUpdateView.as_view(), name='update-url'),
+path('url/create', views.UrlCreateView.as_view(), name='create-url'),
+path('url/<int:pk>/delete/', views.UrlDeleteView.as_view(), name='delete-url'),
+
+path('ussd_short_code', views.UssdShortCodeListView.as_view(), name='ussd_short_code-list'),
+path('ussd_short_code/<int:pk>/', views.UssdShortCodeDetailView.as_view(), name='detail-ussd_short_code'),
+path('ussd_short_code/<int:pk>/update/', views.UssdShortCodeUpdateView.as_view(), name='update-ussd_short_code'),
+path('ussd_short_code/create', views.UssdShortCodeCreateView.as_view(), name='create-ussd_short_code'),
+path('ussd_short_code/<int:pk>/delete/', views.UssdShortCodeDeleteView.as_view(), name='delete-ussd_short_code'),
+
+path('sms_short_code', views.SmsShortCodeListView.as_view(), name='sms_short_code-list'),
+path('sms_short_code/<int:pk>/', views.SmsShortCodeDetailView.as_view(), name='detail-sms_short_code'),
+path('sms_short_code/<int:pk>/update/', views.SmsShortCodeUpdateView.as_view(), name='update-sms_short_code'),
+path('sms_short_code/create', views.SmsShortCodeCreateView.as_view(), name='create-sms_short_code'),
+path('sms_short_code/<int:pk>/delete/', views.SmsShortCodeDeleteView.as_view(), name='delete-sms_short_code'),
+
+path('smpp_account', views.SmppAccountListView.as_view(), name='smpp_account-list'),
+path('smpp_account/<int:pk>/', views.SmppAccountDetailView.as_view(), name='detail-smpp_account'),
+path('smpp_account/<int:pk>/update/', views.SmppAccountUpdateView.as_view(), name='update-smpp_account'),
+path('smpp_account/create', views.SmppAccountCreateView.as_view(), name='create-smpp_account'),
+path('smpp_account/<int:pk>/delete/', views.SmppAccountDeleteView.as_view(), name='delete-smpp_account'),
+
+
+
+
+
 
 #path('test-pdf', views.HelloPDFView.as_view()),
 

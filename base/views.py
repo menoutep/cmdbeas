@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 import json
+from django.core.paginator import Paginator, EmptyPage
 from base.forms import DesktopAppCreateForm,DesktopAppUpdateForm,MobileAppCreateForm,MobileAppUpdateForm,ConnexionAppCreateForm,ConnexionAppUpdateForm,UrlCreateForm,UrlUpdateForm,SmppAccountCreateForm,SmppAccountUpdateForm,SmsShortCodeCreateForm,SmsShortCodeUpdateForm,UssdShortCodeCreateForm,UssdShortCodeUpdateForm,DomainNameCreateForm,DomainNameUpdateForm,DataDictionnaryUpdateForm,DataDictionnaryCreateForm,DataDictionnaryModelCreateForm,DataDictionnaryModelUpdateForm,ApiSpecificationCreateForm,ApiSpecificationUpdateForm,BackupStrategieUpdateForm,BackupStrategieCreateForm,TechnicalRecoveryPlanCreateForm,TechnicalRecoveryPlanUpdateForm,ArchitectureDiagramCreateForm,ArchitectureDiagramUpdateForm,ApiDocumentationCreateForm,ApiDocumentationUpdateForm,CallFlowCreateForm,CallFlowUpdateForm,DataModelUpdateForm,DataModelCreateForm
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
@@ -33,7 +34,7 @@ def pdf_view(request,id,type_file):
         file = BackupStrategie.objects.get(pk=id)
     elif type_file == 'technical-plan':
         file = TechnicalRecoveryPlan.objects.get(pk=id)
-    elif type_file == 'achitecture-diagram':
+    elif type_file == 'architecture-diagram':
         file = ArchitectureDiagram.objects.get(pk=id)
     elif type_file == 'call-flow':
         file = CallFlow.objects.get(pk=id)
@@ -54,7 +55,6 @@ def pdf_view(request,id,type_file):
         response['Content-Disposition'] = 'inline;filename=mypdf.pdf'
         return response
     
-
 
 
 
@@ -83,11 +83,13 @@ def index(request):
 class MobileAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_denied_message =  "Vous n'avez pas la permission d'accéder à cette page. Veuillez contacter votre administrateur"
     permission_required = "base.view_mobileapp"
-
+    login_url = "base:index"
+    raise_exception = True
     model = MobileApp
     template_name = 'channels/mobile_app_list.html'
-    context_object_name = 'mobile_apps'
+    
     def get(self, request, *args, **kwargs):
+        
         # Récupérer le paramètre de la requête GET
         q = self.request.GET.get('q', '')
         # Initialiser le queryset de base (non trié)
@@ -99,6 +101,15 @@ class MobileAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'mobile_apps': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['mobile_apps'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class MobileAppDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -154,6 +165,15 @@ class DesktopAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'desktop_apps': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['desktop_apps'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class DesktopAppDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -214,6 +234,15 @@ class UrlListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'urls': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['urls'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class UrlDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -274,6 +303,15 @@ class SmppAccountListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'smpp_accounts': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['smpp_accounts'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class SmppAccountDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -333,6 +371,15 @@ class SmsShortCodeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'sms_short_codes': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['sms_short_codes'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class SmsShortCodeDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -393,6 +440,15 @@ class UssdShortCodeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView)
         # Passer le queryset trié au template
         print(queryset)
         context = {'ussd_short_codes': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['ussd_short_codes'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class UssdShortCodeDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -453,6 +509,15 @@ class ConnexionAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'connexion_apps': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['connexion_apps'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class ConnexionAppDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -498,7 +563,7 @@ class ConnexionAppDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteVi
 class DomainNameListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_domainname"
     model = DomainName
-    template_name = 'documentation/domain_name_list.html'
+    template_name = 'network/domain_name_list.html'
     context_object_name = 'domain_names'
     def get(self, request, *args, **kwargs):
         # Récupérer le paramètre de la requête GET
@@ -517,12 +582,21 @@ class DomainNameListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'domain_names': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['domain_names'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class DomainNameDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_domainname"
     model = DomainName
-    template_name = 'documentation/domain_name_detail.html'
+    template_name = 'network/domain_name_detail.html'
     context_object_name = 'domain_name'
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
@@ -534,7 +608,7 @@ class DomainNameDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView
 class DomainNameCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     permission_required = "base.add_domainname"
     model = DomainName
-    template_name = 'documentation/domain_name_form.html'
+    template_name = 'network/domain_name_form.html'
     form_class = DomainNameCreateForm
     success_url = reverse_lazy('base:domain_name-list')
     def form_valid(self, form):
@@ -543,7 +617,7 @@ class DomainNameCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView
 class DomainNameUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = "base.change_domainname"
     model = DomainName
-    template_name = 'documentation/domain_name_form.html'
+    template_name = 'network/domain_name_form.html'
     form_class = DomainNameUpdateForm
     success_url = reverse_lazy('base:domain_name-list')
     def form_valid(self, form):
@@ -552,7 +626,7 @@ class DomainNameUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView
 class DomainNameDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     permission_required = "base.delete_domainname"
     model = DomainName
-    template_name = 'documentation/domain_name_confirm_delete.html'
+    template_name = 'network/domain_name_confirm_delete.html'
     success_url = reverse_lazy('domain_name-list')
 
 class NetworkInterfaceListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
@@ -579,6 +653,15 @@ class NetworkInterfaceListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
         # Passer le queryset trié au template
         print(queryset)
         context = {'network_interfaces': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['network_interfaces'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -632,6 +715,15 @@ class IpAdressListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'ip_adresses': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['ip_adresses'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
  
@@ -788,6 +880,15 @@ class VendorListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         
         context = {'vendors': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['vendors'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -860,6 +961,15 @@ class ModuleApplicatifListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
         # Passer le queryset trié au template
         print(queryset)
         context = {'module_applicatifs': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['module_applicatifs'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class ModuleApplicatifDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -892,7 +1002,7 @@ class ModuleApplicatifDeleteView(LoginRequiredMixin,PermissionRequiredMixin,Dele
     success_url = reverse_lazy('base:module_applicatif-list')
 
 
-class ApplicationListView(LoginRequiredMixin,PermissionRequiredMixin,View):
+class ApplicationListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_application"
     template_name = 'application/application_list.html'
 
@@ -902,6 +1012,7 @@ class ApplicationListView(LoginRequiredMixin,PermissionRequiredMixin,View):
         q = self.request.GET.get('q', '')
         # Initialiser le queryset de base (non trié)
         queryset = Application.objects.all()
+        paginate_by = 10
 
         # Vérifier le type du paramètre et trier en conséquence
         if parametre:
@@ -922,11 +1033,24 @@ class ApplicationListView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                 Q(name__icontains=q) |
                                 Q(description__icontains=q) |          
                                 Q(app_type__name__icontains=q)|
-                                Q(vendor__name__icontains=q))  
+                                Q(vendor__name__icontains=q)).distinct() 
         # Passer le queryset trié au template
+                
         print(queryset)
         context = {'applications': queryset}
+        paginator = Paginator(context['applications'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
+        
+        
         return render(request, self.template_name, context)
+
+
 class ApplicationDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_application"
     model = Application
@@ -1005,6 +1129,15 @@ class AppServerListView(LoginRequiredMixin,PermissionRequiredMixin,View):
         # Passer le queryset trié au template
         print(queryset)
         context = {'app_servers': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['app_servers'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class AppServerDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_appserver"
@@ -1064,6 +1197,15 @@ class ConnexionBDListView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                 
         # Passer le queryset trié au template
         context = {'connexion_bds': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['connexion_bds'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, 'application/connexion_bd_list.html', context)
     
 
@@ -1122,6 +1264,15 @@ class ProcessListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                                 
         # Passer le queryset trié au template
         context = {'processes': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['processes'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, 'integration/process_list.html', context)
     
 
@@ -1179,6 +1330,15 @@ class SubProcessListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                                 
         # Passer le queryset trié au template
         context = {'sub_processes': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['sub_processes'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
     
 class SubProcessDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1234,6 +1394,15 @@ class UseCaseListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'use_cases': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['use_cases'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class UseCaseDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1281,11 +1450,19 @@ class ApiListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                             Q(appels_apis__name__icontains=q) |   
                             Q(apis_specifications__name__icontains=q) |
                             Q(apis_documentations__name__icontains=q)  
-                        
                            ).distinct() 
         # Passer le queryset trié au template
         print(queryset)
         context = {'apis': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['apis'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class ApiDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1325,9 +1502,9 @@ class AppelApiListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Récupérer le paramètre de la requête GET
         q = self.request.GET.get('q', '')
         # Initialiser le queryset de base (non trié)
-        queryset = Api.objects.all()
+        queryset = AppelApi.objects.all()
         if q :
-          queryset = Api.objects.filter(
+          queryset = AppelApi.objects.filter(
                             Q(name__icontains=q) |
                             Q(module_applicatif__name__icontains=q) |        
                             Q(api__name__icontains=q) |   
@@ -1337,6 +1514,15 @@ class AppelApiListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'appels_apis': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['appels_apis'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class AppelApiDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1391,6 +1577,15 @@ class DatacenterListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                               
         # Passer le queryset trié au template
         context = {'datacenters': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['datacenters'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -1447,7 +1642,15 @@ class ServerRoomListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                 'server_rooms': queryset,
                    
                    }
-
+        paginate_by = 10
+        paginator = Paginator(context['server_rooms'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
     
 
@@ -1501,6 +1704,15 @@ class RackListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                               
         # Passer le queryset trié au template
         context = {'racks': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['racks'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class RackDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1554,6 +1766,15 @@ class ClusterListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
                               
         # Passer le queryset trié au template
         context = {'clusters': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['clusters'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -1606,7 +1827,17 @@ class SystemeStockageListView(LoginRequiredMixin,PermissionRequiredMixin,ListVie
                            ).distinct() 
         # Passer le queryset trié au template
         print(queryset)
+
         context = {'systeme_stockages': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['systeme_stockages'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -1682,6 +1913,15 @@ class ServerListView(LoginRequiredMixin,PermissionRequiredMixin,View):
                               Q(sys_stockage__name__icontains=q))  
         # Passer le queryset trié au template
         context = {'servers': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['servers'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class ServerDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -1750,6 +1990,15 @@ class DeploiementClusterListView(LoginRequiredMixin,PermissionRequiredMixin,List
         # Passer le queryset trié au template
         print(queryset)
         context = {'deploiement_clusters': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['deploiement_clusters'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 
@@ -1816,6 +2065,15 @@ class PartitionListView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                 
         # Passer le queryset trié au template
         context = {'partitions': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['partitions'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class PartitionDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_partition"
@@ -1882,6 +2140,15 @@ class DatabaseServerListView(LoginRequiredMixin,PermissionRequiredMixin,View):
         # Passer le queryset trié au template
         print(queryset)
         context = {'database_servers': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['database_servers'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class DatabaseServerDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_databaseserver"
@@ -1967,6 +2234,15 @@ class DatabaseListView(LoginRequiredMixin,PermissionRequiredMixin,View):
         # Passer le queryset trié au template
         print(queryset)
         context = {'databases': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['databases'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class DatabaseDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -2051,6 +2327,15 @@ class BackupStrategieListView(LoginRequiredMixin,PermissionRequiredMixin,ListVie
         # Passer le queryset trié au template
         print(queryset)
         context = {'backup_strategies': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['backup_strategies'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class BackupStrategieDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_backupstrategie"
@@ -2107,6 +2392,15 @@ class CallFlowListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'call_flows': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['call_flows'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class CallFlowDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_callflow"
@@ -2164,6 +2458,15 @@ class TechnicalRecoveryPlanListView(LoginRequiredMixin,PermissionRequiredMixin,L
         # Passer le queryset trié au template
         print(queryset)
         context = {'technical_recovery_plans': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['technical_recovery_plans'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class TechnicalRecoveryPlanDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -2222,6 +2525,15 @@ class ArchitectureDiagramListView(LoginRequiredMixin,PermissionRequiredMixin,Lis
         # Passer le queryset trié au template
         print(queryset)
         context = {'architecture_diagrams': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['architecture_diagrams'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class ArchitectureDiagramDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -2281,6 +2593,15 @@ class ApiSpecificationListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
         # Passer le queryset trié au template
         print(queryset)
         context = {'api_specifications': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['api_specifications'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class ApiSpecificationDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_apispecification"
@@ -2340,6 +2661,15 @@ class ApiDocumentationListView(LoginRequiredMixin,PermissionRequiredMixin,ListVi
         # Passer le queryset trié au template
         print(queryset)
         context = {'api_documentations': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['api_documentations'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class ApiDocumentationDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_apidocumentation"
@@ -2399,6 +2729,15 @@ class DataModelListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         # Passer le queryset trié au template
         print(queryset)
         context = {'data_models': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['data_models'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class DataModelDetailView(DetailView):
     permission_required = "base.view_datamodel"
@@ -2457,6 +2796,15 @@ class DataDictionnaryModelListView(LoginRequiredMixin,PermissionRequiredMixin,Li
         # Passer le queryset trié au template
         print(queryset)
         context = {'data_dictionnary_models': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['data_dictionnary_models'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 class DataDictionnaryModelDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_datadictionnarymodel"
@@ -2519,6 +2867,15 @@ class DataDictionnaryListView(LoginRequiredMixin,PermissionRequiredMixin,ListVie
         # Passer le queryset trié au template
         print(queryset)
         context = {'data_dictionnaries': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['data_dictionnaries'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
         return render(request, self.template_name, context)
 
 class DataDictionnaryDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):

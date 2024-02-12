@@ -7,14 +7,37 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">{{partition}}</h4>
-            <p class="card-server_room">
-                Detail de la salle serveur : {{partition}}
-            </p>
+          <div class="row">
+            <div class="col-lg-9">
+              <h4 class="card-title"> {{partition}}</h4>
+              <p class="card-description">
+                Consulter les détails sur la partition : {{partition}}
+              </p>
+            </div>
+            <div class="col-lg-3">
+              
+                <div class="dropdown">
+                  <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Action
+                  </button>
+                  <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                    <h6 class="dropdown-header">Choisir une action</h6>
+                    <a class="dropdown-item" href="{% url 'base:update-partition' partition.pk %}">Modifier la partition</a>
+                    <div class="dropdown-divider"></div>
+                    
+                    <a class="dropdown-item" href="{% url 'base:delete-partition' partition.pk %}">Supprimer la partition</a>
+                    
+                  </div>
+                
+              </div>
+             
+            </div>
+          </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
+                    <th>Partition</th>
                     <th>Nom du serveur</th>
                     <th>Nom du stockage</th>
                     <th>modifié le</th>
@@ -25,9 +48,10 @@
                 <tbody>
                   
                   <tr>
-                    
-                    <td><a href="{% url 'base:update-partition' partition.pk %}">{{ partition.serveur }} </a></td> 
-                    <td><a href="{% url 'base:update-partition' partition.pk %}">{{partition.stockage}}</a></td>
+                    <td><a href="{% url 'base:update-partition' partition.pk %}">{{ partition}} </a></td> 
+
+                    <td><a href="{% url 'base:update-server' partition.serveur.pk %}">{{ partition.serveur }} </a></td> 
+                    <td><a href="{% url 'base:detail-systeme_stockage' partition.stockage.pk %}">{{partition.stockage}}</a></td>
 
                     <td>{{partition.updated|date:"DATETIME_FORMAT"}}</td>
                     <td>{{partition.created|date:"DATETIME_FORMAT"}}</td>
@@ -104,22 +128,26 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{partition}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{partition}}
+              Détails des composant de  : {{datacenter.name}}
             </p>
-            <div class="table-responsive">
+          <div class="table-responsive">
               <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                  }
-                  
+.tree-line {
+    position: absolute;
+    left: 50px;
+    top: 22px;
+    width: 1px;
+    height: calc(100% - 32px);
+    background-color: #040404;
+}
                   ul {
                       list-style-type: none;
-                      padding-left: 20px;
+                      padding-left: 20px; 
                       margin-left: 20px;
-                      margin-bottom: 5px;
-                      padding-bottom: 10px;
+                      margin-bottom: 3px;
+                      padding-bottom: 5px;
                   }
                   
                   li {
@@ -131,6 +159,7 @@
                   
                   .expand-btn {
                       cursor: pointer;
+                      
                       padding: 3px;
                       border-radius: 3px;
                       margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
@@ -161,7 +190,7 @@
                 </div>
               </div>
             
-              <script>
+            <script>
                 var levelColors = ['#95b9c2c1', '#6390a34d', '#95b9c258', '#687f8c','#8d9498'];// Ajoutez autant de couleurs que nécessaire
                 var levelTColors = [
                   'rgba(255, 255, 150, 0.7)',  // Jaune clair
@@ -169,7 +198,7 @@
                   'rgba(255, 250, 150, 0.7)',  // Jaune pâle
                   'rgba(255, 250, 120, 0.7)'   // Jaune très clair
                 ];// Ajoutez autant de couleurs que nécessaire
-              
+                
                 function traverseNestedDictionary(obj, parentElement, level = 0) {
                   var ul = document.createElement('ul');
                   parentElement.appendChild(ul);
@@ -180,23 +209,28 @@
                           ul.appendChild(li);
                           
                           var span = document.createElement('span');
-                          var h3 = document.createElement('h3');
+                          var h3 = document.createElement('h5');
                           span.textContent = key + ": ";
-                          span.style.color = levelTColors[level % levelTColors.length];
-                          span.style.fontSize = '20px'; 
+                          //span.style.color = levelTColors[level % levelTColors.length];
+                          span.style.fontSize = '13px'; 
                           span.style.fontWeight = 'bold';
                           li.appendChild(span);
-              
-                          li.style.backgroundColor = levelColors[level % levelColors.length];
+                          span.style.borderRadius = '8px';
+                          //li.style.backgroundColor ='#9a94a7'
+                          //li.style.backgroundColor = levelColors[level % levelColors.length];
                           li.style.borderRadius = '8px'; 
-                          li.style.maginBottom = '5px';
-                          li.style.paddingBottom = '5px';
+
+                          li.style.position = 'relative'; // Ajout de la position relative pour positionner la ligne verticale
               
                           if (typeof obj[key] === 'object' && obj[key] !== null) {
                               var folderIcon = document.createElement('i');
                               folderIcon.className = 'mdi mdi-folder-outline';
                               span.insertBefore(folderIcon, span.firstChild);
               
+                              var line = document.createElement('div'); // Création de l'élément de ligne verticale
+                              line.className = 'tree-line';
+                              li.appendChild(line); // Ajout de la ligne verticale
+                              
                               traverseNestedDictionary(obj[key], li, level + 1);
               
                               var icon = document.createElement('i');
@@ -215,7 +249,7 @@
                                   var ul = this.parentElement.querySelector('ul');
                                   if (ul) {
                                       ul.classList.toggle('hidden');
-              
+                                      line.style.display = ul.classList.contains('hidden') ? 'none' : 'block';
                                       var icon = this.querySelector('.ted');
                                       if (ul.classList.contains('hidden')) {
                                           icon.classList.remove('mdi-chevron-down');
@@ -228,7 +262,7 @@
                               });
               
                               span.addEventListener('mouseenter', function() {
-                                  this.style.backgroundColor = 'lightgrey';
+                                  this.style.backgroundColor = '#FFCB05';
                               });
               
                               span.addEventListener('mouseleave', function() {
@@ -246,7 +280,7 @@
                               var small = document.createElement('small');
                               small.textContent = obj[key];
                               small.className = 'text-muted'; 
-                              small.style.fontSize = '20px'; 
+                              small.style.fontSize = '12px'; 
               
                               leafSpan.appendChild(small);
                               li.appendChild(leafSpan);
@@ -258,15 +292,17 @@
               
               
               
+              
+              
                 var serializedData = {{ serializer_data|safe }};
                 var treeContainer = document.getElementById('tree2');
                 traverseNestedDictionary(serializedData, treeContainer, true);
-              </script>
+            </script>
               
-            </div>
+          </div>
           </div>
         </div>
-      </div>     
+      </div>   
 
     </div>
   </div>

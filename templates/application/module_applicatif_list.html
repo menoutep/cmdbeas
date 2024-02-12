@@ -63,7 +63,7 @@
                 <tbody>
                   {% for module in module_applicatifs %}
                   <tr>
-                    <td><a href= "{% url 'base:update-module_applicatif' module.pk %}" > {{ module.name }} </a></td> 
+                    <td><a href= "{% url 'base:detail-module_applicatif' module.pk %}" > {{ module.name }} </a></td> 
                     <td> {{ module.description }} </td>   
                     <td> {{ module.application}} </td> 
                     <td> {{ module.vendor}} </td>   
@@ -76,6 +76,25 @@
               </table>
             </div>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
         </div>
       </div>
 

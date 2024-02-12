@@ -32,7 +32,7 @@
 
 <body class="with-welcome-text">
   <div class="container-scroller">
-    <style>
+  <style>
       a{
           text-decoration: none;
           color : #000000;
@@ -48,6 +48,23 @@
         background: #F4F5F7;
         height: 67px;
       }
+      .page-link.active, .active > .page-link {
+        z-index: 3;
+        color: #ffff;
+        background-color: #FFCB05;
+        border-color: var(--bs-pagination-active-border-color);
+    }
+    .page-link {
+      position: relative;
+      display: block;
+      padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
+      font-size: var(--bs-pagination-font-size);
+      color: #FFCB05;
+      text-decoration: none;
+      background-color: var(--bs-pagination-bg);
+      border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
 
       .navbar .navbar-brand-wrapper {
         background: #F4F5F7;
@@ -188,8 +205,8 @@
     <!-- partial:partials/_navbar.html -->
     
     {% load static %}
-    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row" style="background-color:#f7df64">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" style="background-color:#f7df64">
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row" style="background-color:#FFCB05">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" style="background-color:#FFCB05">
           <div class="me-3">
             <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
               <span class="icon-menu"></span>
@@ -197,21 +214,21 @@
           </div>
           <div>
             <a class="navbar-brand brand-logo" href="">
-              <img src="{% static '/assets/images/MTNCI.gif'%}" alt="logo" />
+              <img src="{% static '/assets/images/MTNCI.jpg'%}" alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="../index.html">
-              <img src="{% static '/assets/images/MTNCI.gif'%}" alt="logo" />
+              <img src="{% static '/assets/images/MTNCI.jpg'%}" alt="logo" />
             </a>
           </div>
         </div>
-        <div class="navbar-menu-wrapper d-flex align-items-top" style="background-color:#f7df64">
+        <div class="navbar-menu-wrapper d-flex align-items-top" style="background-color:#FFCB05">
           <ul class="navbar-nav">
             <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
               <h1 class="welcome-text">Bonjour, <span class="text-black fw-bold">{{request.user.username}}</span></h1>
               <h3 class="welcome-sub-text">CMDB | Application Team</h3>
             </li>
           </ul>
-          <ul class="navbar-nav ms-auto" style="background-color:#f7df64">
+          <ul class="navbar-nav ms-auto" style="background-color:#FFCB05">
             {%block categories%}{%endblock%}
          
             {% block form-search %}{% endblock %}
