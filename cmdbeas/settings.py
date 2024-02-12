@@ -36,7 +36,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
-print(ALLOWED_HOSTS)
+
 
 
 # Application definition

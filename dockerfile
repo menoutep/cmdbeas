@@ -13,7 +13,7 @@ COPY . /app/
 
 # Copier le fichier requirements.txt et installer les dépendances
 COPY requirements.txt /app/
-
+COPY cmdbeas/.env /app/cmdbeas/
 # Créer un environnement virtuel et installer les dépendances
 RUN python -m venv /env
 ENV PATH="/env/bin:$PATH"
