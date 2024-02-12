@@ -33,10 +33,16 @@ class DepartementAdmin(SimpleHistoryAdmin):
     search_fields = ["name","description","users_name"]
 admin.site.register(Departement, DepartementAdmin)
 
+class AppTypeAdmin(SimpleHistoryAdmin):
+    list_filter = ('name','updated','created')
+    history_list_display = ["name","description","applications_name"]
+    search_fields = ["name","description","applications_name"]
+admin.site.register(AppType, AppTypeAdmin)
+
 #####Application start######################
 
 #####Application end#############################
-admin.site.register(AppType)
+
 #admin.site.register(BackupStrategie)
 admin.site.register(Application)
 admin.site.register(Database)
