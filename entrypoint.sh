@@ -3,6 +3,8 @@ set -e
 source /env/bin/activate
 # Exécuter les migrations Django au démarrage du conteneur
 echo "Executing Django migrations..."
+
+python manage.py makemigrations
 python manage.py migrate
 
 echo "Executing Django collect staticfiles..."

@@ -13,20 +13,28 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+import environ
+
+env = environ.Env(
+    DEBUG=(bool,True)
+)
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-afv^$)pcd=u7m(in5$z4mp0484y*#5%qj@dqm&*%mo-7x-)m1*'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -52,10 +60,10 @@ INSTALLED_APPS = [
 
 
 # Tell select2 which cache configuration to use:
+AXES_FAILURE_LIMIT = env.int('AXES_FAILURE_LIMIT')
+AXES_LOCK_OUT_AT_FAILURE = env.bool('AXES_LOCK_OUT_AT_FAILURE')
+AXES_COOLOFF_TIME = timedelta(minutes=env.int('AXES_COOLOFF_TIME')) 
 
-AXES_FAILURE_LIMIT = 10
-AXES_LOCK_OUT_AT_FAILURE = True
-AXES_COOLOFF_TIME = timedelta(minutes=30) 
 
 LOGGING = {
     "version": 1,  # the dictConfig format version
@@ -103,6 +111,8 @@ LOGGING = {
         },
     },
 }
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,12 +167,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cmdbeas.wsgi.application'
 
 ##########email smtp config##########
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Adresse du serveur SMTP Gmail
-EMAIL_PORT = 587  # Port SMTP pour TLS
-EMAIL_USE_TLS = True  # Utiliser TLS pour les connexions SMTP
-EMAIL_HOST_USER = 'jozacoder@gmail.com'  # Votre adresse e-mail Gmail
-EMAIL_HOST_PASSWORD = 'qsse pjsp jiyx bzaf'  # Mot de passe de votre compte Gmail
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env.int("EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")  
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")  
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  
 #####################################################
 
 
@@ -230,4 +240,4 @@ CACHES = {
 }
 # Tell select2 which cache configuration to use:
 SELECT2_CACHE_BACKEND = "select2"
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = env("X_FRAME_OPTIONS")
