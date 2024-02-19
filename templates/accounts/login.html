@@ -24,14 +24,27 @@
 </head>
 
 <body>
+  <style>
+    .btn-facebook {
+      background: #FFCB05;
+      color: #ffffff;
+  }
+    .auth form .auth-form-btn {
+      padding: 1rem 1rem;
+      line-height: 1;
+  }
+    .auth .brand-logo {
+      margin-bottom: 1rem;
+  }
+  </style>
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
       <div class="content-wrapper d-flex align-items-center auth px-0">
         <div class="row w-100 mx-0">
-          <div class="col-lg-4 mx-auto">
+          <div class="col-lg-6 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="{% static 'assets/images/logo.svg' %}" alt="logo">
+                <img src="{% static '/assets/images/MTN_2022.png' %}" style="width:50%" alt="logo">
               </div>
               <h4>Y'ello, bienvenue</h4>
               <h6 class="fw-light">Connectez vous pour continuez.</h6>
@@ -49,10 +62,10 @@
                   <div class="form-check">
                     <label class="form-check-label text-muted">
                       <input type="checkbox" class="form-check-input">
-                      Keep me signed in
+                      Se souvenir de moi
                     </label>
                   </div>
-                  <a href="#" class="auth-link text-black">Forgot password?</a>
+                  <a href="#" class="auth-link text-black">Vous avez oublié votre mot de passe?</a>
                 </div>
                 <div class="mb-2">
                   <button type="submit" name="submit" class="btn btn-block btn-facebook auth-form-btn">
