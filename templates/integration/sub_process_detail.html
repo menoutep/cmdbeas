@@ -7,11 +7,33 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            
-            <h4 class="card-title"> {{sub_process}}</h4>
-            <p class="card-description">
-              Detail du :  {{sub_process}}
-            </p>
+            <div class="row">
+
+              <div class="col-lg-9">
+                <h4 class="card-title"> {{sub_process.name}}</h4>
+                <p class="card-description">
+                  Consulter les détails sur le sous processus : {{sub_process.name}}
+                </p>
+              </div>
+              <div class="col-lg-3">
+                
+                  <div class="dropdown">
+                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Action
+                    </button>
+                    <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                      <h6 class="dropdown-header">Choisir une action</h6>
+                      <a class="dropdown-item" href="{% url 'base:update-sub_process' sub_process.pk %}">Modifier {{sub_process.name}}a>
+                      <div class="dropdown-divider"></div>
+                      
+                      <a class="dropdown-item" href="{% url 'base:delete-sub_process' sub_process.pk %}">Supprimer {{sub_process.name}}</a>
+                      
+                    </div>
+                  
+                </div>
+               
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -48,7 +70,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur l'adresse ip' : {{sub_process.name}}
+              Historique des modifications portant sur le sous processus : {{sub_process.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -117,9 +139,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{sub_process.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{sub_process.name}}
             </p>
           <div class="table-responsive">
               <style>

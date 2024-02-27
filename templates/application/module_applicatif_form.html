@@ -10,7 +10,7 @@
           <div class="card-body">
             <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un application</h4>
             <p class="card-description">
-              Veuillez saisir les informations relatives à l'application
+              Veuillez saisir les informations relatives au module applicatif
             </p>
             <form  method="post" class="forms-sample" enctype="multipart/form-data">
                 {% csrf_token %}

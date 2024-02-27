@@ -12,7 +12,7 @@
               <div class="col-lg-9">
                 <h4 class="card-title"> {{systeme_stockage.name}}</h4>
                 <p class="card-description">
-                  Consulter les détails sur le serveur : {{systeme_stockage.name}}
+                  Consulter les détails sur le systeme de stockage : {{systeme_stockage.name}}
                 </p>
               </div>
               <div class="col-lg-3">
@@ -23,10 +23,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-systeme_stockage' systeme_stockage.pk %}">Modifier le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:update-systeme_stockage' systeme_stockage.pk %}">Modifier {{systeme_stockage.name}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-systeme_stockage' systeme_stockage.pk %}">Supprimer le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-systeme_stockage' systeme_stockage.pk %}">Supprimer {{systeme_stockage.name}}</a>
                       
                     </div>
                   
@@ -121,7 +121,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le systeme_stockage : {{systeme_stockage.name}}
+              Historique des modifications portant sur le systeme de stockage : {{systeme_stockage.name}}
             </p>
             <div class="table-responsive">
               <table class="table">

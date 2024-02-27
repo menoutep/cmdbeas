@@ -12,7 +12,7 @@
               <div class="col-lg-9">
                 <h4 class="card-title"> {{desktop_app.name}}</h4>
                 <p class="card-description">
-                  Consulter les détails sur le serveur : {{desktop_app.name}}
+                  Consulter les détails sur l'application bureau : {{desktop_app.name}}
                 </p>
               </div>
               <div class="col-lg-3">
@@ -22,10 +22,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-desktop_app' desktop_app.pk %}">Modifier la base de données</a>
+                      <a class="dropdown-item" href="{% url 'base:update-desktop_app' desktop_app.pk %}">Modifier {{desktop_app.name}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-desktop_app' desktop_app.pk %}">Supprimer le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-desktop_app' desktop_app.pk %}">Supprimer {{desktop_app.name}}</a>
                       
                     </div>
                   
@@ -66,9 +66,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Informations sur : {{desktop_app}}</h4>
+            <h4 class="card-title">Informations sur les connexions applicatives de : {{desktop_app}}</h4>
             <p class="card-description">
-              Plus d'informations sur {{desktop_app.name}}
+              Plus d'informations sur les connexions applicatives de: {{desktop_app.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -175,20 +175,20 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{desktop_app.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{desktop_app.name}}
             </p>
           <div class="table-responsive">
               <style>
-.tree-line {
-    position: absolute;
-    left: 50px;
-    top: 22px;
-    width: 1px;
-    height: calc(100% - 32px);
-    background-color: #040404;
-}
+              .tree-line {
+                  position: absolute;
+                  left: 50px;
+                  top: 22px;
+                  width: 1px;
+                  height: calc(100% - 32px);
+                  background-color: #040404;
+              }
                   ul {
                       list-style-type: none;
                       padding-left: 20px; 
@@ -335,11 +335,6 @@
                       }
                   }
               }
-              
-              
-              
-              
-              
               
                 var serializedData = {{ serializer_data|safe }};
                 var treeContainer = document.getElementById('tree2');

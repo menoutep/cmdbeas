@@ -7,17 +7,17 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">{{systeme_stockage.name}}</h4>
+            <h4 class="card-title">{{deploiement_cluster}}</h4>
             <p class="card-description">
-                Detail de la systeme de stockage: {{systeme_stockage.name}}
+                Detail de la systeme de stockage: {{deploiement_cluster}}
             </p>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Nom</th>
-                    <th>Memoire Ram (gb)</th>
-                    <th>Memoire Rom (tera)</th>
+                    <th>ID</th>
+                    <th>Serveur</th>
+                    <th>Cluster</th>
                     <th>modifié le</th>
                     <th>créer le</th>
                     
@@ -26,11 +26,12 @@
                 <tbody>
                   
                   <tr>
-                    <td><a href="{% url 'base:update-systeme_stockage' systeme_stockage.pk %}" >{{ systeme_stockage.name }} </a></td> 
-                    <td>{{systeme_stockage.ram}}</td>
-                    <td>{{systeme_stockage.rom}}</td>
-                    <td>{{systeme_stockage.updated|date:"DATETIME_FORMAT"}}</td>
-                    <td>{{systeme_stockage.created|date:"DATETIME_FORMAT"}}</td>
+                    <td><a href="{% url 'base:update-deploiement_cluster' deploiement_cluster.pk %}">{{ deploiement_cluster.pk }} </a></td> 
+                            
+                    <td><a href="{% url 'base:detail-server' deploiement_cluster.server.pk %}">{{deploiement_cluster.server}}</a></td>
+                    <td><a href="{% url 'base:detail-cluster' deploiement_cluster.cluster.pk %}">{{deploiement_cluster.cluster}}</a></td>
+                    <td>{{deploiement_cluster.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{deploiement_cluster.created|date:"DATETIME_FORMAT"}}</td>                    
                     
                   </tr>
                  
@@ -45,7 +46,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le systeme_stockage : {{systeme_stockage.name}}
+              Historique des modifications portant sur le deploiement cluster : {{ deploiement_cluster}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -56,49 +57,43 @@
                     <th>Modifier par</th>
                     <th>Raison de la modifications</th>
                     <th>action effectué</th>
-                    <th>Nom</th>
-                    <th>Ram</th>
-                    <th>Rom</th>
+                    <th>Serveur</th>
+                    <th>Cluster</th>
                     
                     
                   </tr>
                 </thead>
                 <tbody>
-                  {% for systeme_stockage_history in systeme_stockage.history.all.distinct %}
-                  {% if systeme_stockage_history.get_history_type_display != "Created" %}
+                  {% for deploiement_cluster_history in deploiement_cluster.history.all.distinct %}
+                  {% if deploiement_cluster_history.get_history_type_display != "Created" %}
                   <tr>
-                    <td>{{systeme_stockage_history.history_id}}</td>
-                    <td>{{systeme_stockage_history.history_date}}</td>
-                    <td>{{systeme_stockage_history.history_user}}</td>
-                    <td>{{systeme_stockage_history.history_change_reason}}</td>
-                    <td>{{systeme_stockage_history.get_history_type_display}}</td>
-                    {% if systeme_stockage_history.prev_record.name != systeme_stockage_history.name %}
-                        <td>valeur après modification : {{systeme_stockage_history.name}}</td>
+                    <td>{{deploiement_cluster_history.history_id}}</td>
+                    <td>{{deploiement_cluster_history.history_date}}</td>
+                    <td>{{deploiement_cluster_history.history_user}}</td>
+                    <td>{{deploiement_cluster_history.history_change_reason}}</td>
+                    <td>{{deploiement_cluster_history.get_history_type_display}}</td>
+                    {% if deploiement_cluster_history.prev_record.server != deploiement_cluster_history.server %}
+                        <td>valeur après modification : {{deploiement_cluster_history.server}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.name}}</td>
+                    <td> valeur inchangé :  {{deploiement_cluster_history.server}}</td>
                     {% endif %}
-                    {% if systeme_stockage_history.prev_record.ram != systeme_stockage_history.ram %}
-                        <td>valeur après modification : {{systeme_stockage_history.ram}}</td>
+                    {% if deploiement_cluster_history.prev_record.cluster != deploiement_cluster_history.cluster %}
+                        <td>valeur après modification : {{deploiement_cluster_history.cluster}}</td>
                     {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.ram}}</td>
+                    <td> valeur inchangé :  {{deploiement_cluster_history.cluster}}</td>
                     {% endif %}
-                    {% if systeme_stockage_history.prev_record.rom != systeme_stockage_history.rom %}
-                        <td>valeur après modification : {{systeme_stockage_history.rom}}</td>
-                    {% else %}
-                    <td> valeur inchangé :  {{systeme_stockage_history.rom}}</td>
-                    {% endif %}
+                    
 
                   </tr>
                   {%else%}
                   <tr>
-                    <td>{{systeme_stockage_history.history_id}}</td>
-                    <td>{{systeme_stockage_history.history_date}}</td>
-                    <td>{{systeme_stockage_history.history_user}}</td>
-                    <td>{{systeme_stockage_history.history_change_reason}}</td>
-                    <td>{{systeme_stockage_history.get_history_type_display}}</td>
-                    <td> valeur a la création : {{systeme_stockage_history.name}}</td>
-                    <td>valeur a la création: {{systeme_stockage_history.ram}}</td>
-                    <td>valeur a la création: {{systeme_stockage_history.rom}}</td>
+                    <td>{{deploiement_cluster_history.history_id}}</td>
+                    <td>{{deploiement_cluster_history.history_date}}</td>
+                    <td>{{deploiement_cluster_history.history_user}}</td>
+                    <td>{{deploiement_cluster_history.history_change_reason}}</td>
+                    <td>{{deploiement_cluster_history.get_history_type_display}}</td>
+                    <td> valeur a la création : {{deploiement_cluster_history.server}}</td>
+                    <td>valeur a la création: {{deploiement_cluster_history.cluster}}</td>
                   </tr>
                   {% endif %}
                   {% endfor %}
@@ -111,9 +106,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{deploiement_cluster}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{deploiement_cluster}}
             </p>
           <div class="table-responsive">
               <style>

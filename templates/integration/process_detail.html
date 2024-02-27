@@ -8,10 +8,33 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> {{ process.name }} </h4>
-            <p class="card-description">
-              Detail : {{ process.name }} 
-            </p>
+            <div class="row">
+
+              <div class="col-lg-9">
+                <h4 class="card-title"> {{process.name}}</h4>
+                <p class="card-description">
+                  Consulter les détails sur le processus : {{process.name}}
+                </p>
+              </div>
+              <div class="col-lg-3">
+                
+                  <div class="dropdown">
+                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Action
+                    </button>
+                    <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                      <h6 class="dropdown-header">Choisir une action</h6>
+                      <a class="dropdown-item" href="{% url 'base:update-process' process.pk %}">Modifier {{process.name}}</a>
+                      <div class="dropdown-divider"></div>
+                      
+                      <a class="dropdown-item" href="{% url 'base:delete-process' process.pk %}">Supprimer {{process.name}}</a>
+                      
+                    </div>
+                  
+                </div>
+               
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -47,7 +70,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur l'adresse ip' : {{process.name}}
+              Historique des modifications portant sur le processus : {{process.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -108,9 +131,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{process.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{process.name}}
             </p>
           <div class="table-responsive">
               <style>

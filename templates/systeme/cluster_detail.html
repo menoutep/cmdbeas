@@ -12,7 +12,7 @@
               <div class="col-lg-9">
                 <h4 class="card-title"> {{cluster.name}}</h4>
                 <p class="card-description">
-                  Consulter les détails sur le serveur : {{cluster.name}}
+                  Consulter les détails sur le cluster: {{cluster.name}}
                 </p>
               </div>
               <div class="col-lg-3">
@@ -23,10 +23,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-cluster' cluster.pk %}">Modifier le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:update-cluster' cluster.pk %}">Modifier {{cluster.name}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-cluster' cluster.pk %}">Supprimer le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-cluster' cluster.pk %}">Supprimer {{cluster.name}}</a>
                       
                     </div>
                   
@@ -173,9 +173,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{cluster.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de : {{cluster.name}}
             </p>
           <div class="table-responsive">
               <style>

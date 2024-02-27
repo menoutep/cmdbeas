@@ -23,10 +23,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-server_room' server_room.pk %}">Modifier le server_room</a>
+                      <a class="dropdown-item" href="{% url 'base:update-server_room' server_room.pk %}">Modifier {{server_room.name}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-server_room' server_room.pk %}">Supprimer le server_room</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-server_room' server_room.pk %}">Supprimer {{server_room.name}}</a>
                       
                     </div>
                   
@@ -109,7 +109,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le server_room : {{server_room.name}}
+              Historique des modifications portant sur la salle serveur : {{server_room.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -168,9 +168,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{server_room.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{server_room.name}}
             </p>
           <div class="table-responsive">
               <style>

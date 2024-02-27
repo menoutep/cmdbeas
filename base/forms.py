@@ -1643,7 +1643,7 @@ class BackupStrategieCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1690,7 +1690,7 @@ class TechnicalRecoveryPlanCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1736,7 +1736,7 @@ class DataDictionnaryCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1785,7 +1785,7 @@ class ArchitectureDiagramCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1835,7 +1835,7 @@ class CallFlowCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1886,7 +1886,7 @@ class ApiSpecificationCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -1937,7 +1937,7 @@ class ApiDocumentationCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+        
         )
 
     class Meta:
@@ -1993,7 +1993,7 @@ class DataModelCreateForm(forms.ModelForm):
         allow_empty_file= False,
         help_text="selectionner un fichier pdf",
         widget=forms.ClearableFileInput(attrs={'class':'form-control','placeholder':'Ajoutez un fichier pdf a la backup strategie'}),
-        validators=[validate_pdf_magic]
+         
         )
 
     class Meta:
@@ -2208,9 +2208,9 @@ class SmsShortCodeCreateForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Entrez le nom code du compte smpp'}), 
         )
     smpp_account = forms.ModelChoiceField(
-        queryset=SmsShortCode.objects.all(),
+        queryset=SmppAccount.objects.all(),
         label='Compte smpp',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un compte smpp'}),
     )
 
 

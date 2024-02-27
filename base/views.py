@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 import json
+import codecs
 from django.core.paginator import Paginator, EmptyPage
 from base.forms import DesktopAppCreateForm,DesktopAppUpdateForm,MobileAppCreateForm,MobileAppUpdateForm,ConnexionAppCreateForm,ConnexionAppUpdateForm,UrlCreateForm,UrlUpdateForm,SmppAccountCreateForm,SmppAccountUpdateForm,SmsShortCodeCreateForm,SmsShortCodeUpdateForm,UssdShortCodeCreateForm,UssdShortCodeUpdateForm,DomainNameCreateForm,DomainNameUpdateForm,DataDictionnaryUpdateForm,DataDictionnaryCreateForm,DataDictionnaryModelCreateForm,DataDictionnaryModelUpdateForm,ApiSpecificationCreateForm,ApiSpecificationUpdateForm,BackupStrategieUpdateForm,BackupStrategieCreateForm,TechnicalRecoveryPlanCreateForm,TechnicalRecoveryPlanUpdateForm,ArchitectureDiagramCreateForm,ArchitectureDiagramUpdateForm,ApiDocumentationCreateForm,ApiDocumentationUpdateForm,CallFlowCreateForm,CallFlowUpdateForm,DataModelUpdateForm,DataModelCreateForm
 from django.contrib.auth.decorators import login_required
@@ -331,7 +332,7 @@ class SmppAccountCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateVie
     model = SmppAccount
     template_name = 'channels/smpp_account_form.html'
     form_class = SmppAccountCreateForm
-    success_smpp_account = reverse_lazy('base:smpp_account-list')
+    success_url = reverse_lazy('base:smpp_account-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -340,7 +341,7 @@ class SmppAccountUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateVie
     model = SmppAccount
     template_name = 'channels/smpp_account_form.html'
     form_class = SmppAccountUpdateForm
-    success_smpp_account = reverse_lazy('base:smpp_account-list')
+    success_url = reverse_lazy('base:smpp_account-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -348,7 +349,7 @@ class SmppAccountDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteVie
     permission_required = "base.delete_smppaccount"
     model = SmppAccount
     template_name = 'channels/smpp_account_confirm_delete.html'
-    success_smpp_account = reverse_lazy('smpp_account-list')
+    success_url = reverse_lazy('smpp_account-list')
 
 class SmsShortCodeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_smsshortcode"
@@ -399,7 +400,7 @@ class SmsShortCodeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateVi
     model = SmsShortCode
     template_name = 'channels/sms_short_code_form.html'
     form_class = SmsShortCodeCreateForm
-    success_sms_short_code = reverse_lazy('base:sms_short_code-list')
+    success_url = reverse_lazy('base:sms_short_code-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -408,7 +409,7 @@ class SmsShortCodeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateVi
     model = SmsShortCode
     template_name = 'channels/sms_short_code_form.html'
     form_class = SmsShortCodeUpdateForm
-    success_sms_short_code = reverse_lazy('base:sms_short_code-list')
+    success_url = reverse_lazy('base:sms_short_code-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -416,7 +417,7 @@ class SmsShortCodeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteVi
     permission_required = "base.delete_smsshortcode"
     model = SmsShortCode
     template_name = 'channels/sms_short_code_confirm_delete.html'
-    success_sms_short_code = reverse_lazy('sms_short_code-list')
+    success_url = reverse_lazy('sms_short_code-list')
 
 class UssdShortCodeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_ussdshortcode"
@@ -468,7 +469,7 @@ class UssdShortCodeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateV
     model = UssdShortCode
     template_name = 'channels/ussd_short_code_form.html'
     form_class = UssdShortCodeCreateForm
-    success_ussd_short_code = reverse_lazy('base:ussd_short_code-list')
+    success_url = reverse_lazy('base:ussd_short_code-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -477,7 +478,7 @@ class UssdShortCodeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateV
     model = UssdShortCode
     template_name = 'channels/ussd_short_code_form.html'
     form_class = UssdShortCodeUpdateForm
-    success_ussd_short_code = reverse_lazy('base:ussd_short_code-list')
+    success_url = reverse_lazy('base:ussd_short_code-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -485,7 +486,7 @@ class UssdShortCodeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteV
     permission_required = "base.delete_ussdshortcode"
     model = UssdShortCode
     template_name = 'channels/ussd_short_code_confirm_delete.html'
-    success_ussd_short_code = reverse_lazy('ussd_short_code-list')
+    success_url = reverse_lazy('ussd_short_code-list')
 
 class ConnexionAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required = "base.view_connexionapp"
@@ -537,7 +538,7 @@ class ConnexionAppCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateVi
     model = ConnexionApp
     template_name = 'channels/connexion_app_form.html'
     form_class = ConnexionAppCreateForm
-    success_connexion_app = reverse_lazy('base:connexion_app-list')
+    success_url = reverse_lazy('base:connexion_app-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -546,7 +547,7 @@ class ConnexionAppUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateVi
     model = ConnexionApp
     template_name = 'channels/connexion_app_form.html'
     form_class = ConnexionAppUpdateForm
-    success_connexion_app = reverse_lazy('base:connexion_app-list')
+    success_url = reverse_lazy('base:connexion_app-list')
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -554,7 +555,7 @@ class ConnexionAppDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteVi
     permission_required = "base.delete_connexionapp"
     model = ConnexionApp
     template_name = 'channels/connexion_app_confirm_delete.html'
-    success_connexion_app = reverse_lazy('connexion_app-list')
+    success_url = reverse_lazy('connexion_app-list')
 
 #################################end Channels views############################################
 
@@ -1817,9 +1818,9 @@ class SystemeStockageListView(LoginRequiredMixin,PermissionRequiredMixin,ListVie
         # Récupérer le paramètre de la requête GET
         q = self.request.GET.get('q', '')
         # Initialiser le queryset de base (non trié)
-        queryset = Api.objects.all()
+        queryset = SystemeStockage.objects.all()
         if q :
-          queryset = Api.objects.filter(
+          queryset = SystemeStockage.objects.filter(
                             Q(name__icontains=q) |
                             Q(servers__name__icontains=q) |        
                             Q(servers__description__icontains=q) |   
@@ -2689,8 +2690,7 @@ class ApiDocumentationCreateView(LoginRequiredMixin,PermissionRequiredMixin,Crea
     template_name = 'documentation/api_documentation_form.html'
     form_class = ApiDocumentationCreateForm
     success_url = reverse_lazy('base:api_documentation-list')
-    def form_valid(self, form):
-        return super().form_valid(form)
+
 
 class ApiDocumentationUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = "base.change_apidocumentation"
@@ -2698,8 +2698,7 @@ class ApiDocumentationUpdateView(LoginRequiredMixin,PermissionRequiredMixin,Upda
     template_name = 'documentation/api_documentation_form.html'
     form_class = ApiDocumentationUpdateForm
     success_url = reverse_lazy('base:api_documentation-list')
-    def form_valid(self, form):
-        return super().form_valid(form)
+
 
 class ApiDocumentationDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     permission_required = "base.delete_apidocumentation"

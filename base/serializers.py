@@ -10,10 +10,7 @@ class DepartementSerializer(serializers.ModelSerializer):
         
  
 
-class VendorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Vendor
-        fields = '__all__'
+
 
 
 
@@ -91,7 +88,11 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = ['name','control_name','description','app_type','modules_applicatifs','replication','priority','deployement_year','backup_strategie','technicals_recoveries_plans']
      
 
-
+class VendorSerializer(serializers.ModelSerializer):
+    modules_applicatifs = serializers.StringRelatedField(many=True, read_only=True)
+    class Meta:
+        model = Vendor
+        fields = ['name','description','modules_applicatifs']
 class ModuleApplicatifSerializer(serializers.ModelSerializer):
     application = ApplicationSerializer(read_only=True)
     vendor = VendorSerializer(read_only=True)
@@ -296,7 +297,7 @@ class SmppAccountSerializer(serializers.ModelSerializer):
     module_applicatif = ModuleApplicatifSerializer(read_only=True)
     class Meta:
         model = SmppAccount
-        fields = ['name','code','module_applicatif','sms_short_codes']
+        fields = ['name','module_applicatif','sms_short_codes']
      
 class SmsShortCodeSerializer(serializers.ModelSerializer):
     smpp_account = SmppAccountSerializer(read_only=True)

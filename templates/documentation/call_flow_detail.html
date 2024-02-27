@@ -8,10 +8,33 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Specifications Api</h4>
-            <p class="card-description">
-              Liste de toutes les specifications call_flow
-            </p>
+            <div class="row">
+
+              <div class="col-lg-9">
+                <h4 class="card-title"> {{call_flow.name}}</h4>
+                <p class="card-description">
+                  Consulter les détails sur le call flow : {{call_flow.name}}
+                </p>
+              </div>
+              <div class="col-lg-3">
+                
+                  <div class="dropdown">
+                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Action
+                    </button>
+                    <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                      <h6 class="dropdown-header">Choisir une action</h6>
+                      <a class="dropdown-item" href="{% url 'base:update-call_flow' call_flow.pk %}">Modifier {{call_flow.name}}</a>
+                      <div class="dropdown-divider"></div>
+                      
+                      <a class="dropdown-item" href="{% url 'base:delete-call_flow' call_flow.pk %}">Supprimer {{call_flow.name}}</a>
+                      
+                    </div>
+                  
+                </div>
+               
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -141,9 +164,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{call_flow.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{call_flow.name}}
             </p>
           <div class="table-responsive">
               <style>
@@ -301,12 +324,6 @@
                       }
                   }
               }
-              
-              
-              
-              
-              
-              
                 var serializedData = {{ serializer_data|safe }};
                 var treeContainer = document.getElementById('tree2');
                 traverseNestedDictionary(serializedData, treeContainer, true);

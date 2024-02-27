@@ -12,7 +12,7 @@
               <div class="col-lg-9">
                 <h4 class="card-title"> {{mobile_app.name}}</h4>
                 <p class="card-description">
-                  Consulter les détails sur le serveur : {{mobile_app.name}}
+                  Consulter les détails sur l'application mobile : {{mobile_app.name}}
                 </p>
               </div>
               <div class="col-lg-3">
@@ -22,10 +22,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-mobile_app' mobile_app.pk %}">Modifier la base de données</a>
+                      <a class="dropdown-item" href="{% url 'base:update-mobile_app' mobile_app.pk %}">Modifier {{mobile_app.name}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-mobile_app' mobile_app.pk %}">Supprimer le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-mobile_app' mobile_app.pk %}">Supprimer {{mobile_app.name}}</a>
                       
                     </div>
                   
@@ -175,9 +175,9 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{mobile_app.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{mobile_app.name}}
             </p>
           <div class="table-responsive">
               <style>

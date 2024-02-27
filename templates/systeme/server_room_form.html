@@ -8,9 +8,9 @@
       <div class="col-md-9 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un salle serveur</h4>
+            <h4 class="card-title">{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une salle serveur</h4>
             <p class="card-description">
-              Veuillez saisir les informations relatives au salle serveur
+              Veuillez saisir les informations relatives à la salle serveur
             </p>
             <form  method="post" class="forms-sample" enctype="multipart/form-data">
                 {% csrf_token %}

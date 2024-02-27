@@ -1,54 +1,71 @@
-FROM ubuntu:22.04
-RUN apt-get update
-RUN apt-get install -y apt-utils vim curl apache2 apache2-utils apache2-dev 
-RUN apt-get -y install python3 libapache2-mod-wsgi-py3
-RUN ln /usr/bin/python3 /usr/bin/python
-RUN apt-get -y install python3-pip
-RUN apt-get install w3m -y
-RUN pip install --upgrade pip
-RUN pip install django ptvsd
-ENV PYTHONUNBUFFERED 1
-RUN mkdir /cmdbeas/
-WORKDIR /cmdbeas/
+FROM alpine:3.19.1
 
-COPY . /cmdbeas/
-RUN apt-get install -y python3-venv
+# Mise à jour des paquets et installation des outils nécessaires
+
+RUN apk update
+RUN apk add --no-cache apache2 
+RUN apk add --no-cache apache2-utils 
+RUN apk add --no-cache apache2-dev 
+RUN apk add --no-cache curl 
+RUN apk add --no-cache python3 
+RUN apk add --no-cache py3-pip 
+RUN apk add --no-cache py3-virtualenv 
+RUN apk add --no-cache vim 
+RUN apk add --no-cache w3m 
+RUN apk add --no-cache gcc 
+RUN apk add --no-cache musl-dev 
+RUN apk add --no-cache python3-dev 
+RUN apk add --no-cache py3-pip
+RUN rm -rf /var/cache/apk/*
+
 RUN python3 -m venv /env
+
+# Définition de la variable PATH pour inclure l'environnement virtuel
 ENV PATH="/env/bin:$PATH"
 
-RUN /env/bin/python3 -m pip install --upgrade pip
-RUN /env/bin/pip install --no-cache-dir -r requirements.txt
-RUN /env/bin/pip install  pip install mod-wsgi
-COPY ./apache/cmdbeas.conf /etc/apache2/sites-available/
+# Installation de Django et ptvsd
+RUN pip install django ptvsd mod-wsgi
 
+# Configuration de l'environnement Python
+ENV PYTHONUNBUFFERED 1
 
-RUN chmod 664 /cmdbeas/db.sqlite3
-RUN chmod 775 /cmdbeas/cmdbeas
-RUN chmod 777 /cmdbeas
-RUN chown :www-data /cmdbeas/db.sqlite3
-RUN chown :www-data /cmdbeas/cmdbeas
-RUN a2dissite 000-default.conf
-#RUN echo "LoadModule wsgi_module '/usr/lib/apache2/modules/mod_wsgi.so'" >> /etc/apache2/mods-enabled/wsgi.load
-RUN echo 'LoadModule wsgi_module "/env/lib/python3.10/site-packages/mod_wsgi/server/mod_wsgi-py310.cpython-310-x86_64-linux-gnu.so"' > /etc/apache2/mods-available/wsgi.load
-RUN echo 'WSGIPythonHome "/usr"' >> /etc/apache2/mods-available/wsgi.load
+# Création du répertoire de travail
+RUN mkdir /cmdbeas
+WORKDIR /cmdbeas
 
-RUN a2ensite cmdbeas.conf
-RUN a2enmod proxy
-RUN echo $USER
-RUN a2enmod wsgi
-RUN a2enmod proxy_http
-RUN a2enmod proxy_balancer
-RUN a2enmod lbmethod_byrequests
+# Copie du code de l'application dans le conteneur
+COPY . /cmdbeas/
+COPY /cmdbeas /var/www/localhost/htdocs/ 
+RUN echo 'LoadModule wsgi_module "/env/lib/python3.11/site-packages/mod_wsgi/server/mod_wsgi-py311.cpython-311-x86_64-linux-musl.so" ' >> /etc/apache2/httpd.conf
+
+# Direct *.wsgi scripts to mod_wsgi
+RUN echo -e "\n\n\
+LoadModule wsgi_module '/env/lib/python3.11/site-packages/mod_wsgi/server/mod_wsgi-py311.cpython-311-x86_64-linux-musl.so'\n\
+WSGIPythonPath /usr/lib/python3.11\n\
+<VirtualHost *:80>\n\
+ServerName cmdbeas.com\n\
+DocumentRoot /cmdbeas\n\
+<Directory /cmdbeas/staticfiles>\n\
+    Require all granted\n\
+</Directory>\n\
+<Directory /cmdbeas>\n\
+    <Files wsgi.py>\n\
+        Require all granted\n\
+    </Files>\n\
+</Directory>\n\
+<Directory /cmdbeas>\n\
+    Options Indexes FollowSymLinks MultiViews\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n\
+WSGIDaemonProcess cmdbeas python-home=/env python-path=/cmdbeas:/env/lib/python3.11/site-packages\n\
+WSGIProcessGroup cmdbeas\n\
+WSGIScriptAlias / /cmdbeas/cmdbeas/wsgi.py\n\
+WSGIApplicationGroup %{GLOBAL}\n\
+ErrorLog /cmdbeas/django.log\n\
+CustomLog /cmdbeas/accounts.log combined\n\
+</VirtualHost>" >> /etc/apache2/httpd.conf
 EXPOSE 80 3500
-#RUN source /env/bin/activate 
-RUN python3 manage.py makemigrations && python manage.py migrate
-
-# Commande pour créer un superutilisateur Django
-# Créer un superutilisateur Django avec un mot de passe spécifié
-
-# Lancement d'Apache après la création du superutilisateur
-#ENTRYPOINT ["/bin/bash", "-c", "apache2ctl -D FOREGROUND"]
-ENTRYPOINT ["/bin/bash"]
-
-
+ENTRYPOINT ["/bin/ash"]
+# Création de l'environnement virtuel
 

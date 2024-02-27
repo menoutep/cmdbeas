@@ -26,8 +26,7 @@
                   <tr>
                     <th>Nom</th>
                     <th>Nombre de membre</th>
-                    <th>modifié le</th>
-                    <th>créer le</th>
+
                     
                   </tr>
                 </thead>
@@ -38,8 +37,7 @@
                             <td><a href="{% url 'accounts:detail-groups' group.pk %}" >{{ group.name }} </a></td>
                             <td> {{group.user_set.count}} </td>
 
-                            <td>{{group.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td>{{group.created|date:"DATETIME_FORMAT"}}</td>                    
+                   
                         </tr>
                    
                   {% endfor %}

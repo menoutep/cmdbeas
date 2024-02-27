@@ -61,8 +61,7 @@
                     <th>Nom</th>
                     <th>Nom de code</th>
                     <th>Model</th>
-                    <th>modifié le</th>
-                    <th>créer le</th>
+
                     
                   </tr>
                 </thead>
@@ -73,8 +72,7 @@
                             <td><a href="" >{{ permission.name }} </a></td>
                             <td>{{permission.codename}}</td>
                             <td>{{permission.content_type.model}}</td>
-                            <td>{{permission.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td>{{permission.created|date:"DATETIME_FORMAT"}}</td>                    
+                            
                         </tr>
                    
                   {% endfor %}
@@ -98,8 +96,7 @@
                   <tr>
                     <th>Nom</th>
                     <th>Nombre de membre</th>
-                    <th>modifié le</th>
-                    <th>créer le</th>
+    
                     
                   </tr>
                 </thead>
@@ -110,8 +107,7 @@
                             <td><a href="{% url 'accounts:detail-groups' group.pk %}" >{{ group.name }} </a></td>
                             <td> {{group.user_set.count}} </td>
 
-                            <td>{{group.updated|date:"DATETIME_FORMAT"}}</td>
-                            <td>{{group.created|date:"DATETIME_FORMAT"}}</td>                    
+                                               
                         </tr>
                    
                   {% endfor %}

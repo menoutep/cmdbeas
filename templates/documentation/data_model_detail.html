@@ -8,10 +8,33 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Models de données</h4>
-            <p class="card-description">
-              Liste de tous les modèles de données
-            </p>
+            <div class="row">
+
+              <div class="col-lg-9">
+                <h4 class="card-title"> {{data_model.name}}</h4>
+                <p class="card-description">
+                  Consulter les détails sur le modèle de données : {{data_model.name}}
+                </p>
+              </div>
+              <div class="col-lg-3">
+                
+                  <div class="dropdown">
+                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Action
+                    </button>
+                    <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                      <h6 class="dropdown-header">Choisir une action</h6>
+                      <a class="dropdown-item" href="{% url 'base:update-data_model' data_model.pk %}">Modifier {{data_model.name}}</a>
+                      <div class="dropdown-divider"></div>
+                      
+                      <a class="dropdown-item" href="{% url 'base:delete-data_model' data_model.pk %}">Supprimer {{data_model.name}}</a>
+                      
+                    </div>
+                  
+                </div>
+               
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -70,9 +93,9 @@
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title"> Vos Plan de reprise technique</h4>
+            <h4 class="card-title"> Vos dictionnaires de données</h4>
             <p class="card-description">
-              Liste de tous les plans de reprise technique
+              Liste de tous les dictionnaires de données reliés à {{data_model.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -113,7 +136,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le api_documentation : {{api_documentation.name}}
+              Historique des modifications portant sur le modèle de données : {{data_model.name}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -206,20 +229,20 @@
       <div class="col-lg-11 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{datacenter.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{data_model.name}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{datacenter.name}}
+              Détails des composant de  : {{data_model.name}}
             </p>
           <div class="table-responsive">
               <style>
-.tree-line {
-    position: absolute;
-    left: 50px;
-    top: 22px;
-    width: 1px;
-    height: calc(100% - 32px);
-    background-color: #040404;
-}
+              .tree-line {
+                  position: absolute;
+                  left: 50px;
+                  top: 22px;
+                  width: 1px;
+                  height: calc(100% - 32px);
+                  background-color: #040404;
+              }
                   ul {
                       list-style-type: none;
                       padding-left: 20px; 
@@ -366,12 +389,6 @@
                       }
                   }
               }
-              
-              
-              
-              
-              
-              
                 var serializedData = {{ serializer_data|safe }};
                 var treeContainer = document.getElementById('tree2');
                 traverseNestedDictionary(serializedData, treeContainer, true);

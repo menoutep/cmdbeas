@@ -10,9 +10,9 @@
             
             <div class="row">
               <div class="col-lg-9">
-                <h4 class="card-title"> {{connexion_bd.name}}</h4>
+                <h4 class="card-title"> {{connexion_bd}}</h4>
                 <p class="card-description">
-                  Consulter les détails sur le serveur : {{connexion_bd.name}}
+                  Consulter les détails sur les connexions base de données: {{connexion_bd}}
                 </p>
               </div>
               <div class="col-lg-3">
@@ -22,10 +22,10 @@
                     </button>
                     <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
                       <h6 class="dropdown-header">Choisir une action</h6>
-                      <a class="dropdown-item" href="{% url 'base:update-connexion_bd' connexion_bd.pk %}">Modifier la base de données</a>
+                      <a class="dropdown-item" href="{% url 'base:update-connexion_bd' connexion_bd.pk %}">Modifier {{connexion_bd}}</a>
                       <div class="dropdown-divider"></div>
                       
-                      <a class="dropdown-item" href="{% url 'base:delete-connexion_bd' connexion_bd.pk %}">Supprimer le serveur</a>
+                      <a class="dropdown-item" href="{% url 'base:delete-connexion_bd' connexion_bd.pk %}">Supprimer {{connexion_bd}}</a>
                       
                     </div>
                   
@@ -74,7 +74,7 @@
           <div class="card-body">
             <h4 class="card-title">Historique </h4>
             <p class="card-description">
-              Historique des modifications portant sur le application : {{connexion_bd.name}}
+              Historique des modifications portant sur le application : {{connexion_bd}}
             </p>
             <div class="table-responsive">
               <table class="table">
@@ -148,9 +148,9 @@
       <div class="col-lg-10 grid-margin stretch-card  mx-auto">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Structure arborescente de l'objet : {{connexion_bd.name}}</h4>
+            <h4 class="card-title">Structure arborescente de l'objet : {{connexion_bd}}</h4>
             <p class="card-description">
-              Détails des composant de  : {{connexion_bd.name}}
+              Détails des composant de  : {{connexion_bd}}
             </p>
             <div class="table-responsive">
               <style>

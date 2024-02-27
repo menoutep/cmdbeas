@@ -239,7 +239,7 @@ def list_groups(request):
     return render(request, 'list_groups.html', {'groups': groups})
 
 class GroupListView(LoginRequiredMixin,SuperuserRequiredMixin,ListView):
-    model = Permission
+    model = Group
     template_name = 'accounts/list_groups.html'
     context_object_name = 'groups'
     def get(self, request, *args, **kwargs):
@@ -291,8 +291,11 @@ def create_group(request):
             selected_permissions = request.POST.getlist('permissions')
             name = form.cleaned_data["name"]
             group = Group.objects.create(name=name)
-            group.created = timezone.now() 
+            
+            
             group.permissions.set(selected_permissions)
+            
+            
             group.save()
             return redirect('base:index')
             logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s  nouveau groupe :%s creer par admin ',user.email,user.pk,user.date_joined.date(),user.is_active,user.last_login.date(),user.last_password_change,user_ip,name)
@@ -324,7 +327,7 @@ def edit_group(request, group_id):
             group.name = name
             group.save()
             group.permissions.set(selected_permissions)
-            group.updated = timezone.now() 
+            
             group.save()
             # Enregistrez l'historique des modifications avec la raison du changement
             history_snapshot = group.history.latest()
