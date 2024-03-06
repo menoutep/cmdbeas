@@ -4,4 +4,9 @@ base.log
 cache.log
 db.sqlite3
 .git
-staticfiles/*
+staticfiles
+env
+Scripts
+share
+Lib
+Include

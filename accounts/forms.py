@@ -214,6 +214,7 @@ class CustomUserUpdateForm(forms.ModelForm):
                         instance.save()
             else :
                 instance.groups.clear()
+                instance.user_permissions.clear()
                         
             instance.updated = timezone.now()
         if commit:

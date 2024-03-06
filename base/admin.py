@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
-from .models import AppType, BackupStrategie, Application,SystemeStockage, Vendor, ModuleApplicatif,Server,Departement,Rack,ServerRoom,Datacenter,Partition,DeploiementCluster,Database,DatabaseServer
+from .models import AppType, BackupStrategie, Application,SystemeStockage, Vendor, ModuleApplicatif,Server,Departement,Rack,ServerRoom,Datacenter,Partition,DeploiementCluster,Database,DatabaseServer,NetworkInterface,IpAdress
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from accounts.forms import CustomUserUpdateForm
@@ -12,7 +12,7 @@ from accounts.models import User
 
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(SimpleHistoryAdmin):
     list_display = ('username', 'email', 'contact', 'departement', 'last_password_change', 'updated', 'reset_by_admin')
     list_filter = ('departement', 'reset_by_admin', 'last_password_change', 'updated')
     search_fields = ('username', 'email', 'contact','departement')
@@ -28,6 +28,7 @@ class BackupStrategieAdmin(SimpleHistoryAdmin):
     empty_value_display = "unknown"
     form = BackupStrategieUpdateForm
 admin.site.register(BackupStrategie, BackupStrategieAdmin)
+
 class DepartementAdmin(SimpleHistoryAdmin):
     list_filter = ('name','updated','created')
     history_list_display = ["name","description","users__name"]
@@ -73,15 +74,70 @@ class SystemeStockageAdmin(SimpleHistoryAdmin):
     form = forms.SystemeStockageUpdateForm
 admin.site.register(SystemeStockage, SystemeStockageAdmin)
 
-admin.site.register(Vendor)
-admin.site.register(ModuleApplicatif)
-admin.site.register(Server)
-admin.site.register(Rack)
-admin.site.register(ServerRoom)
+class VendorAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created')
+    history_list_display = ["name","ram","rom"]
+    search_fields = ["name","modules_applicatifs__name","modules_applicatifs__application__name"]
+    empty_value_display = "unknown"
+    form = forms.VendorUpdateForm
+admin.site.register(Vendor, VendorAdmin)
 
-admin.site.register(Datacenter)
-admin.site.register(Partition)
 
-admin.site.register(DeploiementCluster)
-#admin.site.register(Departement)
-#register(BackupStrategie)
+class ModuleApplicatifAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created')
+    history_list_display = ["name","ram","rom"]
+    search_fields = ["name","application__name","vendor__name","departement__name","databases__name"]
+    empty_value_display = "unknown"
+    form = forms.ModuleApplicatifUpdateForm
+admin.site.register(ModuleApplicatif, ModuleApplicatifAdmin)
+
+class ServerAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created',"type_server","rack__server_room__name","rack__server_room__datacenter__name")
+    history_list_display = ["name","ram","rom","type_server","rack","nb_processor","v_processor","sys_stockage"]
+    search_fields = ["name","type_server","sys_stockage__name","rack__name","rack__server_room__name","rack__server_room__datacenter__name","networks_interfaces__name","clusters__name","networks_interfaces__ip_addresses__ipv4","apps_servers__name","databases_servers__name","databases_servers__databases__name","apps_servers__modules_applicatifs__name"]
+    empty_value_display = "unknown"
+    
+admin.site.register(Server, ServerAdmin)
+
+
+class RackAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created',"server_room__name","server_room__datacenter__name")
+    history_list_display = ["name","server_room","description"]
+    search_fields = ["name","servers__name","server_room__name","server_room__datacenter__name"]
+    empty_value_display = "unknown"
+    form = forms.RackUpdateForm
+admin.site.register(Rack, RackAdmin)
+
+class ServerRoomAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created',"datacenter__name")
+    history_list_display = ["name","datacenter","description","racks__name"]
+    search_fields = ["name","datacenter__name","racks__servers__name","racks__name"]
+    empty_value_display = "unknown"
+    form = forms.ServerRoomUpdateForm
+admin.site.register(ServerRoom, ServerRoomAdmin)
+
+class DatacenterAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created',"localisation")
+    history_list_display = ["name","localisation"]
+    search_fields = ["name","servers_rooms__racks__servers__name","servers__rooms__name"]
+    empty_value_display = "unknown"
+    form = forms.DatacenterUpdateForm
+admin.site.register(Datacenter, DatacenterAdmin)
+
+class PartitionAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created')
+    history_list_display = ["name","serveur","stockage"]
+    search_fields = ["name","serveur__name","stockage__name"]
+    empty_value_display = "unknown"
+    form = forms.PartitionUpdateForm
+admin.site.register(Partition, PartitionAdmin)
+
+class DeploiementClusterAdmin(SimpleHistoryAdmin):
+    list_filter = ('updated','created')
+    history_list_display = ["serveur","cluster"]
+    search_fields = ["serveur__name","cluster__name","serveur__networks_interfaces__name","serveur__networks_interfaces__ip_addresses__ipv4","cluster__ip_address__ipv4"]
+    empty_value_display = "unknown"
+    form = forms.DeploiementClusterUpdateForm
+admin.site.register(DeploiementCluster, DeploiementClusterAdmin)
+
+

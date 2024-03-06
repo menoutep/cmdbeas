@@ -109,7 +109,7 @@
       &.active {
         border-radius: 0px 20px 20px 0px;
         > .nav-link {
-            background: $sidebar-light-menu-active-bg;
+            
             position: relative;
             font-weight: bold;
             font-size: 13px;
@@ -211,7 +211,7 @@
             color: $sidebar-light-submenu-hover-color;
           }
           &.active {
-            color: $sidebar-light-submenu-active-color;
+            
             background: transparent;
           }
         }

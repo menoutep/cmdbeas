@@ -218,7 +218,7 @@ def custom_login(request):
                         login(request, user,backend='django.contrib.auth.backends.ModelBackend')
                         return redirect('accounts:change-password')
                     else:   
-                        logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s  connected ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip)
+                        #logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s  connected ',user_.email,user_.pk,user_.date_joined.date(),user_.is_active,user_.last_login.date(),user_.last_password_change,user_ip)
                         login(request, user,backend='django.contrib.auth.backends.ModelBackend')
                         
                         return redirect('base:index')    
@@ -307,6 +307,8 @@ def create_group(request):
     context = {'form':form}
     return render(request, 'accounts/create_groupe.html',context)
 
+
+
 @login_required
 @user_passes_test(is_superuser)
 def edit_group(request, group_id):
@@ -314,8 +316,13 @@ def edit_group(request, group_id):
     user_ip = get_client_ip(request)
     
     group = get_object_or_404(Group, id=group_id)
+    users_group = group.user_set.all()
     original_permissions = list(group.permissions.all())
-    
+    for user_ in users_group:
+        for permission__ in group.permissions.all():
+            user_.user_permissions.remove(permission__)
+            user_.save()
+    print(user_.user_permissions.all())
     if request.method == 'POST':
         form = GroupUpdateForm(request.POST)
         if form.is_valid():
@@ -329,10 +336,20 @@ def edit_group(request, group_id):
             group.permissions.set(selected_permissions)
             
             group.save()
+            #######ajouter les nouvelles permissions aux membres du groupes#########
+
+            
+            print(users_group)
+            for user_ in users_group:
+               
+                for permission_ in group.permissions.all():
+                    assign_perm(permission_, user_)
+                    user.save()
+            #########end##############################################################
             # Enregistrez l'historique des modifications avec la raison du changement
-            history_snapshot = group.history.latest()
-            history_snapshot.history_change_reason = historical_change_reason
-            history_snapshot.save()
+            #history_snapshot = group.history.latest()
+            #history_snapshot.history_change_reason = historical_change_reason
+            #history_snapshot.save()
 
             logger.info('user email: %s user id: %s user date joined: %s account status: %s last connexion: %s last password change: %s to ip adress :%s groupe modifie :%s par admin. Historique des modifications avec raison : %s', user.email, user.pk, user.date_joined.date(), user.is_active, user.last_login.date(), user.last_password_change, user_ip, name, historical_change_reason)
             return redirect('accounts:list-groups')

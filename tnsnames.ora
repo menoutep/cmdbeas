@@ -1,0 +1,15 @@
+EASDB =
+
+  (DESCRIPTION =
+
+    (ADDRESS = (PROTOCOL = TCP)(HOST = wbs-scan.mtn.ci)(PORT = 1541))
+
+    (CONNECT_DATA =
+
+      (SERVER = DEDICATED)
+
+      (SERVICE_NAME = EASDB)
+
+    )
+
+  )

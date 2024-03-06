@@ -29,6 +29,9 @@
 <body class="with-welcome-text">
   <div class="container-scroller">
     <style>
+      .nav-item.active{
+    color: #6C7383;
+}
       a{
           text-decoration: none;
           color : #000000;
@@ -172,7 +175,7 @@
     }
 
     .sidebar .nav.sub-menu .nav-item .nav-link {
-      color: #484848;
+      
       padding-left: 1rem;
       padding-right: 1rem;
       padding-top: 0.5rem;
@@ -199,7 +202,7 @@
   
   </style>
     <!-- partial:partials/_navbar.html -->
-    
+  
     {% load static %}
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row" style="background-color:#FFCB05; height: 50px;">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" style="background-color:#FFCB05">
@@ -291,7 +294,7 @@
         </li>
       </ul>
       <div class="tab-content" id="setting-content">
-        <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel"
+        <div class="tab-pane fade show scroll-wrapper" id="todo-section" role="tabpanel"
           aria-labelledby="todo-section">
           <div class="add-items d-flex px-3 mb-0">
          
@@ -617,7 +620,28 @@
   <script src="{% static 'assets/js/dashboard.js' %}"></script>
   <script src="{% static 'assets/js/proBanner.js' %}"></script>
   <!-- <script src="../../assets/js/Chart.roundedBarCharts.js"></script> -->
+
   <!-- End custom js for this page-->
+<script>
+  // Fonction pour retirer la classe 'active' des éléments
+
+  // Sélectionnez tous les éléments avec la classe "nav-link" qui contiennent un sous-menu
+  
+
+elements = document.querySelectorAll('li.nav-item')
+
+//console.log(elements.length)
+for (var i=0;i<elements.length;i++){
+  console.log(elements[i])
+  
+  elements[i].style.color = "#484848";
+
+}
+elements = document.querySelectorAll('li.nav-item')
+
+
+
+</script>
 </body>
 
 </html>

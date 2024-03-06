@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_select2',
+    'django_cron',
     'api',
     'axes',
     'simple_history',
@@ -59,7 +60,10 @@ INSTALLED_APPS = [
     'guardian',
 
 ]
-
+CRON_CLASSES = [
+    "accounts.cron.MyCronJob",
+    
+]
 
 # Tell select2 which cache configuration to use:
 AXES_FAILURE_LIMIT = env.int('AXES_FAILURE_LIMIT')
@@ -145,6 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT=BASE_DIR/'media'
 
 
+
 SIMPLE_HISTORY_HISTORY_CHANGE_REASON_USE_TEXT_FIELD=True
 SIMPLE_HISTORY_ENFORCE_HISTORY_MODEL_PERMISSIONS = True
 
@@ -177,15 +182,24 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  
 #####################################################
 
-
-
+GUARDIAN_GET_INIT_ANONYMOUS_USER = None
+ANONYMOUS_USER_NAME =   None
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#os.environ['TNS_ADMIN'] = os.path.join(BASE_DIR, 'tnsnames.ora')
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        },
+    "oracle": {
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": "wbs-scan:1541/EASDB.mtn.ci",
+        "USER": "SVC_GESCONF",
+        "PASSWORD": "Lkc_Kh23dSQpKb9AAA",
+        "HOST": "",
+        "PORT": "",
     }
 }
 
