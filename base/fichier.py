@@ -1,7 +1,10 @@
-class DeploiementClusterAdmin(SimpleHistoryAdmin):
-    list_filter = ('updated','created')
-    history_list_display = ["serveur","cluster"]
-    search_fields = ["serveur__name","cluster__name","serveur__networks_interfaces__name","serveur__networks_interfaces__ip_addresses__ipv4","cluster__ip_address__ipv4"]
-    empty_value_display = "unknown"
-    form = forms.DeploiementClusterUpdateForm
-admin.site.register(DeploiementCluster, DeploiementClusterAdmin)
+              {% if perms.base.view_systemestockage %}
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:systeme_stockage-list' %}">Voir les systeme de stockages </a></li>
+              {%else%}
+              <li class="nav-item"> <a class="nav-link" href="#">Voir les systeme de stockages </a></li>
+              {%endif%}
+              {% if perms.base.add_systemestockage %}
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-systeme_stockage' %}">creer une systeme de stockage</a></li>
+              {%else%}
+              <li class="nav-item"> <a class="nav-link" href="#">creer une systeme de stockage </a></li>
+              {%endif%}

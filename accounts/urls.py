@@ -15,6 +15,8 @@ path('list-groups/', views.GroupListView.as_view(), name='list-groups'),
 path('detail-group/<int:pk>/', views.GroupDetailView.as_view(), name='detail-groups'),
 
 path('create-group/', views.create_group, name='create-groups'),
+path('supprimer-group/<int:group_id>/', views.supprimer_groupe, name='delete-groups'),
+
 path('edit-group/<int:group_id>/', views.edit_group, name='edit-groups'),
 path('add-user-to-group/', views.add_user_to_group, name='add-user-to-groups'),
 path('change-password/', views.reset_password, name='change-password'),

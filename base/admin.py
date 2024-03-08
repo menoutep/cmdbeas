@@ -11,6 +11,15 @@ from accounts.models import User
 #@admin.register(BackupStrategie)
 
 
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin
+from accounts.models import Group
+
+# Désenregistrer la classe Group par défaut
+
+
+# Enregistrer votre CustomGroup avec le modèle GroupAdmin
+admin.site.register(Group, GroupAdmin)
 
 class UserAdmin(SimpleHistoryAdmin):
     list_display = ('username', 'email', 'contact', 'departement', 'last_password_change', 'updated', 'reset_by_admin')

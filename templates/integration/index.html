@@ -453,21 +453,28 @@
             <span class="menu-title">Dashboard</span>
           </a>
         </li>
+    {%if perms.base.view_process or perms.base.add_process or perms.base.view_subprocess or perms.base.add_subprocess or perms.base.view_usecase or perms.base.add_usecase%}
         <li class="nav-item nav-category">Process </li>
+        {%if perms.base.view_process or perms.base.add_process%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <a class="nav-link" data-bs-toggle="collapse" href="#process" aria-expanded="false" aria-controls="process">
             <i class="menu-icon mdi mdi-floor-plan"></i>
             <span class="menu-title">Nos Process</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="ui-basic">
+          <div class="collapse" id="process">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_process%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:process-list' %}">Voir les process </a></li>
+              {%endif%}
+              {%if perms.base.add_process%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-process' %}">creer un process</a></li>
-    
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_subprocess or perms.base.add_subprocess%}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#sub-process" aria-expanded="false" aria-controls="sub-process">
               <i class="menu-icon mdi mdi-floor-plan"></i>
@@ -476,59 +483,79 @@
             </a>
             <div class="collapse" id="sub-process">
               <ul class="nav flex-column sub-menu">
+                {%if perms.base.view_subprocess%}
                 <li class="nav-item"> <a class="nav-link" href="{% url 'base:sub_process-list' %}">Voir les sous process </a></li>
+                {%endif%}
+                {%if perms.base.add_subprocess%}
                 <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-sub_process' %}">creer un sous process</a></li>
-      
+                {%endif%}
               </ul>
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#use-case" aria-expanded="false" aria-controls="use-case">
-              <i class="menu-icon mdi mdi-floor-plan"></i>
-              <span class="menu-title">Nos Use Case</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="use-case">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'base:use_case-list' %}">Voir les uses cases</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-use_case' %}">creer un use case</a></li>
-      
-              </ul>
-            </div>
-          </li>
- 
- 
-        <li class="nav-item nav-category">Api Administration</li>
+        </li>
+        {%endif%}
+        {%if perms.base.view_usecase or perms.base.add_usecase%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#apptypes" aria-expanded="false"
-            aria-controls="apptypes">
+          <a class="nav-link" data-bs-toggle="collapse" href="#use-case" aria-expanded="false" aria-controls="use-case">
+            <i class="menu-icon mdi mdi-floor-plan"></i>
+            <span class="menu-title">Nos Use Case</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="use-case">
+            <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_usecase %}
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:use_case-list' %}">Voir les uses cases</a></li>
+              {%endif%}
+              {%if perms.base.add_usecase%}
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-use_case' %}">creer un use case</a></li>
+              {%endif%}
+            </ul>
+          </div>
+        </li>
+        {%endif%}
+    {%endif%}
+    {%if perms.base.view_api or perms.base.add_api or perms.base.view_appelapi or perms.base.add_appelapi%}
+        <li class="nav-item nav-category">Api Administration</li>
+        {%if perms.base.view_api or perms.base.add_api%}
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="collapse" href="#api" aria-expanded="false"
+            aria-controls="api">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Api</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="apptypes">
+          <div class="collapse" id="api">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_api%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:api-list' %}">Voir nos api</a></li>
+              {%endif%}
+              {%if perms.base.add_api%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-api' %}">Creer une api</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_appelapi or perms.base.add_appelapi%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#applications" aria-expanded="false"
-            aria-controls="applications">
+          <a class="nav-link" data-bs-toggle="collapse" href="#appel-api" aria-expanded="false"
+            aria-controls="appel-api">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Appel Api</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="applications">
+          <div class="collapse" id="appel-api">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_appelapi%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:appel_api-list' %}">Voir nos appels api</a></li>
+              {%endif%}
+              {%if perms.base.add_appelapi%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-appel_api' %}">Creer un appel api</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
-
-
+        {%endif%}
+    {%endif%}
 
        
       </ul>

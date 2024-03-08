@@ -27,7 +27,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="{% static 'assets/css/vertical-layout-light/style.css' %}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
+  <link rel="shortcut icon" href="{% static 'assets/images/MTNCI.jpg' %}" />
 </head>
 
 <body class="with-welcome-text">
@@ -454,138 +454,195 @@
                   <span class="menu-title">Dashboard</span>
                 </a>
               </li>
-              <li class="nav-item nav-category">Api Documentation Administartion</li>
+              {%if perms.base.view_apispecification or perms.base.add_apispecification or perms.base.view_apidocumentation or perms.base.add_apidocumentation%}
+              <li class="nav-item nav-category">Api Documentation Administration</li>
+              {%if perms.base.view_apidocumentation or perms.base.add_apidocumentation%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <a class="nav-link" data-bs-toggle="collapse" href="#api-documentation" aria-expanded="false" aria-controls="api-documentation">
                   <i class="menu-icon mdi mdi-floor-plan"></i>
                   <span class="menu-title">Documentation api</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="ui-basic">
+                <div class="collapse" id="api-documentation">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_apidocumentation %}
                     <li class="nav-item " > <a class="nav-link" href="{% url 'base:api_documentation-list' %}">Voir les documentations </a></li>
+                    {%endif%}
+                    {%if perms.base.add_apidocumentation%}
                     <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-api_documentation' %}">creer une documentation</a></li>
-          
+                    {%endif%}
                   </ul>
                 </div>
               </li>
-      
+              {%endif%}
+              {%if perms.base.view_apispecification or perms.base.add_apispecification%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                <a class="nav-link" data-bs-toggle="collapse" href="#api-specification" aria-expanded="false" aria-controls="api-specification">
                   <i class="menu-icon mdi mdi-floor-plan"></i>
                   <span class="menu-title">Api Specification</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="charts">
+                <div class="collapse" id="api-specification">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_apispecification %}
                     <li class="nav-item"> <a class="nav-link" href="{% url 'base:api_specification-list' %}">Voir les spécifications</a></li>
+                    {%endif%}
+                    {%if perms.base.add_apispecification%}
                     <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-api_specification' %}">ajouter une spécification</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+            {%if perms.base.view_datamodel or perms.base.add_datamodel or perms.base.view_datadictionnary or perms.base.add_datadictionnary or perms.base.view_datadictionnarymodel or perms.base.add_datadictionnarymodel %}
               <li class="nav-item nav-category">Datamodel administration</li>
+              {%if perms.base.view_datamodel or perms.base.add_datamodel%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#pages" aria-expanded="false"
-                  aria-controls="pages">
+                <a class="nav-link" data-bs-toggle="collapse" href="#data-model" aria-expanded="false"
+                  aria-controls="data-model">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Modèle de données</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="pages">
+                <div class="collapse" id="data-model">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_datamodel%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:data_model-list' %}">Voir modèle de données</a></li>
+                    {%endif%}
+                    {%if perms.base.add_datamodel%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-data_model' %}">Creer un modèle de données</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+              {%if perms.base.view_datadictionnary or perms.base.add_datadictionnary%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#rack" aria-expanded="false"
-                  aria-controls="rack">
+                <a class="nav-link" data-bs-toggle="collapse" href="#data-dictionnary" aria-expanded="false"
+                  aria-controls="data-dictionnary">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Dictionnaires de données</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="rack">
+                <div class="collapse" id="data-dictionnary">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_datadictionnary%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:data_dictionnary-list' %}">Voir dictionnaires de données</a></li>
+                    {%endif%}
+                    {%if perms.base.add_datadictionnary%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-data_dictionnary' %}">Creer un dictionnaire de données</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+              {%if perms.base.view_datadictionnarymodel or perms.base.add_datadictionnarymodel%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#server-room" aria-expanded="false"
-                  aria-controls="server-room">
+                <a class="nav-link" data-bs-toggle="collapse" href="#datadictionnarymodel" aria-expanded="false"
+                  aria-controls="datadictionnarymodel">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">mapping data</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="server-room">
+                <div class="collapse" id="datadictionnarymodel">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_datadictionnarymodel%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:data_dictionnary_model-list' %}">Voir nos mapping<</a></li>
+                    {%endif%}
+                    {%if perms.base.add_datadictionnarymodel%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-data_dictionnary_model' %}">Creer un mapping</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
-              
+              {%endif%}
+            {%endif%}
+            {%if perms.base.view_technicalrecoveryplan or perms.base.add_technicalrecoveryplan or perms.base.view_backupstrategie or perms.base.add_backupstrategie%}
+
               <li class="nav-item nav-category">Plan reprise désastre</li>
+             {%if perms.base.view_technicalrecoveryplan or perms.base.add_technicalrecoveryplan%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false"
-                  aria-controls="icons">
+                <a class="nav-link" data-bs-toggle="collapse" href="#technicalrecoveryplan" aria-expanded="false"
+                  aria-controls="technicalrecoveryplan">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Plan de reprise technique</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="icons">
+                <div class="collapse" id="technicalrecoveryplan">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_technicalrecoveryplan%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:technical_recovery_plan-list' %}">Voir nos plan </a></li>
+                    {%endif%}
+                    {%if perms.base.add_technicalrecoveryplan%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-technical_recovery_plan' %}">Creer un plan</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+              {%if perms.base.view_backupstrategie or perms.base.add_backupstrategie%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
-                  aria-controls="form-elements">
+                <a class="nav-link" data-bs-toggle="collapse" href="#backupstrategie" aria-expanded="false"
+                  aria-controls="backupstrategie">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Backup strategie</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="form-elements">
+                <div class="collapse" id="backupstrategie">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_backupstrategie%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:backupstrategie-list' %}">Voir nos backups strategies</a></li>
+                    {%endif%}
+                    {%if perms.base.add_backupstrategie%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:backupstrategie-create' %}">Creer une backup strategie</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+            {%endif%}
+            {%if perms.base.view_architecturediagram or perms.base.add_architecturediagram or perms.base.view_callflow or perms.base.add_callflow %}
               <li class="nav-item nav-category">Architecture et call flow</li>
+              {%if perms.base.view_architecturediagram or perms.base.add_architecturediagram%}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false"
-                  aria-controls="auth">
+                <a class="nav-link" data-bs-toggle="collapse" href="#architecturediagram" aria-expanded="false"
+                  aria-controls="architecturediagram">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Diagrammes d'architecture</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="auth">
+                <div class="collapse" id="architecturediagram">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_architecturediagram%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:architecture_diagram-list' %}">Voir nos diagrammes</a></li>
+                    {%endif%}
+                    {%if perms.base.add_architecturediagram%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-architecture_diagram' %}">Creer un Serveur diagramme</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
+              {%endif%}
+              {%if perms.base.view_callflow or perms.base.add_callflow %}
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#test" aria-expanded="false"
-                  aria-controls="test">
+                <a class="nav-link" data-bs-toggle="collapse" href="#callflow" aria-expanded="false"
+                  aria-controls="callflow">
                   <i class="menu-icon mdi mdi-card-text-outline"></i>
                   <span class="menu-title">Call flow</span>
                   <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="test">
+                <div class="collapse" id="callflow">
                   <ul class="nav flex-column sub-menu">
+                    {%if perms.base.view_callflow%}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:call_flow-list' %}">Voir nos call flow</a></li>
+                    {%endif%}
+                    {%if perms.base.add_callflow %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'base:create-call_flow' %}">Creer un call flow</a></li>
+                    {%endif%}
                   </ul>
                 </div>
               </li>
-             
+              {%endif%}
             </ul>
           </nav>
       <!-- partial -->

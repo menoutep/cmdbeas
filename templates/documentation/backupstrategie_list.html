@@ -1,4 +1,4 @@
-{% extends 'documentation/index.html' %}
+{% extends 'systeme/index.html' %}
 {% load static %}
 
 
@@ -30,7 +30,7 @@
                   
                         <tr>
                             <td><a href="{% url 'base:backupstrategie-detail' backup_strategie.pk %}" > {{ backup_strategie.name }} </a></td> 
-                            <td>{{backup_strategie.description}}</td>
+                            
                             
                             <td>{{backup_strategie.file}}</td>
                             <td>{{backup_strategie.updated|date:"DATETIME_FORMAT"}}</td>

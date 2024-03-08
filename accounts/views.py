@@ -308,6 +308,26 @@ def create_group(request):
     return render(request, 'accounts/create_groupe.html',context)
 
 
+@login_required
+@user_passes_test(is_superuser)
+def supprimer_groupe(request, group_id):
+    # Récupérer le groupe à supprimer
+    groupe = get_object_or_404(Group, id=group_id)
+
+    
+        # Supprimer les permissions associées à ce groupe des utilisateurs
+    for utilisateur in groupe.user_set.all():
+        utilisateur.user_permissions.remove(*groupe.permissions.all())
+        utilisateur.save()
+
+    # Supprimer le groupe
+    groupe.delete()
+
+    # Rediriger vers une page de confirmation ou une autre vue
+    return redirect('accounts:list-groups')
+
+    # Afficher une page de confirmation de suppression
+
 
 @login_required
 @user_passes_test(is_superuser)
@@ -322,7 +342,7 @@ def edit_group(request, group_id):
         for permission__ in group.permissions.all():
             user_.user_permissions.remove(permission__)
             user_.save()
-    print(user_.user_permissions.all())
+    #print(user_.user_permissions.all())
     if request.method == 'POST':
         form = GroupUpdateForm(request.POST)
         if form.is_valid():

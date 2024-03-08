@@ -449,7 +449,9 @@
             <span class="menu-title">Dashboard</span>
           </a>
         </li>
+      {%if perms.base.view_networkinterface or perms.base.add_networkinterface  or perms.base.view_domainname or perms.base.add_domainname%}
         <li class="nav-item nav-category">Equipements Réseaux Administrations</li>
+        {%if perms.base.view_networkinterface or perms.base.add_networkinterface%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
             <i class="menu-icon mdi mdi-floor-plan"></i>
@@ -458,12 +460,17 @@
           </a>
           <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_networkinterface%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:network_interface-list' %}">Voir les interfaces</a></li>
+              {%endif%}
+              {%if perms.base.add_networkinterface%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-network_interface' %}">creer un interface</a></li>
-    
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_domainname or perms.base.add_domainname%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
             <i class="menu-icon mdi mdi-floor-plan"></i>
@@ -472,14 +479,18 @@
           </a>
           <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_domainname%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:domain_name-list' %}">Voir les noms de domaines</a></li>
+              {%endif%}
+              {%if perms.base.add_domainname%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-domain_name' %}">creer un nom de domaine</a></li>
-    
+              {%endif%}
             </ul>
           </div>
         </li>
-
- 
+        {%endif%}
+      {%endif%}
+      {%if perms.base.view_ipadress or perms.base.add_ipadress%}
         <li class="nav-item nav-category">Addresse Ip Administration</li>
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#apptypes" aria-expanded="false"
@@ -490,33 +501,16 @@
           </a>
           <div class="collapse" id="apptypes">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_ipadress%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:ip_adress-list' %}">Voir nos adresse ip</a></li>
+              {%endif%}
+              {%if perms.base.add_ipadress%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-ip_adress' %}">Creer une adresse ip</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
-
- 
-        <li class="nav-item nav-category">Cablage Administration</li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#apptypes" aria-expanded="false"
-            aria-controls="apptypes">
-            <i class="menu-icon mdi mdi-card-text-outline"></i>
-            <span class="menu-title">Cablage</span>
-            <i class="menu-arrow"></i>
-          </a>
-          <div class="collapse" id="apptypes">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item"><a class="nav-link" href="">Voir nos cablages</a></li>
-              <li class="nav-item"><a class="nav-link" href="">Creer un cablage</a></li>
-            </ul>
-          </div>
-        </li>
- 
-      
-
-
-       
+      {%endif%}
       </ul>
     </nav>
       <!-- partial -->

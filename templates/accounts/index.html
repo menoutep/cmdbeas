@@ -283,14 +283,15 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
+    {%if request.user.is_superuser %}
     <li class="nav-item nav-category">Users Management</li>
     <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+      <a class="nav-link" data-bs-toggle="collapse" href="#users" aria-expanded="false" aria-controls="users">
         <i class="menu-icon mdi mdi-account-multiple"></i>
         <span class="menu-title">Users</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="ui-basic">
+      <div class="collapse" id="users">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'accounts:user-list' %}">Voir nos utilisateurs</a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'accounts:create-user' %}">Creer un utilisateur</a></li>
@@ -300,13 +301,13 @@
     </li>
     <li class="nav-item nav-category">Roles and Permissions Managements</li>
     <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
-        aria-controls="form-elements">
+      <a class="nav-link" data-bs-toggle="collapse" href="#roles" aria-expanded="false"
+        aria-controls="roles">
         <i class="menu-icon mdi mdi-account-key"></i>
         <span class="menu-title">Roles</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="form-elements">
+      <div class="collapse" id="roles">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{% url 'accounts:list-groups' %}">Voir nos roles</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'accounts:create-groups' %}">Créer un role</a></li>
@@ -315,6 +316,7 @@
         </ul>
       </div>
     </li>
+    {%endif%}
 
 
 

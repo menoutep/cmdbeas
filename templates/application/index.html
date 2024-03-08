@@ -453,24 +453,29 @@
             <span class="menu-title">Dashboard</span>
           </a>
         </li>
+      {%if perms.base.view_appserver or perms.base.add_appserver%}
         <li class="nav-item nav-category">Serveurs d'Applications Administrations</li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <a class="nav-link" data-bs-toggle="collapse" href="#app-server" aria-expanded="false" aria-controls="app-server">
             <i class="menu-icon mdi mdi-floor-plan"></i>
             <span class="menu-title">Nos serveurs</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="ui-basic">
+          <div class="collapse" id="app-server">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_appserver%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:app_server-list' %}">Voir les serveurs </a></li>
+              {%endif%}
+              {%if perms.base.add_appserver%}
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-app_server' %}">creer un serveur</a></li>
-    
+              {%endif%}
             </ul>
           </div>
         </li>
-
- 
+      {%endif%}
+      {%if perms.base.view_apptype or perms.base.add_apptype or perms.base.view_application or perms.base.add_application or if perms.base.view_moduleapplicatif or perms.base.add_moduleapplicatif or perms.base.view_appdeployment or perms.base.add_appdeployment or perms.base.view_connexionbd or perms.base.add_connexionbd%}
         <li class="nav-item nav-category">Applications Administration</li>
+        {%if perms.base.view_apptype or perms.base.add_apptype%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#apptypes" aria-expanded="false"
             aria-controls="apptypes">
@@ -480,11 +485,17 @@
           </a>
           <div class="collapse" id="apptypes">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_apptype %}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:apptype-list' %}">Voir nos types d'applications</a></li>
+              {%endif%}
+              {%if perms.base.add_apptype%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-apptype' %}">Creer un type d'application</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_application or perms.base.add_application%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#applications" aria-expanded="false"
             aria-controls="applications">
@@ -494,11 +505,17 @@
           </a>
           <div class="collapse" id="applications">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_application%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:application-list' %}">Voir nos applications</a></li>
+              {%endif%}
+              {%if perms.base.add_application%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-application' %}">Creer une application</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_moduleapplicatif or perms.base.add_moduleapplicatif%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#modapp" aria-expanded="false"
             aria-controls="modapp">
@@ -508,11 +525,17 @@
           </a>
           <div class="collapse" id="modapp">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_moduleapplicatif %}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:module_applicatif-list' %}">Voir nos modules applicatifs</a></li>
+              {%endif%}
+              {%if perms.base.add_moduleapplicatif%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-module_applicatif' %}">Creer un modules applicatifs</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_appdeployment or perms.base.add_appdeployment%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#appdep" aria-expanded="false"
             aria-controls="appdep">
@@ -522,11 +545,17 @@
           </a>
           <div class="collapse" id="appdep">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_appdeployment%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:app_server-list' %}">Voir nos deployements d'applications</a></li>
+              {%endif%}
+              {%if perms.base.add_appdeployment%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-app_server' %}">Creer un deployement d'application</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_connexionbd or perms.base.add_connexionbd%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#conbd" aria-expanded="false"
             aria-controls="conbd">
@@ -536,12 +565,20 @@
           </a>
           <div class="collapse" id="conbd">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_connexionbd%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:connexion_bd-list' %}">Voir nos connexion base de données</a></li>
+              {%endif%}
+              {%if perms.base.add_connexionbd%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-connexion_bd' %}">Creer une connexion base de données</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+      {%endif%}
+    {%if perms.base.view_departement or perms.base.add_departement or perms.base.view_vendor or perms.base.add_vendor%}
         <li class="nav-item nav-category">Application Ownership</li>
+        {%if perms.base.view_departement or perms.base.add_departement%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#departement" aria-expanded="false"
             aria-controls="departement">
@@ -551,11 +588,17 @@
           </a>
           <div class="collapse" id="departement">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_departement%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:departement-list' %}">Voir nos departement</a></li>
+              {%endif%}
+              {%if perms.base.add_departement%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-departement' %}">Creer un departement</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_vendor or perms.base.add_vendor%}
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#vendor" aria-expanded="false"
             aria-controls="vendor">
@@ -565,14 +608,17 @@
           </a>
           <div class="collapse" id="vendor">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_vendor%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:vendor-list' %}">Voir nos vendors</a></li>
+              {%endif%}
+              {%if perms.base.add_vendor%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-vendor' %}">Creer un vendor</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
-
-
-       
+        {%endif%}
+    {%endif%}
       </ul>
     </nav>
       <!-- partial -->

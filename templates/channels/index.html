@@ -454,14 +454,16 @@
             <span class="menu-title">Dashboard</span>
           </a>
         </li>
+      {%if perms.base.view_mobileapp or perms.base.add_mobileapp or perms.base.view_desktopapp or perms.base.add_desktopapp%}
         <li class="nav-item nav-category">Applications Administration</li>
+        {%if perms.base.view_mobileapp or perms.base.add_mobileapp%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <a class="nav-link" data-bs-toggle="collapse" href="#mobile-app" aria-expanded="false" aria-controls="mobile-app">
             <i class="menu-icon mdi mdi-floor-plan"></i>
             <span class="menu-title">Nos applications mobiles</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="ui-basic">
+          <div class="collapse" id="mobile-app">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:mobile_app-list' %}">Voir les applications mobiles </a></li>
               <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-mobile_app' %}">creer une applications mobiles</a></li>
@@ -469,6 +471,8 @@
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%perms.base.view_desktopapp or perms.base.add_desktopapp%}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#bureau" aria-expanded="false" aria-controls="bureau">
               <i class="menu-icon mdi mdi-floor-plan"></i>
@@ -482,73 +486,95 @@
       
               </ul>
             </div>
-          </li>
-
- 
-
+        </li>
+        {%endif%}
+      {%endif%}
+    {%if perms.base.view_smsshortcode or perms.base.add_smsshortcode or perms.base.view_ussdshortcode or perms.base.add_ussdshortcode%}
         <li class="nav-item nav-category">Short Code Administration</li>
+        {%if perms.base.view_ussdshortcode or perms.base.add_ussdshortcode%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#apptypes" aria-expanded="false"
-            aria-controls="apptypes">
+          <a class="nav-link" data-bs-toggle="collapse" href="#ussd-code" aria-expanded="false"
+            aria-controls="ussd-code">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Ussd short code</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="apptypes">
+          <div class="collapse" id="ussd-code">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_ussdshortcode%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:ussd_short_code-list' %}">Voir nos ussd short code</a></li>
+              {%%endif}
+              {%if perms.base.add_ussdshortcode%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-ussd_short_code' %}">Creer un ussd short code</a></li>
+              {%%endif}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_smsshortcode or perms.base.add_smsshortcode%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#applications" aria-expanded="false"
-            aria-controls="applications">
+          <a class="nav-link" data-bs-toggle="collapse" href="#sms-code" aria-expanded="false"
+            aria-controls="sms-code">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Sms Short Code</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="applications">
+          <div class="collapse" id="sms-code">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_smsshortcode or perms.base.add_smsshortcode%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:sms_short_code-list' %}">Voir nos sms short code</a></li>
+              {%endif%}
+              {%if perms.base.add_smsshortcode%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-sms_short_code' %}">Creer un sms short code</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
-
- 
+        {%endif%}
+    {%%endif}
+    {%if perms.base.view_smppaccount or perms.base.add_smppaccount or perms.base.view_url or perms.base.add_url%}
         <li class="nav-item nav-category">VAS Service Administration</li>
+        {%if perms.base.view_smppaccount or perms.base.add_smppaccount%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#departement" aria-expanded="false"
-            aria-controls="departement">
+          <a class="nav-link" data-bs-toggle="collapse" href="#smpp-account" aria-expanded="false"
+            aria-controls="smpp-account">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Smpp account</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="departement">
+          <div class="collapse" id="smpp-account">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_smppaccount%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:smpp_account-list' %}">Voir nos comptes smpp</a></li>
+              {%endif%}
+              {%if perms.base.add_smppaccount%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-smpp_account' %}">Creer un compte smpp</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
+        {%endif%}
+        {%if perms.base.view_url or perms.base.add_url%}
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#vendor" aria-expanded="false"
-            aria-controls="vendor">
+          <a class="nav-link" data-bs-toggle="collapse" href="#url" aria-expanded="false"
+            aria-controls="url">
             <i class="menu-icon mdi mdi-card-text-outline"></i>
             <span class="menu-title">Url</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="vendor">
+          <div class="collapse" id="url">
             <ul class="nav flex-column sub-menu">
+              {%if perms.base.view_url%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:url-list' %}">Voir nos urls</a></li>
+              {%endif%}
+              {%if perms.base.add_url%}
               <li class="nav-item"><a class="nav-link" href="{% url 'base:create-url' %}">Creer une url</a></li>
+              {%endif%}
             </ul>
           </div>
         </li>
-
-
-       
+        {%endif%}
+    {%endif%}
       </ul>
     </nav>
       <!-- partial -->

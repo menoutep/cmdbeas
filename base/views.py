@@ -114,7 +114,7 @@ class MobileAppListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         return render(request, self.template_name, context)
 
 class MobileAppDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-    permission_required = 'app.view_mobileapp'
+    permission_required = 'base.view_mobileapp'
     model = MobileApp
     template_name = 'channels/mobile_app_detail.html'
     context_object_name = 'mobile_app'
