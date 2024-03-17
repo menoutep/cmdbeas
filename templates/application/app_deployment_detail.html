@@ -1,0 +1,366 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <div class="row">
+              <div class="col-lg-9">
+                <h4 class="card-title"> {{app_deployment}}</h4>
+                <p class="card-description">
+                  Consulter les détails sur le deploiement : {{app_deployment}}
+                </p>
+              </div>
+              <div class="col-lg-3">
+                  <div class="dropdown">
+                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuSizeButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Action
+                    </button>
+                    <div class="dropdown-menu show" aria-labelledby="dropdownMenuButton3">
+                      <h6 class="dropdown-header">Choisir une action</h6>
+                      <a class="dropdown-item" href="{% url 'base:update-app_deployment' app_deployment.pk %}">Modifier {{app_deployment}}</a>
+                      <div class="dropdown-divider"></div>
+                      
+                      <a class="dropdown-item" href="{% url 'base:delete-app_deployment' app_deployment.pk %}">Supprimer {{app_deployment}}</a>
+                      
+                    </div>
+                  
+                </div>
+               
+              </div>
+              
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th>Nom</th>
+                    <th>Serveur d'application </th>
+                    <th>Module applicatif</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr>
+                    <td><a href= "{% url 'base:update-app_deployment' app_deployment.pk %}" > {{app_deployment}} </a></td> 
+                      
+                    <td> {{ app_deployment.app_server}} </td> 
+                    <td> {{ app_deployment.module_applicatif}} </td> 
+                      
+                                       
+                    <td>{{app_deployment.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{app_deployment.created|date:"DATETIME_FORMAT"}}</td>                
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%if app_deployment.module_applicatif.all.distinct %}
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Détails des modules applicatif hébergé sur : {{app_deployment.name}}</h4>
+            <p class="card-description">
+                Voir les modules applicatifs relié à {{app_deployment.name}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Application</th>
+                    <th>Vendor</th>
+                    <th>Departement</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                       
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for module_applicatif in app_deployment.module_applicatif.all.distinct %} 
+                  <tr>
+                    <td><a href= ""> {{ module_applicatif.name }} </a></td> 
+                    <td> {{ module_applicatif.description }} </td>   
+                    <td> {{ module_applicatif.application}} </td> 
+                    <td> {{ module_applicatif.vendor}} </td>   
+                    <td> {{ module_applicatif.departement }} </td>                      
+                    <td> {{module_applicatif.updated|date:"DATETIME_FORMAT"}} </td>
+                    <td> {{module_applicatif.created|date:"DATETIME_FORMAT"}} </td>                
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif  %}
+
+
+
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Historique </h4>
+            <p class="card-description">
+              Historique des modifications portant sur le serveur d'application : {{app_deployment}}
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Modifié le</th>
+                    <th>Modifier par</th>
+                    <th>Raison de la modifications</th>
+                    <th>action effectué</th>
+                    <th>Serveur d'application</th>
+                 
+                    <th>Module applicatif</th>
+             
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for app_deployment_history in app_deployment.history.all.distinct %}
+                  {% if app_deployment_history.get_history_type_display != "Created" %}
+                  <tr>
+                    <td>{{app_deployment_history.history_id}}</td>
+                    <td>{{app_deployment_history.history_date}}</td>
+                    <td>{{app_deployment_history.history_user}}</td>
+                    <td>{{app_deployment_history.history_change_reason}}</td>
+                    <td>{{app_deployment_history.get_history_type_display}}</td>
+
+                    {% if app_deployment_history.prev_record.app_server != app_deployment_history.app_server %}
+                        <td>valeur après modification : {{app_deployment_history.app_server}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{app_deployment_history.app_server}}</td>
+                    {% endif %}
+                    {% if app_deployment_history.prev_record.module_applicatif != app_deployment_history.module_applicatif %}
+                        <td>valeur après modification : {{app_deployment_history.module_applicatif}}</td>
+                    {% else %}
+                    <td> valeur inchangé :  {{app_deployment_history.module_applicatif}}</td>
+                    {% endif %}
+                    
+
+
+                  </tr>
+                  {%else%}
+                  <tr>
+                    <td>{{app_deployment_history.history_id}}</td>
+                    <td>{{app_deployment_history.history_date}}</td>
+                    <td>{{app_deployment_history.history_user}}</td>
+                    <td>{{app_deployment_history.history_change_reason}}</td>
+                    <td>{{app_deployment_history.get_history_type_display}}</td>
+                    <td> valeur a la création :{{app_deployment.app_server}}</td>
+                    <td> valeur a la création :{{app_deployment.module_applicatif}}</td>
+                    
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Structure arborescente de l'objet : {{app_deployment}}</h4>
+            <p class="card-description">
+              Détails des composant de  : {{app_deployment}}
+            </p>
+            <div class="table-responsive">
+              <style>
+                .tree-line {
+                    position: absolute;
+                    left: 60px;
+                    top: 22px;
+                    width: 1px;
+                    height: calc(100% - 32px);
+                    background-color: #040404;
+                }
+                .ul-test-classe{
+                      list-style-type: none;
+                      padding-left: 20px; 
+                      margin-left: 20px;
+                      margin-bottom: 3px;
+                      padding-bottom: 5px;
+
+                }
+                .li-test-classe{
+                  margin-bottom: 5px;
+                      margin-left: 7px;
+                      padding-left: 10px;
+                      padding-right: 5px;
+                }       
+                  .expand-btn {
+                      cursor: pointer;
+                      
+                      padding: 3px;
+                      border-radius: 3px;
+                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                      display: inline-block; /* Affichage en ligne pour permettre le positionnement horizontal */
+                  }
+                  
+                  .expand-btn:hover {
+                      background-color: #f0f0f0;
+                  }
+                  
+                  ul.hidden {
+                      display: none;
+                  }
+           
+        
+              
+                  .mdi {
+                      font-size: 18px;
+                      vertical-align: middle; /* Alignement vertical au centre */
+                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                  }
+                  
+              </style>
+            
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-11">
+                    <div id="tree2"></div>
+                  </div>
+                </div>
+              </div>
+            
+            <script>
+                var levelColors = ['#95b9c2c1', '#6390a34d', '#95b9c258', '#687f8c','#8d9498'];// Ajoutez autant de couleurs que nécessaire
+                var levelTColors = [
+                  'rgba(255, 255, 150, 0.7)',  // Jaune clair
+                  'rgba(255, 255, 120, 0.7)',  // Jaune plus doux
+                  'rgba(255, 250, 150, 0.7)',  // Jaune pâle
+                  'rgba(255, 250, 120, 0.7)'   // Jaune très clair
+                ];// Ajoutez autant de couleurs que nécessaire
+                
+                function traverseNestedDictionary(obj, parentElement, level = 0) {
+                  var ul = document.createElement('ul');
+                  ul.classList.add('ul-test-classe');
+                  parentElement.appendChild(ul);
+              
+                  for (var key in obj) {
+                      if (obj.hasOwnProperty(key)) {
+                          var li = document.createElement('li');
+                          li.classList.add('li-test-classe');
+                          ul.appendChild(li);
+                          
+                          var span = document.createElement('span');
+                          var h3 = document.createElement('h5');
+                          span.textContent = key + ": ";
+                          //span.style.color = levelTColors[level % levelTColors.length];
+                          span.style.fontSize = '13px'; 
+                          span.style.fontWeight = 'bold';
+                          li.appendChild(span);
+                          span.style.borderRadius = '8px';
+                          //li.style.backgroundColor ='#9a94a7'
+                          //li.style.backgroundColor = levelColors[level % levelColors.length];
+                          li.style.borderRadius = '8px'; 
+
+                          li.style.position = 'relative'; // Ajout de la position relative pour positionner la ligne verticale
+              
+                          if (typeof obj[key] === 'object' && obj[key] !== null) {
+                              var folderIcon = document.createElement('i');
+                              folderIcon.className = 'mdi mdi-folder-outline';
+                              span.insertBefore(folderIcon, span.firstChild);
+              
+                              var line = document.createElement('div'); // Création de l'élément de ligne verticale
+                              line.className = 'tree-line';
+                              li.appendChild(line); // Ajout de la ligne verticale
+                              
+                              traverseNestedDictionary(obj[key], li, level + 1);
+              
+                              var icon = document.createElement('i');
+                              icon.className = 'mdi ted mdi-chevron-right';
+                              span.appendChild(icon);
+              
+                              if (Object.keys(obj[key]).length > 0) {
+                                  icon.classList.add('has-children');
+                              } else {
+                                  icon.style.display = 'none';
+                              }
+              
+                              span.addEventListener('click', function(e) {
+                                  e.stopPropagation();
+              
+                                  var ul = this.parentElement.querySelector('ul');
+                                  if (ul) {
+                                      ul.classList.toggle('hidden');
+                                      line.style.display = ul.classList.contains('hidden') ? 'none' : 'block';
+                                      var icon = this.querySelector('.ted');
+                                      if (ul.classList.contains('hidden')) {
+                                          icon.classList.remove('mdi-chevron-down');
+                                          icon.classList.add('mdi-chevron-right');
+                                      } else {
+                                          icon.classList.remove('mdi-chevron-right');
+                                          icon.classList.add('mdi-chevron-down');
+                                      }
+                                  }
+                              });
+              
+                              span.addEventListener('mouseenter', function() {
+                                  this.style.backgroundColor = '#FFCB05';
+                              });
+              
+                              span.addEventListener('mouseleave', function() {
+                                  this.style.backgroundColor = levelColors[level % levelColors.length];
+                              });
+              
+                              span.style.transition = 'background-color 0.3s ease-in-out';
+              
+                          } else {
+                              var fileIcon = document.createElement('i');
+                              fileIcon.className = 'mdi mdi-file-outline';
+                              span.insertBefore(fileIcon, span.firstChild);
+              
+                              var leafSpan = document.createElement('span');
+                              var small = document.createElement('small');
+                              small.textContent = obj[key];
+                              small.className = 'text-muted'; 
+                              small.style.fontSize = '12px'; 
+              
+                              leafSpan.appendChild(small);
+                              li.appendChild(leafSpan);
+                          }
+                      }
+                  }
+              }
+              
+              
+              
+              
+              
+              
+                var serializedData = {{ serializer_data|safe }};
+                var treeContainer = document.getElementById('tree2');
+                traverseNestedDictionary(serializedData, treeContainer, true);
+            </script>
+                   
+            </div>
+          </div>
+        </div>
+      </div>       
+
+    </div>
+  </div>
+  {% endblock %}

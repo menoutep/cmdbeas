@@ -1031,16 +1031,16 @@
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#app-server" aria-expanded="false" aria-controls="app-server">
             <i class="menu-icon mdi mdi-floor-plan"></i>
-            <span class="menu-title">Nos serveurs</span>
+            <span class="menu-title">Nos serveurs d'applications</span>
             <i class="menu-arrow"></i>
           </a>
           <div class="collapse" id="app-server">
             <ul class="nav flex-column sub-menu">
               {%if perms.base.view_appserver%}
-              <li class="nav-item"> <a class="nav-link" href="{% url 'base:app_server-list' %}">Voir les serveurs </a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:app_server-list' %}">Voir les serveurs d'applications</a></li>
               {%endif%}
               {%if perms.base.add_appserver%}
-              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-app_server' %}">creer un serveur</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'base:create-app_server' %}">creer un serveur d'application</a></li>
               {%endif%}
             </ul>
           </div>
@@ -1119,10 +1119,10 @@
           <div class="collapse" id="appdep">
             <ul class="nav flex-column sub-menu">
               {%if perms.base.view_appdeployment%}
-              <li class="nav-item"><a class="nav-link" href="{% url 'base:app_server-list' %}">Voir nos deployements d'applications</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'base:app_deployment-list' %}">Voir nos deployements d'applications</a></li>
               {%endif%}
               {%if perms.base.add_appdeployment%}
-              <li class="nav-item"><a class="nav-link" href="{% url 'base:create-app_server' %}">Creer un deployement d'application</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'base:create-app_deployment' %}">Creer un deployement d'application</a></li>
               {%endif%}
             </ul>
           </div>

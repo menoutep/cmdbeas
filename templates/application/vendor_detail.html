@@ -210,7 +210,7 @@
           </div>
         </div>
       </div> 
-      <div class="col-lg-10 grid-margin stretch-card  mx-auto">
+      <div class="col-lg-11 grid-margin stretch-card  mx-auto">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Structure arborescente de l'objet : {{server.name}}</h4>
@@ -221,27 +221,26 @@
               <style>
                 .tree-line {
                     position: absolute;
-                    left: 50px;
+                    left: 60px;
                     top: 22px;
                     width: 1px;
                     height: calc(100% - 32px);
                     background-color: #040404;
                 }
-                  ul {
+                .ul-test-classe{
                       list-style-type: none;
                       padding-left: 20px; 
                       margin-left: 20px;
                       margin-bottom: 3px;
                       padding-bottom: 5px;
-                  }
-                  
-                  li {
-                      margin-bottom: 5px;
+
+                }
+                .li-test-classe{
+                  margin-bottom: 5px;
                       margin-left: 7px;
                       padding-left: 10px;
                       padding-right: 5px;
-                  }
-                  
+                }       
                   .expand-btn {
                       cursor: pointer;
                       
@@ -258,6 +257,8 @@
                   ul.hidden {
                       display: none;
                   }
+           
+        
               
                   .mdi {
                       font-size: 18px;
@@ -286,11 +287,13 @@
                 
                 function traverseNestedDictionary(obj, parentElement, level = 0) {
                   var ul = document.createElement('ul');
+                  ul.classList.add('ul-test-classe');
                   parentElement.appendChild(ul);
               
                   for (var key in obj) {
                       if (obj.hasOwnProperty(key)) {
                           var li = document.createElement('li');
+                          li.classList.add('li-test-classe');
                           ul.appendChild(li);
                           
                           var span = document.createElement('span');

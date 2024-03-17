@@ -68,7 +68,7 @@ def send_password_email(email,password):
     
     from_email = 'jozacoder@gmail.com'  # Remplacez par votre adresse e-mail
     recipient_list = [user_.email]  # Adresse e-mail du destinataire (utilisateur)
-    send_mail(subject, message, from_email, recipient_list)
+    send_mail(subject=subject, message=message,from_email=from_email,recipient_list=recipient_list)
 
 
 

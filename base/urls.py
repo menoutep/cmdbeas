@@ -103,6 +103,14 @@ path('app_server/<int:pk>/update/', views.AppServerUpdateView.as_view(), name='u
 path('app_server/create', views.AppServerCreateView.as_view(), name='create-app_server'),
 path('app_server/<int:pk>/delete/', views.AppServerDeleteView.as_view(), name='delete-app_server'),
 
+
+path('app_deployment', views.AppDeploymentListView.as_view(), name='app_deployment-list'),
+path('app_deployment/<int:pk>/', views.AppDeploymentDetailView.as_view(), name='detail-app_deployment'),
+path('app_deployment/<int:pk>/update/', views.AppDeploymentUpdateView.as_view(), name='update-app_deployment'),
+path('app_deployment/create', views.AppDeploymentCreateView.as_view(), name='create-app_deployment'),
+path('app_deployment/<int:pk>/delete/', views.AppDeploymentDeleteView.as_view(), name='delete-app_deployment'),
+
+
 path('connexion_bd', views.ConnexionBDListView.as_view(), name='connexion_bd-list'),
 path('connexion_bd/<int:pk>/', views.ConnexionBDDetailView.as_view(), name='detail-connexion_bd'),
 path('connexion_bd/<int:pk>/update/', views.ConnexionBDUpdateView.as_view(), name='update-connexion_bd'),

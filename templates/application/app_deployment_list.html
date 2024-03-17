@@ -1,0 +1,77 @@
+{% extends 'systeme/index.html' %}
+{% load static %}
+
+{%block form-search%}
+<li class="nav-item">
+  <form method="GET" class="search-form" action="{% url 'base:app_deployment-list' %}">
+    <i class="icon-search"></i>
+    <input type="search" name ="q" class="form-control" placeholder="Search Here" title="Search here">
+  </form>
+</li>
+{%endblock%}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-11 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            
+            <h4 class="card-title"> Vos Deploiement d'applications</h4>
+            <p class="card-description">
+              Liste de toutes les deploiement d'applications
+            </p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th>Deploiement </th>
+                    <th>Serveur d'application </th>
+                    <th>Module applicatif</th>
+                    <th>modifié le</th>
+                    <th>créer le</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for app_deployment in page_obj %}
+                  <tr>
+                    <td><a href= "{% url 'base:detail-app_deployment' app_deployment.pk %}"> {{ app_deployment}} </a></td> 
+                    <td><a href= "{% url 'base:detail-app_server' app_deployment.app_server.pk %}">  {{ app_deployment.app_server}} </td> 
+                    <td>  <a href= "{% url 'base:detail-module_applicatif' app_deployment.module_applicatif.pk %}">{{ app_deployment.module_applicatif }}</a> </td>   
+                                       
+                    <td>{{app_deployment.updated|date:"DATETIME_FORMAT"}}</td>
+                    <td>{{app_deployment.created|date:"DATETIME_FORMAT"}}</td>                
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+              {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  {% endblock %}

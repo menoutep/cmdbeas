@@ -256,8 +256,8 @@ class Cluster(models.Model):
 
 
 class DeploiementCluster(models.Model):
-    serveur = models.ForeignKey(Server,on_delete=models.CASCADE,related_name="servers")
-    cluster = models.ForeignKey(Cluster,on_delete=models.CASCADE)
+    serveur = models.ForeignKey(Server,on_delete=models.CASCADE,related_name="deploiement_clusters")
+    cluster = models.ForeignKey(Cluster,on_delete=models.CASCADE,related_name="deploiement_clusters")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
@@ -466,8 +466,8 @@ class AppServer(models.Model):
 
 
 class AppDeployment(models.Model):
-    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE)
-    app_server = models.ForeignKey(AppServer,on_delete=models.CASCADE)
+    module_applicatif = models.ForeignKey(ModuleApplicatif,on_delete=models.CASCADE,related_name="apps_deployments")
+    app_server = models.ForeignKey(AppServer,on_delete=models.CASCADE,related_name="apps_deployments")
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()

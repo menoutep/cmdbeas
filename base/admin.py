@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
-from .models import AppType, BackupStrategie, Application,SystemeStockage, Vendor, ModuleApplicatif,Server,Departement,Rack,ServerRoom,Datacenter,Partition,DeploiementCluster,Database,DatabaseServer,NetworkInterface,IpAdress
+from .models import AppType, BackupStrategie, Application, Cluster,SystemeStockage, Vendor, ModuleApplicatif,Server,Departement,Rack,ServerRoom,Datacenter,Partition,DeploiementCluster,Database,DatabaseServer,NetworkInterface,IpAdress
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from accounts.forms import CustomUserUpdateForm
@@ -149,4 +149,4 @@ class DeploiementClusterAdmin(SimpleHistoryAdmin):
     form = forms.DeploiementClusterUpdateForm
 admin.site.register(DeploiementCluster, DeploiementClusterAdmin)
 
-
+admin.site.register(Cluster)

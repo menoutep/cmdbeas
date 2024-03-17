@@ -180,166 +180,174 @@
               Détails des composant de  : {{desktop_app.name}}
             </p>
           <div class="table-responsive">
-              <style>
+            <style>
               .tree-line {
                   position: absolute;
-                  left: 50px;
+                  left: 60px;
                   top: 22px;
                   width: 1px;
                   height: calc(100% - 32px);
                   background-color: #040404;
               }
-                  ul {
-                      list-style-type: none;
-                      padding-left: 20px; 
-                      margin-left: 20px;
-                      margin-bottom: 3px;
-                      padding-bottom: 5px;
-                  }
-                  
-                  li {
-                      margin-bottom: 5px;
-                      margin-left: 7px;
-                      padding-left: 10px;
-                      padding-right: 5px;
-                  }
-                  
-                  .expand-btn {
-                      cursor: pointer;
-                      
-                      padding: 3px;
-                      border-radius: 3px;
-                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
-                      display: inline-block; /* Affichage en ligne pour permettre le positionnement horizontal */
-                  }
-                  
-                  .expand-btn:hover {
-                      background-color: #f0f0f0;
-                  }
-                  
-                  ul.hidden {
-                      display: none;
-                  }
-              
-                  .mdi {
-                      font-size: 18px;
-                      vertical-align: middle; /* Alignement vertical au centre */
-                      margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
-                  }
-                  
-              </style>
+              .ul-test-classe{
+                    list-style-type: none;
+                    padding-left: 20px; 
+                    margin-left: 20px;
+                    margin-bottom: 3px;
+                    padding-bottom: 5px;
+
+              }
+              .li-test-classe{
+                margin-bottom: 5px;
+                    margin-left: 7px;
+                    padding-left: 10px;
+                    padding-right: 5px;
+              }       
+                .expand-btn {
+                    cursor: pointer;
+                    
+                    padding: 3px;
+                    border-radius: 3px;
+                    margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                    display: inline-block; /* Affichage en ligne pour permettre le positionnement horizontal */
+                }
+                
+                .expand-btn:hover {
+                    background-color: #f0f0f0;
+                }
+                
+                ul.hidden {
+                    display: none;
+                }
+         
+      
             
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-11">
-                    <div id="tree2"></div>
-                  </div>
+                .mdi {
+                    font-size: 18px;
+                    vertical-align: middle; /* Alignement vertical au centre */
+                    margin-right: 5px; /* Ajout de la marge à droite pour séparer l'icône du texte */
+                }
+                
+            </style>
+          
+            <div class="container">
+              <div class="row">
+                <div class="col-md-11">
+                  <div id="tree2"></div>
                 </div>
               </div>
+            </div>
+          
+          <script>
+              var levelColors = ['#95b9c2c1', '#6390a34d', '#95b9c258', '#687f8c','#8d9498'];// Ajoutez autant de couleurs que nécessaire
+              var levelTColors = [
+                'rgba(255, 255, 150, 0.7)',  // Jaune clair
+                'rgba(255, 255, 120, 0.7)',  // Jaune plus doux
+                'rgba(255, 250, 150, 0.7)',  // Jaune pâle
+                'rgba(255, 250, 120, 0.7)'   // Jaune très clair
+              ];// Ajoutez autant de couleurs que nécessaire
+              
+              function traverseNestedDictionary(obj, parentElement, level = 0) {
+                var ul = document.createElement('ul');
+                ul.classList.add('ul-test-classe');
+                parentElement.appendChild(ul);
             
-            <script>
-                var levelColors = ['#95b9c2c1', '#6390a34d', '#95b9c258', '#687f8c','#8d9498'];// Ajoutez autant de couleurs que nécessaire
-                var levelTColors = [
-                  'rgba(255, 255, 150, 0.7)',  // Jaune clair
-                  'rgba(255, 255, 120, 0.7)',  // Jaune plus doux
-                  'rgba(255, 250, 150, 0.7)',  // Jaune pâle
-                  'rgba(255, 250, 120, 0.7)'   // Jaune très clair
-                ];// Ajoutez autant de couleurs que nécessaire
-                
-                function traverseNestedDictionary(obj, parentElement, level = 0) {
-                  var ul = document.createElement('ul');
-                  parentElement.appendChild(ul);
-              
-                  for (var key in obj) {
-                      if (obj.hasOwnProperty(key)) {
-                          var li = document.createElement('li');
-                          ul.appendChild(li);
-                          
-                          var span = document.createElement('span');
-                          var h3 = document.createElement('h5');
-                          span.textContent = key + ": ";
-                          //span.style.color = levelTColors[level % levelTColors.length];
-                          span.style.fontSize = '13px'; 
-                          span.style.fontWeight = 'bold';
-                          li.appendChild(span);
-                          span.style.borderRadius = '8px';
-                          //li.style.backgroundColor ='#9a94a7'
-                          //li.style.backgroundColor = levelColors[level % levelColors.length];
-                          li.style.borderRadius = '8px'; 
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        var li = document.createElement('li');
+                        li.classList.add('li-test-classe');
+                        ul.appendChild(li);
+                        
+                        var span = document.createElement('span');
+                        var h3 = document.createElement('h5');
+                        span.textContent = key + ": ";
+                        //span.style.color = levelTColors[level % levelTColors.length];
+                        span.style.fontSize = '13px'; 
+                        span.style.fontWeight = 'bold';
+                        li.appendChild(span);
+                        span.style.borderRadius = '8px';
+                        //li.style.backgroundColor ='#9a94a7'
+                        //li.style.backgroundColor = levelColors[level % levelColors.length];
+                        li.style.borderRadius = '8px'; 
 
-                          li.style.position = 'relative'; // Ajout de la position relative pour positionner la ligne verticale
-              
-                          if (typeof obj[key] === 'object' && obj[key] !== null) {
-                              var folderIcon = document.createElement('i');
-                              folderIcon.className = 'mdi mdi-folder-outline';
-                              span.insertBefore(folderIcon, span.firstChild);
-              
-                              var line = document.createElement('div'); // Création de l'élément de ligne verticale
-                              line.className = 'tree-line';
-                              li.appendChild(line); // Ajout de la ligne verticale
-                              
-                              traverseNestedDictionary(obj[key], li, level + 1);
-              
-                              var icon = document.createElement('i');
-                              icon.className = 'mdi ted mdi-chevron-right';
-                              span.appendChild(icon);
-              
-                              if (Object.keys(obj[key]).length > 0) {
-                                  icon.classList.add('has-children');
-                              } else {
-                                  icon.style.display = 'none';
-                              }
-              
-                              span.addEventListener('click', function(e) {
-                                  e.stopPropagation();
-              
-                                  var ul = this.parentElement.querySelector('ul');
-                                  if (ul) {
-                                      ul.classList.toggle('hidden');
-                                      line.style.display = ul.classList.contains('hidden') ? 'none' : 'block';
-                                      var icon = this.querySelector('.ted');
-                                      if (ul.classList.contains('hidden')) {
-                                          icon.classList.remove('mdi-chevron-down');
-                                          icon.classList.add('mdi-chevron-right');
-                                      } else {
-                                          icon.classList.remove('mdi-chevron-right');
-                                          icon.classList.add('mdi-chevron-down');
-                                      }
-                                  }
-                              });
-              
-                              span.addEventListener('mouseenter', function() {
-                                  this.style.backgroundColor = '#FFCB05';
-                              });
-              
-                              span.addEventListener('mouseleave', function() {
-                                  this.style.backgroundColor = levelColors[level % levelColors.length];
-                              });
-              
-                              span.style.transition = 'background-color 0.3s ease-in-out';
-              
-                          } else {
-                              var fileIcon = document.createElement('i');
-                              fileIcon.className = 'mdi mdi-file-outline';
-                              span.insertBefore(fileIcon, span.firstChild);
-              
-                              var leafSpan = document.createElement('span');
-                              var small = document.createElement('small');
-                              small.textContent = obj[key];
-                              small.className = 'text-muted'; 
-                              small.style.fontSize = '12px'; 
-              
-                              leafSpan.appendChild(small);
-                              li.appendChild(leafSpan);
-                          }
-                      }
-                  }
-              }
-              
-                var serializedData = {{ serializer_data|safe }};
-                var treeContainer = document.getElementById('tree2');
-                traverseNestedDictionary(serializedData, treeContainer, true);
-            </script>
+                        li.style.position = 'relative'; // Ajout de la position relative pour positionner la ligne verticale
+            
+                        if (typeof obj[key] === 'object' && obj[key] !== null) {
+                            var folderIcon = document.createElement('i');
+                            folderIcon.className = 'mdi mdi-folder-outline';
+                            span.insertBefore(folderIcon, span.firstChild);
+            
+                            var line = document.createElement('div'); // Création de l'élément de ligne verticale
+                            line.className = 'tree-line';
+                            li.appendChild(line); // Ajout de la ligne verticale
+                            
+                            traverseNestedDictionary(obj[key], li, level + 1);
+            
+                            var icon = document.createElement('i');
+                            icon.className = 'mdi ted mdi-chevron-right';
+                            span.appendChild(icon);
+            
+                            if (Object.keys(obj[key]).length > 0) {
+                                icon.classList.add('has-children');
+                            } else {
+                                icon.style.display = 'none';
+                            }
+            
+                            span.addEventListener('click', function(e) {
+                                e.stopPropagation();
+            
+                                var ul = this.parentElement.querySelector('ul');
+                                if (ul) {
+                                    ul.classList.toggle('hidden');
+                                    line.style.display = ul.classList.contains('hidden') ? 'none' : 'block';
+                                    var icon = this.querySelector('.ted');
+                                    if (ul.classList.contains('hidden')) {
+                                        icon.classList.remove('mdi-chevron-down');
+                                        icon.classList.add('mdi-chevron-right');
+                                    } else {
+                                        icon.classList.remove('mdi-chevron-right');
+                                        icon.classList.add('mdi-chevron-down');
+                                    }
+                                }
+                            });
+            
+                            span.addEventListener('mouseenter', function() {
+                                this.style.backgroundColor = '#FFCB05';
+                            });
+            
+                            span.addEventListener('mouseleave', function() {
+                                this.style.backgroundColor = levelColors[level % levelColors.length];
+                            });
+            
+                            span.style.transition = 'background-color 0.3s ease-in-out';
+            
+                        } else {
+                            var fileIcon = document.createElement('i');
+                            fileIcon.className = 'mdi mdi-file-outline';
+                            span.insertBefore(fileIcon, span.firstChild);
+            
+                            var leafSpan = document.createElement('span');
+                            var small = document.createElement('small');
+                            small.textContent = obj[key];
+                            small.className = 'text-muted'; 
+                            small.style.fontSize = '12px'; 
+            
+                            leafSpan.appendChild(small);
+                            li.appendChild(leafSpan);
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            
+            
+            
+              var serializedData = {{ serializer_data|safe }};
+              var treeContainer = document.getElementById('tree2');
+              traverseNestedDictionary(serializedData, treeContainer, true);
+          </script>
               
           </div>
           </div>

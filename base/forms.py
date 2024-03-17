@@ -3,7 +3,7 @@ from django import forms
 from .models import ConnexionBD,AppServer,AppelApi,Api,ModuleApplicatif,Departement,AppType,Process,UseCase,CallFlow,SubProcess,Api,Datacenter,ServerRoom,Rack,Cluster,SystemeStockage,Server,Partition,DeploiementCluster,Database,DatabaseServer,DataDictionnary,DataDictionnaryModel,DataModel,DesktopApp,DomainName,ArchitectureDiagram, UssdShortCode,Vendor,Application,BackupStrategie,NetworkInterface,Notifications,IpAdress
 from base.models import PRIORITY_CHOICES,NAME_APP_TYPE_CHOICES
 from .validators import validate_pdf_magic
-from .models import BackupStrategie,TechnicalRecoveryPlan,ApiSpecification,ApiDocumentation,Url,SmsShortCode,SmppAccount,MobileApp,DesktopApp,ConnexionApp
+from .models import AppDeployment, BackupStrategie,TechnicalRecoveryPlan,ApiSpecification,ApiDocumentation,Url,SmsShortCode,SmppAccount,MobileApp,DesktopApp,ConnexionApp
 
 
 NAME_SERVER_TYPE_CHOICES = (
@@ -1134,14 +1134,13 @@ class IpAdressForm(forms.ModelForm):
     interface = forms.ModelChoiceField(
         queryset=NetworkInterface.objects.all(),
         label='Interface Réseau',
-        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une interface réseau'}),
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner une interface réseau'})
     )
     ipv4 = forms.GenericIPAddressField(
         protocol='ipv4',
         required=True,
         label='Adresse IPv4',
-        widget = forms.TextInput(attrs={'class': 'form-control','type': 'tel', 'pattern': '^(\d{1,3}\.){3}\d{1,3}$'}),
-
+        widget = forms.TextInput(attrs={'class': 'form-control','type': 'tel', 'pattern': '^(\d{1,3}\.){3}\d{1,3}$'})
         )
 
     class Meta:
@@ -2369,8 +2368,6 @@ class DesktopAppUpdateForm(DesktopAppCreateForm):
 
 
 class ConnexionAppCreateForm(forms.ModelForm):
-
-
     mobile_app = forms.ModelChoiceField(
         queryset=MobileApp.objects.all(),
         label='Application Mobile',
@@ -2409,6 +2406,43 @@ class ConnexionAppUpdateForm(ConnexionAppCreateForm):
         if commit:
             instance.save()
         return instance
+
+class AppDeploymentCreateForm(forms.ModelForm):
+    module_applicatif = forms.ModelChoiceField(
+        queryset=ModuleApplicatif.objects.all(),
+        label='Module applicatif',
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':'Selectionner un module applicatif'}),
+    )
+    app_server = forms.ModelChoiceField(
+        queryset=AppServer.objects.all(),
+        label="Serveur d'application",
+        widget=forms.Select(attrs={'class': 'form-control','placeholder':"Selectionner un serveur d'application"}),
+    )
+    class Meta:
+        model = AppDeployment
+        fields = ['module_applicatif','app_server']
+    
+class AppDeploymentUpdateForm(AppDeploymentCreateForm):
+    historical_change_reason = forms.CharField(
+        label="Raison du changement historique",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Raison du changement historique', 'style': 'height: 100px;'}),
+    )
+    class Meta:
+        model = AppDeployment
+        fields = ['module_applicatif','app_server']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        historical_change_reason = self.cleaned_data.get('historical_change_reason', None)
+
+        if historical_change_reason:
+            # Ajoutez une explication à la sauvegarde historique
+            instance.historical_change_reason = historical_change_reason
+            
+        if commit:
+            instance.save()
+        return instance
+
+
 
 
 #################end documentation forms#############################

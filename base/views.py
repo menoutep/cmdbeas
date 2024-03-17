@@ -14,10 +14,10 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import ConnexionApp, Departement,Partition,CallFlow,MobileApp, SmppAccount, SmsShortCode,Url, UssdShortCode
 from django.views import View
 from django.db.models import Q
-from base.serializers import DomainNameSerializer,DataDictionnaryModelSerializer,DataDictionnarySerializer,ApiSpecificationSerializer,CallFlowSerializer,ArchitectureDiagramSerializer,ApiDocumentationSerializer,TechnicalRecoveryPlanSerializer,ConnexionBDSerializer,AppServerSerializer,AppelApiSerializer,ApiSerializer,UseCaseSerializer,ProcessSerializer,SubProcessSerializer,DataModelSerializer,DatacenterSerializer,ServerRoomSerializer,DepartementSerializer,DatabaseSerializer,DatabaseServerSerializer
+from base.serializers import AppDeploymentSerializer, DomainNameSerializer,DataDictionnaryModelSerializer,DataDictionnarySerializer,ApiSpecificationSerializer,CallFlowSerializer,ArchitectureDiagramSerializer,ApiDocumentationSerializer,TechnicalRecoveryPlanSerializer,ConnexionBDSerializer,AppServerSerializer,AppelApiSerializer,ApiSerializer,UseCaseSerializer,ProcessSerializer,SubProcessSerializer,DataModelSerializer,DatacenterSerializer,ServerRoomSerializer,DepartementSerializer,DatabaseSerializer,DatabaseServerSerializer
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .forms import ConnexionBDForm,ConnexionBDUpdateForm,AppServerForm,AppServerUpdateForm,ProcessForm,UseCaseUpdateForm,UseCaseForm,SubProcessForm,AppelApiForm,ApiForm,ApiUpdateForm,SubProcessUpdateForm,ProcessUpdateForm,AppelApiUpdateForm,IpAdressForm,IpAdressUpdateForm,NetworkInterfaceForm,NetworkInterfaceUpdateForm,DepartementForm,DepartementUpdateForm,AppTypeForm,AppTypeUpdateForm,DatacenterForm,DatacenterUpdateForm,ServerRoomForm,ServerRoomUpdateForm,RackForm,RackUpdateForm,ClusterForm,ClusterUpdateForm,SystemeStockageForm,SystemeStockageUpdateForm,ServerForm,ServerUpdateForm,DeploiementClusterUpdateForm,DeploiementClusterForm,PartitionForm,PartitionUpdateForm,DatabaseServerForm,DatabaseServerUpdateForm,DatabaseForm,DatabaseUpdateForm,VendorUpdateForm,VendorForm,ApplicationForm,ApplicationUpdateForm,ModuleApplicatifForm,ModuleApplicatifUpdateForm
+from .forms import AppDeploymentCreateForm,AppDeploymentUpdateForm,ConnexionBDForm,ConnexionBDUpdateForm,AppServerForm,AppServerUpdateForm,ProcessForm,UseCaseUpdateForm,UseCaseForm,SubProcessForm,AppelApiForm,ApiForm,ApiUpdateForm,SubProcessUpdateForm,ProcessUpdateForm,AppelApiUpdateForm,IpAdressForm,IpAdressUpdateForm,NetworkInterfaceForm,NetworkInterfaceUpdateForm,DepartementForm,DepartementUpdateForm,AppTypeForm,AppTypeUpdateForm,DatacenterForm,DatacenterUpdateForm,ServerRoomForm,ServerRoomUpdateForm,RackForm,RackUpdateForm,ClusterForm,ClusterUpdateForm,SystemeStockageForm,SystemeStockageUpdateForm,ServerForm,ServerUpdateForm,DeploiementClusterUpdateForm,DeploiementClusterForm,PartitionForm,PartitionUpdateForm,DatabaseServerForm,DatabaseServerUpdateForm,DatabaseForm,DatabaseUpdateForm,VendorUpdateForm,VendorForm,ApplicationForm,ApplicationUpdateForm,ModuleApplicatifForm,ModuleApplicatifUpdateForm
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -1165,13 +1165,74 @@ class AppServerUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView)
     model = AppServer
     form_class = AppServerUpdateForm
     template_name = 'application/app_server_form.html'
-    success_url = reverse_lazy('base:app_server-list')
-  
+    success_url = reverse_lazy('base:app_server-list') 
 class AppServerDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     permission_required = "base.delete_appserver"
     model = AppServer
     template_name = 'application/app_server_confirm_delete.html'
     success_url = reverse_lazy('base:app_server-list')
+
+
+class AppDeploymentListView(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = "base.view_appdeployment"
+    template_name = 'application/app_deployment_list.html'
+
+    def get(self, request, *args, **kwargs):
+        # Récupérer le paramètre de la requête GET
+        parametre = request.GET.get('parametre')
+        q = self.request.GET.get('q', '')
+        # Initialiser le queryset de base (non trié)
+        queryset = AppDeployment.objects.all()
+        if q :  
+            queryset = AppDeployment.objects.filter(
+                            Q(name__icontains=q) |
+                            Q(description__icontains=q) |          
+                            Q(server__name__icontains=q)|
+                            Q(module_applicatif__name__icontains=q))  
+        # Passer le queryset trié au template
+        print(queryset)
+        context = {'app_deployments': queryset}
+        paginate_by = 10
+        paginator = Paginator(context['app_deployments'], paginate_by)
+        page_number = request.GET.get('page') if request.GET.get('page') is not None else 1
+        page_number = int(page_number)
+        try:
+            page_obj = paginator.page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
+        context['page_obj'] = page_obj
+        return render(request, self.template_name, context)
+class AppDeploymentDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
+    permission_required = "base.view_appdeployment"
+    model = AppDeployment
+    template_name = 'application/app_deployment_detail.html'
+    context_object_name = 'app_deployment'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Récupérer l'historique de la relation many-to-many 'cluster'
+        print(self.object)
+        serializer = AppDeploymentSerializer(self.object)
+        serializer_data=json.dumps(serializer.data)
+        context['serializer_data'] = serializer_data
+        return context
+class AppDeploymentCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+    permission_required = "base.add_appdeployment"
+    model = AppDeployment
+    form_class = AppDeploymentCreateForm
+    template_name = 'application/app_deployment_form.html'
+    success_url = reverse_lazy('base:app_deployment-list')
+class AppDeploymentUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+    permission_required = "base.change_appdeployment"
+    model = AppDeployment
+    form_class = AppDeploymentUpdateForm
+    template_name = 'application/app_deployment_form.html'
+    success_url = reverse_lazy('base:app_deployment-list') 
+class AppDeploymentDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
+    permission_required = "base.delete_appdeployment"
+    model = AppDeployment
+    template_name = 'application/app_deployment_confirm_delete.html'
+    success_url = reverse_lazy('base:app_deployment-list')
 
 
 class ConnexionBDListView(LoginRequiredMixin,PermissionRequiredMixin,View):
@@ -1208,8 +1269,6 @@ class ConnexionBDListView(LoginRequiredMixin,PermissionRequiredMixin,View):
             page_obj = paginator.page(1)  # Afficher la première page si le numéro de page est incorrect
         context['page_obj'] = page_obj
         return render(request, 'application/connexion_bd_list.html', context)
-    
-
 class ConnexionBDDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     permission_required = "base.view_connexionbd"
     model = ConnexionBD
